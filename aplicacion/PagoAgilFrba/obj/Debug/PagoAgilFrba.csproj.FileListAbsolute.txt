@@ -1,0 +1,21 @@
+\\VBOXSVR\PagoAgil2C2017\src\PagoAgilFrba\bin\Debug\PagoAgilFrba.exe.config
+A:\Ronan\Misc\UTN\GDD\Aplicacion Desktop\PagoAgilFrba\bin\Debug\PagoAgilFrba.exe.config
+A:\Ronan\Misc\UTN\GDD\Aplicacion Desktop\PagoAgilFrba\bin\Debug\PagoAgilFrba.exe
+A:\Ronan\Misc\UTN\GDD\Aplicacion Desktop\PagoAgilFrba\bin\Debug\PagoAgilFrba.pdb
+A:\Ronan\Misc\UTN\GDD\Aplicacion Desktop\PagoAgilFrba\obj\Debug\PagoAgilFrba.csprojResolveAssemblyReference.cache
+A:\Ronan\Misc\UTN\GDD\Aplicacion Desktop\PagoAgilFrba\obj\Debug\PagoAgilFrba.Properties.Resources.resources
+A:\Ronan\Misc\UTN\GDD\Aplicacion Desktop\PagoAgilFrba\obj\Debug\PagoAgilFrba.csproj.GenerateResource.Cache
+A:\Ronan\Misc\UTN\GDD\Aplicacion Desktop\PagoAgilFrba\obj\Debug\PagoAgilFrba.exe
+A:\Ronan\Misc\UTN\GDD\Aplicacion Desktop\PagoAgilFrba\obj\Debug\PagoAgilFrba.pdb
+A:\Ronan\Misc\UTN\GDD\Aplicacion Desktop\PagoAgilFrba\obj\Debug\PagoAgilFrba.Login.resources
+A:\Ronan\Misc\UTN\GDD\Aplicacion Desktop\PagoAgilFrba\obj\Debug\PagoAgilFrba.EleccionRol.FormEleccionRol.resources
+A:\Ronan\Misc\UTN\GDD\Aplicacion Desktop\PagoAgilFrba\obj\Debug\PagoAgilFrba.Forms.MenuPrincipal.formMenuPrincipal.resources
+A:\Ronan\Misc\UTN\GDD\Aplicacion Desktop\Repo\aplicacion\PagoAgilFrba\bin\Debug\PagoAgilFrba.exe.config
+A:\Ronan\Misc\UTN\GDD\Aplicacion Desktop\Repo\aplicacion\PagoAgilFrba\obj\Debug\PagoAgilFrba.exe
+A:\Ronan\Misc\UTN\GDD\Aplicacion Desktop\Repo\aplicacion\PagoAgilFrba\obj\Debug\PagoAgilFrba.pdb
+A:\Ronan\Misc\UTN\GDD\Aplicacion Desktop\Repo\aplicacion\PagoAgilFrba\obj\Debug\PagoAgilFrba.csprojResolveAssemblyReference.cache
+A:\Ronan\Misc\UTN\GDD\Aplicacion Desktop\Repo\aplicacion\PagoAgilFrba\obj\Debug\PagoAgilFrba.EleccionRol.FormEleccionRol.resources
+A:\Ronan\Misc\UTN\GDD\Aplicacion Desktop\Repo\aplicacion\PagoAgilFrba\obj\Debug\PagoAgilFrba.Login.resources
+A:\Ronan\Misc\UTN\GDD\Aplicacion Desktop\Repo\aplicacion\PagoAgilFrba\obj\Debug\PagoAgilFrba.Forms.MenuPrincipal.FormMenuPrincipal.resources
+A:\Ronan\Misc\UTN\GDD\Aplicacion Desktop\Repo\aplicacion\PagoAgilFrba\obj\Debug\PagoAgilFrba.Properties.Resources.resources
+A:\Ronan\Misc\UTN\GDD\Aplicacion Desktop\Repo\aplicacion\PagoAgilFrba\obj\Debug\PagoAgilFrba.csproj.GenerateResource.Cache
