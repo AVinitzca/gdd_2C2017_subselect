@@ -1,6 +1,8 @@
 ﻿using PagoAgilFrba.Dominio;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,10 +13,14 @@ namespace PagoAgilFrba.DB
     public class DB
     {
         private static readonly DB instancia = new DB();
+        private SqlConnection conexion;
+
 
         private DB()
         {
-            
+            this.conexion = new SqlConnection();
+            this.conexion.ConnectionString = "Data Source=localhost\\SQLSERVER2012;Initial Catalog=GD1C2017;Integrated Security=True";
+            this.conexion.Open();
         }
 
         public static DB Instancia
@@ -24,8 +30,32 @@ namespace PagoAgilFrba.DB
                 return instancia;
             }
         }
-        
 
+        public Respuesta comando(string nombre, Dictionary<string, object> valores)
+        {
+            SqlCommand comando = new SqlCommand(nombre, this.conexion);
+            comando.CommandType = CommandType.StoredProcedure;
+
+            foreach (string clave in valores.Keys)
+            {
+                comando.Parameters.AddWithValue("@" + clave, valores[clave]);
+            }
+
+            SqlParameter retorno = new SqlParameter("@FLAG_ERROR", SqlDbType.Int);
+            retorno.Size = sizeof(int);
+            retorno.Direction = ParameterDirection.Output;
+            comando.Parameters.Add(retorno);
+
+            SqlParameter mensaje = new SqlParameter("@MENSAJE", SqlDbType.VarChar);
+            mensaje.Size = 255 * sizeof(char);
+            mensaje.Direction = ParameterDirection.Output;
+            comando.Parameters.Add(mensaje);
+
+            comando.ExecuteNonQuery();
+
+            return new Respuesta((int)retorno.Value, mensaje.Value.ToString());            
+        }
+        
         public List<Rubro> obtenerRubros()
         {
             List<Rubro> rubros = new List<Rubro>();
