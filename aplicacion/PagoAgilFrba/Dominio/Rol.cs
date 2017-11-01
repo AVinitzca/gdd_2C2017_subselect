@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,7 +11,8 @@ namespace PagoAgilFrba.Dominio
     {
        
         private string nombre;
-        private List<Funcionalidad> funcionalidades;
+
+        private List<Funcionalidad> funcionalidades = new List<Funcionalidad>();
 
         public string Nombre
         {
@@ -24,12 +26,32 @@ namespace PagoAgilFrba.Dominio
             }
         }
 
+        [Browsable(false)]
         public List<Funcionalidad> Funcionalidades
         {
             get
             {
                 return this.funcionalidades;
             }
+            set
+            {
+                this.funcionalidades = value;
+            }
         }
+
+        public String ListaFuncionalidades
+        {
+            get
+            {
+                return (this.funcionalidades.Select(funcionalidad => funcionalidad.Descripcion).Aggregate("", (prev, next) => "," + next));
+            }
+        }
+
+        public void agregarFuncionadlidad(Funcionalidad funcionalidad)
+        {
+            this.funcionalidades.Add(funcionalidad);
+        }
+
+
     }
 }

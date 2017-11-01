@@ -20,9 +20,9 @@ namespace PagoAgilFrba.EleccionRol
         }
 
         private void formElegirRol_Load(object sender, EventArgs e)
-        {
-            this.cmbRoles.Items.AddRange(Usuario.Logeado.roles().ToArray());
-            this.cmbRoles.Items.AddRange(Usuario.Logeado.sucursales().ToArray());
+        {            
+            this.cmbRoles.Items.AddRange(Usuario.Logeado.Roles.ToArray());
+            this.cmbSucursales.Items.AddRange(Usuario.Logeado.Sucursales.ToArray());
         }
 
         private void btnContinuar_Click(object sender, EventArgs e)
@@ -31,9 +31,14 @@ namespace PagoAgilFrba.EleccionRol
             {
                 MessageBox.Show("Seleccione un rol");
             }
+            else if(this.cmbSucursales.SelectedItem == null)
+            {
+                MessageBox.Show("Seleccione una sucursal");
+            }
             else
             {
                 Usuario.Logeado.asignarRol((Rol)this.cmbRoles.SelectedValue);
+                Usuario.Logeado.asignarSucursal((Sucursal)this.cmbSucursales.SelectedValue);
                 Form form = new FormMenuPrincipal();
                 form.Show();
                 this.Hide();                

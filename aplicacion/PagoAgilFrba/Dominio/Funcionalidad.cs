@@ -18,7 +18,12 @@ namespace PagoAgilFrba.Dominio
             {
                 return this.descripcion;
             }
+            set
+            {
+                this.descripcion = value;
+            }
         }
+        
 
     }
 }

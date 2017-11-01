@@ -46,7 +46,7 @@ namespace PagoAgilFrba.Configuracion
             }
         }
 
-        public object valor(string clave)
+        public static object valor(string clave)
         {
             object valor = null;
             configuracion.TryGetValue(clave, out valor);

@@ -1,4 +1,11 @@
-﻿using PagoAgilFrba.Dominio;
+﻿using PagoAgilFrba.AbmCliente;
+using PagoAgilFrba.AbmFactura;
+using PagoAgilFrba.AbmRol;
+using PagoAgilFrba.Dominio;
+using PagoAgilFrba.Forms.AbmEmpresa;
+using PagoAgilFrba.Forms.AbmSucursal;
+using PagoAgilFrba.Forms.Devolucion;
+using PagoAgilFrba.RegistroPago;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -22,6 +29,11 @@ namespace PagoAgilFrba.Forms.MenuPrincipal
 
         private void FormMenuPrincipal_Load(object sender, EventArgs e)
         {
+            FormDevolucionFactura form = new FormDevolucionFactura();
+            form.Show();
+            this.Hide();
+            return;
+                           
             foreach(Funcionalidad funcionalidad in Usuario.Logeado.Rol.Funcionalidades)
             {
                 ToolStripButton btnOpcion = new ToolStripButton(funcionalidad.Descripcion);

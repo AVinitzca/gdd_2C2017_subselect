@@ -11,7 +11,9 @@ namespace PagoAgilFrba.Dominio
         private string email;
         private string password;
         private List<Rol> posiblesRoles;
+        private List<Sucursal> posiblesSucursales;
         private Rol rolSeleccionado;
+        private Sucursal sucursalSeleccionada;
 
         private static Usuario logeado;
 
@@ -27,6 +29,10 @@ namespace PagoAgilFrba.Dominio
             Rol rol = new Rol();
             rol.Nombre = "RolTest";
             this.posiblesRoles.Add(rol);
+            this.posiblesSucursales = new List<Sucursal>();
+            Sucursal sucursal = new Sucursal();
+            sucursal.Nombre = "Paternal";
+            this.posiblesSucursales.Add(sucursal);
             /*             
             * DB.ejecutarProcedimiento({email, password});
             * 
@@ -36,14 +42,28 @@ namespace PagoAgilFrba.Dominio
             return true;
         }
 
-        public List<Rol> roles()
+        public List<Rol> Roles
         {
-            return this.posiblesRoles;
+            get
+            {
+                return this.posiblesRoles;
+            }         
         }
-
+        public List<Sucursal> Sucursales
+        {
+            get
+            {
+                return this.posiblesSucursales;
+            }            
+        }
         public void asignarRol(Rol rol)
         {
             this.rolSeleccionado = rol;
+        }
+
+        public void asignarSucursal(Sucursal sucursal)
+        {
+            this.sucursalSeleccionada = sucursal;
         }
 
         public Rol Rol
@@ -60,6 +80,15 @@ namespace PagoAgilFrba.Dominio
             {
                 return logeado;
             }
-        } 
+        }
+
+        public Sucursal Sucursal
+        {
+            get
+            {
+                return this.sucursalSeleccionada;
+            }
+        }
+        
     }
 }

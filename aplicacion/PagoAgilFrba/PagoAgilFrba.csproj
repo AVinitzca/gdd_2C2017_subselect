@@ -34,6 +34,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -46,38 +47,59 @@
   <ItemGroup>
     <Compile Include="Configuracion\Configuracion.cs" />
     <Compile Include="DB\DB.cs" />
+    <Compile Include="Dominio\Cliente.cs" />
+    <Compile Include="Dominio\Empresa.cs" />
+    <Compile Include="Dominio\Factura.cs" />
+    <Compile Include="Dominio\FormaDePago.cs" />
     <Compile Include="Dominio\Funcionalidad.cs" />
+    <Compile Include="Dominio\ItemFactura.cs" />
+    <Compile Include="Dominio\Pago.cs" />
+    <Compile Include="Dominio\RendicionFacturas.cs" />
     <Compile Include="Dominio\Rol.cs" />
+    <Compile Include="Dominio\Rubro.cs" />
+    <Compile Include="Dominio\Sucursal.cs" />
     <Compile Include="Dominio\Usuario.cs" />
-    <Compile Include="Forms\AbmCliente\Form1.cs">
+    <Compile Include="Forms\AbmCliente\Clientes.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\AbmCliente\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Forms\AbmCliente\Clientes.Designer.cs">
+      <DependentUpon>Clientes.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\AbmEmpresa\Form1.cs">
+    <Compile Include="Forms\AbmEmpresa\Empresas.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\AbmEmpresa\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Forms\AbmEmpresa\Empresas.Designer.cs">
+      <DependentUpon>Empresas.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\AbmFactura\Form1.cs">
+    <Compile Include="Forms\AbmFactura\AltaFacturas.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\AbmFactura\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Forms\AbmFactura\AltaFacturas.Designer.cs">
+      <DependentUpon>AltaFacturas.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\AbmRol\Form1.cs">
+    <Compile Include="Forms\AbmRol\Roles.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\AbmRol\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Forms\AbmRol\Roles.Designer.cs">
+      <DependentUpon>Roles.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\AbmSucursal\Form1.cs">
+    <Compile Include="Forms\AbmSucursal\Sucursales.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\AbmSucursal\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Forms\AbmSucursal\Sucursales.Designer.cs">
+      <DependentUpon>Sucursales.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Devolucion\DevolucionFactura.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Devolucion\DevolucionFactura.Designer.cs">
+      <DependentUpon>DevolucionFactura.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Devolucion\DevolucionRendicion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Devolucion\DevolucionRendicion.Designer.cs">
+      <DependentUpon>DevolucionRendicion.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\EleccionIngreso\FormEleccionIngreso.cs">
       <SubType>Form</SubType>
@@ -91,11 +113,11 @@
     <Compile Include="Forms\Login\FormLogin.Designer.cs">
       <DependentUpon>FormLogin.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\ListadoEstadistico\Form1.cs">
+    <Compile Include="Forms\ListadoEstadistico\ListadoEstadistico.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\ListadoEstadistico\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Forms\ListadoEstadistico\ListadoEstadistico.Designer.cs">
+      <DependentUpon>ListadoEstadistico.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\MenuPrincipal\FormMenuPrincipal.cs">
       <SubType>Form</SubType>
@@ -105,26 +127,56 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Forms\RegistroPago\Form1.cs">
+    <Compile Include="Forms\RegistroPago\Pagos.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\RegistroPago\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Forms\RegistroPago\Pagos.Designer.cs">
+      <DependentUpon>Pagos.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Rendicion\Form1.cs">
+    <Compile Include="Forms\Rendiciones\Rendiciones.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Rendicion\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Forms\Rendiciones\Rendiciones.Designer.cs">
+      <DependentUpon>Rendiciones.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Forms\AbmCliente\Clientes.resx">
+      <DependentUpon>Clientes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\AbmEmpresa\Empresas.resx">
+      <DependentUpon>Empresas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\AbmFactura\AltaFacturas.resx">
+      <DependentUpon>AltaFacturas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\AbmRol\Roles.resx">
+      <DependentUpon>Roles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\AbmSucursal\Sucursales.resx">
+      <DependentUpon>Sucursales.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Devolucion\DevolucionFactura.resx">
+      <DependentUpon>DevolucionFactura.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Devolucion\DevolucionRendicion.resx">
+      <DependentUpon>DevolucionRendicion.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\EleccionIngreso\FormEleccionIngreso.resx">
       <DependentUpon>FormEleccionIngreso.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ListadoEstadistico\ListadoEstadistico.resx">
+      <DependentUpon>ListadoEstadistico.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Login\FormLogin.resx">
       <DependentUpon>FormLogin.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MenuPrincipal\FormMenuPrincipal.resx">
       <DependentUpon>FormMenuPrincipal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\RegistroPago\Pagos.resx">
+      <DependentUpon>Pagos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Rendiciones\Rendiciones.resx">
+      <DependentUpon>Rendiciones.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -135,6 +187,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="Properties\DataSources\PagoAgilFrba.Dominio.Rol.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
