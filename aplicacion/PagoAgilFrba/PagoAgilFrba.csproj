@@ -140,6 +140,7 @@
     <Compile Include="Forms\Rendiciones\Rendiciones.Designer.cs">
       <DependentUpon>Rendiciones.cs</DependentUpon>
     </Compile>
+    <Compile Include="Utils\UtilFunctions.cs" />
     <EmbeddedResource Include="Forms\AbmCliente\Clientes.resx">
       <DependentUpon>Clientes.cs</DependentUpon>
     </EmbeddedResource>

@@ -37,8 +37,8 @@ namespace PagoAgilFrba.EleccionRol
             }
             else
             {
-                Usuario.Logeado.asignarRol((Rol)this.cmbRoles.SelectedValue);
-                Usuario.Logeado.asignarSucursal((Sucursal)this.cmbSucursales.SelectedValue);
+                Usuario.Logeado.asignarRol((Rol)this.cmbRoles.SelectedItem);
+                Usuario.Logeado.asignarSucursal((Sucursal)this.cmbSucursales.SelectedItem);
                 Form form = new FormMenuPrincipal();
                 form.Show();
                 this.Hide();                

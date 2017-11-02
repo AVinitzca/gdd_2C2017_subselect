@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PagoAgilFrba.DB;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ namespace PagoAgilFrba.Dominio
 {
     public class Usuario
     {
-        private string email;
+        private string username;
         private string password;
         private List<Rol> posiblesRoles;
         private List<Sucursal> posiblesSucursales;
@@ -17,29 +18,22 @@ namespace PagoAgilFrba.Dominio
 
         private static Usuario logeado;
 
-        public Usuario(string email, string password)
+        public Usuario(string username, string password)
         {
-            this.email = email;
-            this.password = password;
+            this.Username = username;
+            this.Password = password;
         }
 
-        public bool logear()
-        {
-            this.posiblesRoles = new List<Rol>();
-            Rol rol = new Rol();
-            rol.Nombre = "RolTest";
-            this.posiblesRoles.Add(rol);
-            this.posiblesSucursales = new List<Sucursal>();
-            Sucursal sucursal = new Sucursal();
-            sucursal.Nombre = "Paternal";
-            this.posiblesSucursales.Add(sucursal);
-            /*             
-            * DB.ejecutarProcedimiento({email, password});
-            * 
-            * 
-            */
-            logeado = this;
-            return true;
+        public Respuesta logear()
+        {            
+            Respuesta respuesta = DB.DB.Instancia.logear(this);
+            if(respuesta.Codigo == 0)
+            {
+                this.posiblesRoles = DB.DB.Instancia.obtenerRolesParaUsuario(this);
+                this.posiblesSucursales = DB.DB.Instancia.obtenerSucursalesParaUsuario(this);
+                logeado = this;
+            }
+            return respuesta;            
         }
 
         public List<Rol> Roles
@@ -89,6 +83,31 @@ namespace PagoAgilFrba.Dominio
                 return this.sucursalSeleccionada;
             }
         }
-        
+
+        public string Username
+        {
+            get
+            {
+                return username;
+            }
+
+            set
+            {
+                username = value;
+            }
+        }
+
+        public string Password
+        {
+            get
+            {
+                return password;
+            }
+
+            set
+            {
+                password = value;
+            }
+        }
     }
 }

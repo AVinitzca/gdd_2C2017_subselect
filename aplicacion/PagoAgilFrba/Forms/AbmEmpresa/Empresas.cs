@@ -1,4 +1,5 @@
 ﻿using PagoAgilFrba.Dominio;
+using PagoAgilFrba.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -22,6 +23,7 @@ namespace PagoAgilFrba.Forms.AbmEmpresa
 
         private void Empresas_Load(object sender, EventArgs e)
         {
+            this.empresas = new BindingList<Empresa>();
             this.cmbRubro.Items.AddRange(DB.DB.Instancia.obtenerRubros().ToArray());
             this.cmbFiltroRubro.Items.AddRange(DB.DB.Instancia.obtenerRubros().ToArray());
             this.cargarEmpresas();
@@ -164,8 +166,8 @@ namespace PagoAgilFrba.Forms.AbmEmpresa
 
         protected void cargarEmpresas()
         {
-            this.empresas.Clear();
             this.empresas = new BindingList<Empresa>(DB.DB.Instancia.obtenerEmpresas(this.txtFiltroNombre.Text, this.txtFiltroCuit.Text, (Rubro)this.cmbFiltroRubro.SelectedItem));
+            this.dgvEmpresas.DataSource = empresas;
         }
 
         private void txtFiltroNombre_TextChanged(object sender, EventArgs e)

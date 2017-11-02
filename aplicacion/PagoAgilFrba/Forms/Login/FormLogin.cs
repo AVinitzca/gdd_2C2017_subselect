@@ -4,6 +4,7 @@ using PagoAgilFrba.EleccionRol;
 using System.Windows.Forms;
 using PagoAgilFrba.Configuracion;
 using PagoAgilFrba.Dominio;
+using PagoAgilFrba.DB;
 
 namespace PagoAgilFrba
 {
@@ -18,19 +19,7 @@ namespace PagoAgilFrba
                 MessageBox.Show(Configuracion.Configuracion.Error);
             }
         }
-
-        private void txtEmail_TextChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                var eMailValidator = new System.Net.Mail.MailAddress(((TextBox)sender).Text);
-                ((TextBox)sender).ForeColor = Color.Black;                
-            }
-            catch (FormatException ex)
-            {
-                ((TextBox)sender).ForeColor = Color.Red;
-            }
-        }
+        
 
         private void Login_Load(object sender, EventArgs e)
         {
@@ -39,12 +28,13 @@ namespace PagoAgilFrba
 
         private void btnEntrar_Click(object sender, EventArgs e)
         {
-            String email    = this.Controls.Find("txtEmail", true)[0].Text;
-            String password = this.Controls.Find("txtPassword", true)[0].Text;
+            String email    = this.txtNombreUsuario.Text;
+            String password = this.txtPassword.Text;
 
             Usuario usuario = new Usuario(email, password);
 
-            if(usuario.logear())
+            Respuesta respuesta = usuario.logear();
+            if(respuesta.Codigo == 0)
             {                
                 Form formEleccionRol = new FormEleccionRol();                
                 formEleccionRol.Show();
@@ -52,7 +42,7 @@ namespace PagoAgilFrba
             }
             else
             {
-                MessageBox.Show("ERROR");
+                MessageBox.Show("Error: " + respuesta.Mensaje);
             }
         }
         

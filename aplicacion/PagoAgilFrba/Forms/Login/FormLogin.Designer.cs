@@ -32,8 +32,8 @@
             this.btnEntrar = new System.Windows.Forms.Button();
             this.lblPassword = new System.Windows.Forms.Label();
             this.txtPassword = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.txtEmail = new System.Windows.Forms.TextBox();
+            this.lblUsername = new System.Windows.Forms.Label();
+            this.txtNombreUsuario = new System.Windows.Forms.TextBox();
             this.lblBienvenida = new System.Windows.Forms.Label();
             this.lblIngreso = new System.Windows.Forms.Label();
             this.gpbLogin.SuspendLayout();
@@ -44,8 +44,8 @@
             this.gpbLogin.Controls.Add(this.btnEntrar);
             this.gpbLogin.Controls.Add(this.lblPassword);
             this.gpbLogin.Controls.Add(this.txtPassword);
-            this.gpbLogin.Controls.Add(this.label1);
-            this.gpbLogin.Controls.Add(this.txtEmail);
+            this.gpbLogin.Controls.Add(this.lblUsername);
+            this.gpbLogin.Controls.Add(this.txtNombreUsuario);
             this.gpbLogin.Location = new System.Drawing.Point(12, 87);
             this.gpbLogin.Name = "gpbLogin";
             this.gpbLogin.Size = new System.Drawing.Size(405, 260);
@@ -84,26 +84,25 @@
             this.txtPassword.Size = new System.Drawing.Size(332, 30);
             this.txtPassword.TabIndex = 4;
             // 
-            // label1
+            // lblUsername
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(24, 43);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(57, 24);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "Email";
+            this.lblUsername.AutoSize = true;
+            this.lblUsername.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblUsername.Location = new System.Drawing.Point(24, 43);
+            this.lblUsername.Name = "lblUsername";
+            this.lblUsername.Size = new System.Drawing.Size(175, 24);
+            this.lblUsername.TabIndex = 3;
+            this.lblUsername.Text = "Nombre de Usuario";
             // 
-            // txtEmail
+            // txtNombreUsuario
             // 
-            this.txtEmail.AccessibleDescription = "Email";
-            this.txtEmail.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtEmail.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.txtEmail.Location = new System.Drawing.Point(28, 70);
-            this.txtEmail.Name = "txtEmail";
-            this.txtEmail.Size = new System.Drawing.Size(332, 30);
-            this.txtEmail.TabIndex = 0;
-            this.txtEmail.TextChanged += new System.EventHandler(this.txtEmail_TextChanged);
+            this.txtNombreUsuario.AccessibleDescription = "Nombre de Usuario";
+            this.txtNombreUsuario.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtNombreUsuario.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.txtNombreUsuario.Location = new System.Drawing.Point(28, 70);
+            this.txtNombreUsuario.Name = "txtNombreUsuario";
+            this.txtNombreUsuario.Size = new System.Drawing.Size(332, 30);
+            this.txtNombreUsuario.TabIndex = 0;
             // 
             // lblBienvenida
             // 
@@ -148,11 +147,11 @@
 
         private System.Windows.Forms.GroupBox gpbLogin;
         private System.Windows.Forms.Label lblBienvenida;
-        private System.Windows.Forms.TextBox txtEmail;
+        private System.Windows.Forms.TextBox txtNombreUsuario;
         private System.Windows.Forms.Label lblIngreso;
         private System.Windows.Forms.Label lblPassword;
         private System.Windows.Forms.TextBox txtPassword;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblUsername;
         private System.Windows.Forms.Button btnEntrar;
     }
 }

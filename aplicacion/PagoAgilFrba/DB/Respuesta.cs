@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,12 +11,12 @@ namespace PagoAgilFrba.DB
     {
         private int codigo;
         private string mensaje;
+        private DataTable tabla;
 
-        public Respuesta(int codigo, string mensaje)
+        public Respuesta()
         {
-            this.codigo = codigo;
-            this.mensaje = mensaje;
         }
+        
 
         public int Codigo
         {
@@ -42,5 +43,18 @@ namespace PagoAgilFrba.DB
                 mensaje = value;
             }
         }
+
+        public DataTable Tabla
+        {
+            get
+            {
+                return this.tabla;
+            }
+            set
+            {
+                this.tabla = value;   
+            }
+        }
+
     }
 }

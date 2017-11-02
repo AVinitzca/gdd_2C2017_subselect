@@ -28,14 +28,10 @@ namespace PagoAgilFrba.Forms.MenuPrincipal
         }
 
         private void FormMenuPrincipal_Load(object sender, EventArgs e)
-        {
-            FormDevolucionFactura form = new FormDevolucionFactura();
-            form.Show();
-            this.Hide();
-            return;
-                           
+        {                           
             foreach(Funcionalidad funcionalidad in Usuario.Logeado.Rol.Funcionalidades)
             {
+                MessageBox.Show(funcionalidad.Descripcion);
                 ToolStripButton btnOpcion = new ToolStripButton(funcionalidad.Descripcion);
                 btnOpcion.Tag = funcionalidad;
                 btnOpcion.Click += new System.EventHandler(this.irAFormulario);

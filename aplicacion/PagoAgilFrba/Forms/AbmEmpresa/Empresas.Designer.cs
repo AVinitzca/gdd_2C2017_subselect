@@ -217,6 +217,7 @@
             // 
             // cmbFiltroRubro
             // 
+            this.cmbFiltroRubro.DisplayMember = "Descripcion";
             this.cmbFiltroRubro.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbFiltroRubro.FormattingEnabled = true;
             this.cmbFiltroRubro.Location = new System.Drawing.Point(883, 9);
