@@ -25,9 +25,9 @@ A:\Ronan\Misc\UTN\GDD\Aplicacion Desktop\Repo\aplicacion\PagoAgilFrba\obj\Debug\
 A:\Ronan\Misc\UTN\GDD\Aplicacion Desktop\Repo\aplicacion\PagoAgilFrba\obj\Debug\PagoAgilFrba.Forms.AbmEmpresa.FormEmpresas.resources
 A:\Ronan\Misc\UTN\GDD\Aplicacion Desktop\Repo\aplicacion\PagoAgilFrba\obj\Debug\PagoAgilFrba.Forms.AbmSucursal.FormSucursales.resources
 A:\Ronan\Misc\UTN\GDD\Aplicacion Desktop\Repo\aplicacion\PagoAgilFrba\obj\Debug\PagoAgilFrba.AbmCliente.FormClientes.resources
-A:\Ronan\Misc\UTN\GDD\Aplicacion Desktop\Repo\aplicacion\PagoAgilFrba\obj\Debug\PagoAgilFrba.AbmFactura.FormFactura.resources
 A:\Ronan\Misc\UTN\GDD\Aplicacion Desktop\Repo\aplicacion\PagoAgilFrba\obj\Debug\PagoAgilFrba.RegistroPago.FormPagos.resources
 A:\Ronan\Misc\UTN\GDD\Aplicacion Desktop\Repo\aplicacion\PagoAgilFrba\obj\Debug\PagoAgilFrba.Forms.Devolucion.FormDevolucionFactura.resources
 A:\Ronan\Misc\UTN\GDD\Aplicacion Desktop\Repo\aplicacion\PagoAgilFrba\obj\Debug\PagoAgilFrba.Forms.Devolucion.DevolucionRendicion.resources
 A:\Ronan\Misc\UTN\GDD\Aplicacion Desktop\Repo\aplicacion\PagoAgilFrba\obj\Debug\PagoAgilFrba.ListadoEstadistico.FormListadoEstadistico.resources
 A:\Ronan\Misc\UTN\GDD\Aplicacion Desktop\Repo\aplicacion\PagoAgilFrba\obj\Debug\PagoAgilFrba.Rendicion.FormRendiciones.resources
+A:\Ronan\Misc\UTN\GDD\Aplicacion Desktop\Repo\aplicacion\PagoAgilFrba\obj\Debug\PagoAgilFrba.AbmFactura.FormAltaFactura.resources

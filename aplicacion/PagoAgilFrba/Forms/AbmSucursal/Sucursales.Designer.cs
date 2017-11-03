@@ -238,6 +238,9 @@
             this.Controls.Add(this.lblFiltroDireccion);
             this.Controls.Add(this.dgvSucursales);
             this.Controls.Add(this.gpbIngreso);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "FormSucursales";
             this.Text = "Sucursales";
             this.Load += new System.EventHandler(this.FormSucursales_Load);

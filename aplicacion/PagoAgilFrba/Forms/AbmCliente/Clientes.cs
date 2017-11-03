@@ -171,7 +171,7 @@ namespace PagoAgilFrba.AbmCliente
         protected void cargarClientes()
         {
             this.clientes.Clear();
-            this.clientes = new BindingList<Cliente>(DB.DB.Instancia.obtenerClientes(this.txtFiltroNombre.Text, this.txtFiltroApellido.Text, this.txtFiltroApellido.Text));
+            this.clientes = new BindingList<Cliente>(DB.DB.Instancia.obtenerClientes(this.txtFiltroNombre.Text, this.txtFiltroApellido.Text, Int32.Parse(this.txtFiltroDNI.Text)));
         }
 
         private void txtCodigoPostal_KeyPress(object sender, KeyPressEventArgs e)

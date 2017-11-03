@@ -33,6 +33,7 @@
             this.btnDevolver = new System.Windows.Forms.Button();
             this.lblMotivo = new System.Windows.Forms.Label();
             this.txtMotivo = new System.Windows.Forms.TextBox();
+            this.btnVolver = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // cmbFacturas
@@ -85,16 +86,31 @@
             this.txtMotivo.Size = new System.Drawing.Size(281, 30);
             this.txtMotivo.TabIndex = 4;
             // 
+            // btnVolver
+            // 
+            this.btnVolver.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
+            this.btnVolver.Location = new System.Drawing.Point(112, 317);
+            this.btnVolver.Name = "btnVolver";
+            this.btnVolver.Size = new System.Drawing.Size(173, 61);
+            this.btnVolver.TabIndex = 5;
+            this.btnVolver.Text = "Volver";
+            this.btnVolver.UseVisualStyleBackColor = true;
+            this.btnVolver.Click += new System.EventHandler(this.btnVolver_Click);
+            // 
             // FormDevolucionFactura
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(399, 355);
+            this.ClientSize = new System.Drawing.Size(399, 390);
+            this.Controls.Add(this.btnVolver);
             this.Controls.Add(this.txtMotivo);
             this.Controls.Add(this.lblMotivo);
             this.Controls.Add(this.btnDevolver);
             this.Controls.Add(this.lblFactura);
             this.Controls.Add(this.cmbFacturas);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "FormDevolucionFactura";
             this.Text = "DevolucionFactura";
             this.Load += new System.EventHandler(this.FormDevolucionFactura_Load);
@@ -110,5 +126,6 @@
         private System.Windows.Forms.Button btnDevolver;
         private System.Windows.Forms.Label lblMotivo;
         private System.Windows.Forms.TextBox txtMotivo;
+        private System.Windows.Forms.Button btnVolver;
     }
 }

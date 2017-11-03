@@ -162,6 +162,9 @@
             this.Controls.Add(this.lblEmpresa);
             this.Controls.Add(this.lblFacturas);
             this.Controls.Add(this.lstFacturas);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "FormPagos";
             this.Text = "Pagos";
             this.Load += new System.EventHandler(this.FormPagos_Load);

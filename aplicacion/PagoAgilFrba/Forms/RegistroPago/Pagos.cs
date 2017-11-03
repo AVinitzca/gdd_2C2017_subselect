@@ -22,7 +22,7 @@ namespace PagoAgilFrba.RegistroPago
         private void FormPagos_Load(object sender, EventArgs e)
         {
             this.cmbEmpresas.Items.AddRange(DB.DB.Instancia.obtenerEmpresas(null, null, null).ToArray());
-            this.cmbCliente.Items.AddRange(DB.DB.Instancia.obtenerClientes(null, null, null).ToArray());
+            this.cmbCliente.Items.AddRange(DB.DB.Instancia.obtenerClientes(null, null, 0).ToArray());
             this.cmbFormaPago.Items.AddRange(DB.DB.Instancia.obtenerFormasDePago().ToArray());
         }
 
@@ -66,8 +66,7 @@ namespace PagoAgilFrba.RegistroPago
                 }
                 pago.Facturas = facturas;
                 pago.Fecha = (DateTime)Configuracion.Configuracion.valor("fecha");
-                pago.Sucursal = Usuario.Logeado.Sucursal;
-                pago.Total = pago.Facturas.Aggregate(0d, (prev, post) => prev + ((Factura)post).Total);
+                pago.Sucursal = Usuario.Logeado.Sucursal;                
                 DB.DB.Instancia.crearPago(pago);
                 this.Hide();
                 FormMenuPrincipal menu = new FormMenuPrincipal();

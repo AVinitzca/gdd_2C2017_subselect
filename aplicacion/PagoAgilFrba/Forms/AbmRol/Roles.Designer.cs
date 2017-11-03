@@ -30,13 +30,13 @@
         {
             this.components = new System.ComponentModel.Container();
             this.gpbNuevoRol = new System.Windows.Forms.GroupBox();
+            this.btnCancelar = new System.Windows.Forms.Button();
+            this.btnModificar = new System.Windows.Forms.Button();
             this.btnCrear = new System.Windows.Forms.Button();
             this.txtNombre = new System.Windows.Forms.TextBox();
             this.lblNombre = new System.Windows.Forms.Label();
             this.lstFuncionalidades = new System.Windows.Forms.ListBox();
             this.dgvRoles = new System.Windows.Forms.DataGridView();
-            this.btnModificar = new System.Windows.Forms.Button();
-            this.btnCancelar = new System.Windows.Forms.Button();
             this.rolBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.gpbNuevoRol.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvRoles)).BeginInit();
@@ -58,6 +58,28 @@
             this.gpbNuevoRol.TabIndex = 0;
             this.gpbNuevoRol.TabStop = false;
             this.gpbNuevoRol.Text = "Nuevo Rol";
+            // 
+            // btnCancelar
+            // 
+            this.btnCancelar.Location = new System.Drawing.Point(192, 368);
+            this.btnCancelar.Name = "btnCancelar";
+            this.btnCancelar.Size = new System.Drawing.Size(138, 68);
+            this.btnCancelar.TabIndex = 5;
+            this.btnCancelar.Text = "Cancelar";
+            this.btnCancelar.UseVisualStyleBackColor = true;
+            this.btnCancelar.Visible = false;
+            this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
+            // 
+            // btnModificar
+            // 
+            this.btnModificar.Location = new System.Drawing.Point(33, 368);
+            this.btnModificar.Name = "btnModificar";
+            this.btnModificar.Size = new System.Drawing.Size(142, 68);
+            this.btnModificar.TabIndex = 4;
+            this.btnModificar.Text = "Modificar";
+            this.btnModificar.UseVisualStyleBackColor = true;
+            this.btnModificar.Visible = false;
+            this.btnModificar.Click += new System.EventHandler(this.btnModificar_Click);
             // 
             // btnCrear
             // 
@@ -89,6 +111,7 @@
             // 
             // lstFuncionalidades
             // 
+            this.lstFuncionalidades.DisplayMember = "Descripcion";
             this.lstFuncionalidades.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lstFuncionalidades.FormattingEnabled = true;
             this.lstFuncionalidades.ItemHeight = 25;
@@ -106,31 +129,9 @@
             this.dgvRoles.Name = "dgvRoles";
             this.dgvRoles.ReadOnly = true;
             this.dgvRoles.RowTemplate.Height = 24;
-            this.dgvRoles.Size = new System.Drawing.Size(438, 439);
+            this.dgvRoles.Size = new System.Drawing.Size(858, 439);
             this.dgvRoles.TabIndex = 1;
             this.dgvRoles.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvRoles_CellContentClick);
-            // 
-            // btnModificar
-            // 
-            this.btnModificar.Location = new System.Drawing.Point(33, 368);
-            this.btnModificar.Name = "btnModificar";
-            this.btnModificar.Size = new System.Drawing.Size(142, 68);
-            this.btnModificar.TabIndex = 4;
-            this.btnModificar.Text = "Modificar";
-            this.btnModificar.UseVisualStyleBackColor = true;
-            this.btnModificar.Visible = false;
-            this.btnModificar.Click += new System.EventHandler(this.btnModificar_Click);
-            // 
-            // btnCancelar
-            // 
-            this.btnCancelar.Location = new System.Drawing.Point(192, 368);
-            this.btnCancelar.Name = "btnCancelar";
-            this.btnCancelar.Size = new System.Drawing.Size(138, 68);
-            this.btnCancelar.TabIndex = 5;
-            this.btnCancelar.Text = "Cancelar";
-            this.btnCancelar.UseVisualStyleBackColor = true;
-            this.btnCancelar.Visible = false;
-            this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
             // 
             // rolBindingSource
             // 
@@ -140,9 +141,12 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(870, 485);
+            this.ClientSize = new System.Drawing.Size(1256, 485);
             this.Controls.Add(this.dgvRoles);
             this.Controls.Add(this.gpbNuevoRol);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "FormRoles";
             this.Text = "Roles";
             this.Load += new System.EventHandler(this.FormRoles_Load);

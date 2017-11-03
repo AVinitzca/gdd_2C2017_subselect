@@ -13,8 +13,12 @@ namespace PagoAgilFrba.Dominio
         private Empresa empresa;
         private DateTime creacion;
         private DateTime vencimiento;
-        private double total;
-        
+        private List<ItemFactura> items;
+
+        public Factura()
+        {
+            this.items = new List<ItemFactura>();
+        }
 
         public Cliente Cliente
         {
@@ -68,16 +72,36 @@ namespace PagoAgilFrba.Dominio
             }
         }
 
+        public List<ItemFactura> Items
+        {
+            get
+            {
+                return this.items;
+            }
+            set
+            {
+                this.items = value;
+            }
+        }
+
+        private double total;
+
         public double Total
         {
             get
             {
-                return total;
+                if(this.items.Count != 0)
+                {
+                    return this.items.Aggregate(0d, (prev, next) => prev + next.Cantidad * next.Monto);
+                }
+                else
+                {
+                    return this.total;
+                }                
             }
-
             set
             {
-                total = value;
+                this.total = value;
             }
         }
 

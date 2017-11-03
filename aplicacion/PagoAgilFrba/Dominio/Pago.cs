@@ -14,7 +14,6 @@ namespace PagoAgilFrba.Dominio
         private List<Factura> facturas;
         private Empresa empresa;
         private Cliente cliente;
-        private double total;
 
         public DateTime Fecha
         {
@@ -98,13 +97,9 @@ namespace PagoAgilFrba.Dominio
         {
             get
             {
-                return total;
+                return this.Facturas.Aggregate(0d, (prev, next) => prev + next.Total);
             }
-
-            set
-            {
-                total = value;
-            }
+            
         }
     }
 }

@@ -88,6 +88,9 @@
             this.Controls.Add(this.btnContinuar);
             this.Controls.Add(this.cmbRoles);
             this.Controls.Add(this.lblBienvenida);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "FormEleccionRol";
             this.Text = "Elegir Rol";
             this.Load += new System.EventHandler(this.formElegirRol_Load);

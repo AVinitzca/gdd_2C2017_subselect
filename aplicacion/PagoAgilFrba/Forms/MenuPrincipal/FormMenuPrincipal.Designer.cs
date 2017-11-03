@@ -36,18 +36,21 @@
             this.mnsNavbar.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.mnsNavbar.Location = new System.Drawing.Point(0, 0);
             this.mnsNavbar.Name = "mnsNavbar";
-            this.mnsNavbar.Size = new System.Drawing.Size(795, 24);
+            this.mnsNavbar.Size = new System.Drawing.Size(1167, 24);
             this.mnsNavbar.TabIndex = 0;
             this.mnsNavbar.Text = "Navbar";
             // 
-            // formMenuPrincipal
+            // FormMenuPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(795, 361);
+            this.ClientSize = new System.Drawing.Size(1167, 361);
             this.Controls.Add(this.mnsNavbar);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MainMenuStrip = this.mnsNavbar;
-            this.Name = "formMenuPrincipal";
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.Name = "FormMenuPrincipal";
             this.Text = "Menu Principal";
             this.Load += new System.EventHandler(this.FormMenuPrincipal_Load);
             this.ResumeLayout(false);

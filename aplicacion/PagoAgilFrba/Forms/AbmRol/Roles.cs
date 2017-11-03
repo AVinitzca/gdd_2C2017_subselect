@@ -14,7 +14,8 @@ namespace PagoAgilFrba.AbmRol
     public partial class FormRoles : Form
     {
         private BindingList<Rol> roles;
-
+        private List<Funcionalidad> aBorrar = new List<Funcionalidad>();
+        private List<Funcionalidad> aAgregar = new List<Funcionalidad>();
         public FormRoles()
         {
             InitializeComponent();
@@ -23,7 +24,8 @@ namespace PagoAgilFrba.AbmRol
         private void FormRoles_Load(object sender, EventArgs e)
         {
             this.roles = new BindingList<Rol>();
-            this.cargarRoles();
+            this.lstFuncionalidades.Items.AddRange(DB.DB.Instancia.obtenerFuncionalidades().ToArray());
+            this.cargarRoles();            
             this.dgvRoles.DataSource = roles;
             DataGridViewButtonColumn modificar = new DataGridViewButtonColumn();
             DataGridViewButtonColumn borrar = new DataGridViewButtonColumn();
@@ -46,7 +48,6 @@ namespace PagoAgilFrba.AbmRol
                 return;
             }
 
-
             Rol rolNuevo = new Rol();
             this.llenar(ref rolNuevo);
             this.roles.Add(rolNuevo);
@@ -61,10 +62,13 @@ namespace PagoAgilFrba.AbmRol
                 if(senderGrid.Columns[e.ColumnIndex].Name == "dgvColumnModificar" && this.gpbNuevoRol.Tag == null)
                 {
                     Rol rol = this.roles[e.RowIndex];
-                    this.txtNombre.Text = rol.Nombre;
+                    this.txtNombre.Text = rol.Nombre;                    
                     for(int index = 0; index < this.lstFuncionalidades.Items.Count; index++)
                     {
-                        this.lstFuncionalidades.SelectedIndices.Add(index);
+                        if(rol.Funcionalidades.Contains(((Funcionalidad)this.lstFuncionalidades.Items[index])))
+                        {
+                            this.lstFuncionalidades.SelectedIndices.Add(index);
+                        }                        
                     }
                     this.btnModificar.Visible = true;
                     this.btnCancelar.Visible = true;
@@ -95,7 +99,8 @@ namespace PagoAgilFrba.AbmRol
             this.btnCancelar.Visible = false;
             this.btnModificar.Visible = false;
             this.btnCrear.Visible = true;
-            DB.DB.Instancia.modificarRol(modificado);
+            DB.DB.Instancia.modificarRol(modificado, this.aAgregar, this.aBorrar);
+            this.gpbNuevoRol.Tag = null;
         }
 
         private void btnCancelar_Click(object sender, EventArgs e)
@@ -132,12 +137,27 @@ namespace PagoAgilFrba.AbmRol
 
         protected void llenar(ref Rol rol)
         {
-            rol.Nombre = this.txtNombre.Text;
+            rol.Nombre = this.txtNombre.Text;            
             List<Funcionalidad> funcionalidades = new List<Funcionalidad>();
+            aBorrar.Clear();
+            aAgregar.Clear();
             foreach (object item in this.lstFuncionalidades.SelectedItems)
             {
-                funcionalidades.Add((Funcionalidad)item);
+                Funcionalidad funcionalidad = (Funcionalidad)item;
+                funcionalidades.Add(funcionalidad);
+                if(!rol.Funcionalidades.Contains(funcionalidad))
+                {
+                    aAgregar.Add(funcionalidad);
+                }
             }
+            foreach (Funcionalidad funcionalidad in rol.Funcionalidades)
+            {
+                if (!funcionalidades.Contains(funcionalidad))
+                {
+                    aBorrar.Add(funcionalidad);
+                }
+            }
+
             rol.Funcionalidades = funcionalidades;
             this.txtNombre.Clear();
             this.lstFuncionalidades.ClearSelected();            
@@ -145,7 +165,7 @@ namespace PagoAgilFrba.AbmRol
 
         protected void cargarRoles()
         {
-            this.roles = new BindingList<Rol>(DB.DB.Instancia.obtenerRoles());
+            this.roles = new BindingList<Rol>(DB.DB.Instancia.obtenerRoles(""));
         }
 
     }

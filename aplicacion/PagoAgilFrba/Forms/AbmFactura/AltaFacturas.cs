@@ -1,4 +1,5 @@
 ﻿using PagoAgilFrba.Dominio;
+using PagoAgilFrba.Forms.MenuPrincipal;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,17 +12,17 @@ using System.Windows.Forms;
 
 namespace PagoAgilFrba.AbmFactura
 {
-    public partial class FormFactura : Form
+    public partial class FormAltaFactura : Form
     {
-        public FormFactura()
+        public FormAltaFactura()
         {
             InitializeComponent();
         }
 
         private void FormFactura_Load(object sender, EventArgs e)
         {
-            this.cmbCliente.Items.AddRange(DB.DB.Instancia.obtenerClientes(null, null, null).ToArray());
-            this.cmbEmpresa.Items.AddRange(DB.DB.Instancia.obtenerEmpresas(null, null, null).ToArray());
+            this.cmbCliente.Items.AddRange(DB.DB.Instancia.obtenerClientes("", "", 0).ToArray());
+            this.cmbEmpresa.Items.AddRange(DB.DB.Instancia.obtenerEmpresas("", "", null).ToArray());
         }
         
 
@@ -91,21 +92,28 @@ namespace PagoAgilFrba.AbmFactura
                 Factura factura = new Factura();
                 factura.Cliente = (Cliente)this.cmbCliente.SelectedItem;
                 factura.Empresa = (Empresa)this.cmbEmpresa.SelectedItem;
-                factura.Creacion = (DateTime)Configuracion.Configuracion.valor("fecha");
-                factura.Vencimiento = (DateTime)this.dtpFechaVencimiento.Value;                
-                DB.DB.Instancia.crearFactura(factura);
+                factura.Creacion = Configuracion.Configuracion.fecha();
+                factura.Vencimiento = (DateTime)this.dtpFechaVencimiento.Value;
                 for (int index = 0; index < this.dgvItems.Rows.Count - 1; index++)
                 {
                     DataGridViewRow row = this.dgvItems.Rows[index];
                     ItemFactura itemFactura = new ItemFactura();
                     itemFactura.Factura = factura;
-                    itemFactura.Monto = (double)row.Cells[1].Value;
-                    itemFactura.Cantidad = (int)row.Cells[2].Value;
-                    DB.DB.Instancia.crearItem(itemFactura);
+                    itemFactura.Monto = Double.Parse(row.Cells[1].Value.ToString());
+                    itemFactura.Cantidad = Int32.Parse(row.Cells[2].Value.ToString());
+                    factura.Items.Add(itemFactura);
                 }
+                DB.DB.Instancia.crearFactura(factura);
+               
                 MessageBox.Show("La factura se registro satisfactoriamente");
             }
         }
 
+        private void btnVolver_Click(object sender, EventArgs e)
+        {
+            FormMenuPrincipal menuPrincipal = new FormMenuPrincipal();
+            this.Hide();
+            menuPrincipal.Show();
+        }
     }
 }

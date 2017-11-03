@@ -1,4 +1,5 @@
 ﻿using PagoAgilFrba.Dominio;
+using PagoAgilFrba.Forms.MenuPrincipal;
 using PagoAgilFrba.Utils;
 using System;
 using System.Collections.Generic;
@@ -183,6 +184,13 @@ namespace PagoAgilFrba.Forms.AbmEmpresa
         private void cmbFiltroRubro_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.cargarEmpresas();
+        }
+
+        private void btnVolver_Click(object sender, EventArgs e)
+        {
+            FormMenuPrincipal menuPrincipal = new FormMenuPrincipal();
+            this.Hide();
+            menuPrincipal.Show();
         }
     }
 }

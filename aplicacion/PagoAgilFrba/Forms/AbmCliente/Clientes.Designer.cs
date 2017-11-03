@@ -280,7 +280,7 @@
             this.dgvClientes.Name = "dgvClientes";
             this.dgvClientes.ReadOnly = true;
             this.dgvClientes.RowTemplate.Height = 24;
-            this.dgvClientes.Size = new System.Drawing.Size(1197, 453);
+            this.dgvClientes.Size = new System.Drawing.Size(1580, 453);
             this.dgvClientes.TabIndex = 3;
             this.dgvClientes.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvClientes_CellContentClick);
             // 
@@ -329,6 +329,7 @@
             this.txtFiltroDNI.Name = "txtFiltroDNI";
             this.txtFiltroDNI.Size = new System.Drawing.Size(251, 30);
             this.txtFiltroDNI.TabIndex = 20;
+            this.txtFiltroDNI.Text = "0";
             this.txtFiltroDNI.TextChanged += new System.EventHandler(this.txtFiltroDNI_TextChanged);
             // 
             // lblFiltroDNI
@@ -360,7 +361,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1610, 599);
+            this.ClientSize = new System.Drawing.Size(1978, 599);
             this.Controls.Add(this.btnVolver);
             this.Controls.Add(this.txtFiltroDNI);
             this.Controls.Add(this.lblFiltroDNI);
@@ -370,6 +371,9 @@
             this.Controls.Add(this.lblFiltroNombre);
             this.Controls.Add(this.gpbIngreso);
             this.Controls.Add(this.dgvClientes);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "FormClientes";
             this.Text = "Clientes";
             this.Load += new System.EventHandler(this.FormClientes_Load);

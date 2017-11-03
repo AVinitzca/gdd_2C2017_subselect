@@ -11,6 +11,7 @@ namespace PagoAgilFrba.DB
     {
         private int codigo;
         private string mensaje;
+        private int id;
         private DataTable tabla;
 
         public Respuesta()
@@ -56,5 +57,17 @@ namespace PagoAgilFrba.DB
             }
         }
 
+        public int Id
+        {
+            get
+            {
+                return id;
+            }
+
+            set
+            {
+                id = value;
+            }
+        }
     }
 }

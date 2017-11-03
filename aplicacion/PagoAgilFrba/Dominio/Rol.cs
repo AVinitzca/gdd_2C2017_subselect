@@ -43,7 +43,7 @@ namespace PagoAgilFrba.Dominio
         {
             get
             {
-                return (this.funcionalidades.Select(funcionalidad => funcionalidad.Descripcion).Aggregate("", (prev, next) => "," + next));
+                return this.funcionalidades.Aggregate("", (prev, next) => prev + ", " + next.Descripcion);
             }
         }
 

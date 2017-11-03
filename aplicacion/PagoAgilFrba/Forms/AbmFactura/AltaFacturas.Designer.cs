@@ -1,6 +1,6 @@
 ﻿namespace PagoAgilFrba.AbmFactura
 {
-    partial class FormFactura
+    partial class FormAltaFactura
     {
         /// <summary>
         /// Required designer variable.
@@ -44,6 +44,7 @@
             this.lblItems = new System.Windows.Forms.Label();
             this.btnCrear = new System.Windows.Forms.Button();
             this.lblTotal = new System.Windows.Forms.Label();
+            this.btnVolver = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvItems)).BeginInit();
             this.SuspendLayout();
             // 
@@ -59,6 +60,7 @@
             // 
             // cmbCliente
             // 
+            this.cmbCliente.DisplayMember = "NombreCompleto";
             this.cmbCliente.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.cmbCliente.FormattingEnabled = true;
             this.cmbCliente.Location = new System.Drawing.Point(271, 6);
@@ -68,6 +70,7 @@
             // 
             // cmbEmpresa
             // 
+            this.cmbEmpresa.DisplayMember = "Nombre";
             this.cmbEmpresa.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.cmbEmpresa.FormattingEnabled = true;
             this.cmbEmpresa.Location = new System.Drawing.Point(271, 53);
@@ -173,7 +176,7 @@
             // btnCrear
             // 
             this.btnCrear.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.btnCrear.Location = new System.Drawing.Point(226, 552);
+            this.btnCrear.Location = new System.Drawing.Point(226, 529);
             this.btnCrear.Name = "btnCrear";
             this.btnCrear.Size = new System.Drawing.Size(175, 84);
             this.btnCrear.TabIndex = 12;
@@ -191,11 +194,23 @@
             this.lblTotal.TabIndex = 13;
             this.lblTotal.Text = "Total: 0";
             // 
-            // FormFactura
+            // btnVolver
+            // 
+            this.btnVolver.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
+            this.btnVolver.Location = new System.Drawing.Point(17, 529);
+            this.btnVolver.Name = "btnVolver";
+            this.btnVolver.Size = new System.Drawing.Size(175, 84);
+            this.btnVolver.TabIndex = 14;
+            this.btnVolver.Text = "Volver";
+            this.btnVolver.UseVisualStyleBackColor = true;
+            this.btnVolver.Click += new System.EventHandler(this.btnVolver_Click);
+            // 
+            // FormAltaFactura
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(618, 673);
+            this.Controls.Add(this.btnVolver);
             this.Controls.Add(this.lblTotal);
             this.Controls.Add(this.btnCrear);
             this.Controls.Add(this.lblItems);
@@ -208,7 +223,10 @@
             this.Controls.Add(this.lblEmpresa);
             this.Controls.Add(this.cmbCliente);
             this.Controls.Add(this.lblCliente);
-            this.Name = "FormFactura";
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.Name = "FormAltaFactura";
             this.Text = "Registro de Facturas";
             this.Load += new System.EventHandler(this.FormFactura_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvItems)).EndInit();
@@ -235,5 +253,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvColumnTotal;
         private System.Windows.Forms.Button btnCrear;
         private System.Windows.Forms.Label lblTotal;
+        private System.Windows.Forms.Button btnVolver;
     }
 }

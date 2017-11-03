@@ -31,7 +31,6 @@ namespace PagoAgilFrba.Forms.MenuPrincipal
         {                           
             foreach(Funcionalidad funcionalidad in Usuario.Logeado.Rol.Funcionalidades)
             {
-                MessageBox.Show(funcionalidad.Descripcion);
                 ToolStripButton btnOpcion = new ToolStripButton(funcionalidad.Descripcion);
                 btnOpcion.Tag = funcionalidad;
                 btnOpcion.Click += new System.EventHandler(this.irAFormulario);

@@ -33,6 +33,7 @@
             this.btnDevolver = new System.Windows.Forms.Button();
             this.lblFactura = new System.Windows.Forms.Label();
             this.cmbRendiciones = new System.Windows.Forms.ComboBox();
+            this.btnVolver = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // txtMotivo
@@ -85,16 +86,31 @@
             this.cmbRendiciones.TabIndex = 5;
             this.cmbRendiciones.Text = "Rendicion";
             // 
+            // btnVolver
+            // 
+            this.btnVolver.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
+            this.btnVolver.Location = new System.Drawing.Point(111, 314);
+            this.btnVolver.Name = "btnVolver";
+            this.btnVolver.Size = new System.Drawing.Size(173, 61);
+            this.btnVolver.TabIndex = 10;
+            this.btnVolver.Text = "Volver";
+            this.btnVolver.UseVisualStyleBackColor = true;
+            this.btnVolver.Click += new System.EventHandler(this.btnVolver_Click);
+            // 
             // DevolucionRendicion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(407, 387);
+            this.Controls.Add(this.btnVolver);
             this.Controls.Add(this.txtMotivo);
             this.Controls.Add(this.lblMotivo);
             this.Controls.Add(this.btnDevolver);
             this.Controls.Add(this.lblFactura);
             this.Controls.Add(this.cmbRendiciones);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "DevolucionRendicion";
             this.Text = "DevolucionRendicion";
             this.Load += new System.EventHandler(this.DevolucionRendicion_Load);
@@ -110,5 +126,6 @@
         private System.Windows.Forms.Button btnDevolver;
         private System.Windows.Forms.Label lblFactura;
         private System.Windows.Forms.ComboBox cmbRendiciones;
+        private System.Windows.Forms.Button btnVolver;
     }
 }

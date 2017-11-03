@@ -95,6 +95,9 @@
             this.Controls.Add(this.lblPorcentaje);
             this.Controls.Add(this.cmbEmpresas);
             this.Controls.Add(this.lblEmpresa);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "FormRendiciones";
             this.Text = "Rendiciones";
             this.Load += new System.EventHandler(this.FormRendiciones_Load);

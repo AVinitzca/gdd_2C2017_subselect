@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -51,6 +52,13 @@ namespace PagoAgilFrba.Configuracion
             object valor = null;
             configuracion.TryGetValue(clave, out valor);
             return valor;
+        }
+
+        public static DateTime fecha()
+        {
+            object fecha = valor("fecha");
+            string i = DateTime.Now.ToString();
+            return DateTime.ParseExact(fecha.ToString(), "yyyy-MM-dd HH:mm:ss", CultureInfo.CurrentCulture);
         }
 
     }
