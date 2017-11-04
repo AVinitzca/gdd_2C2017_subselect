@@ -21,8 +21,8 @@ namespace PagoAgilFrba.RegistroPago
 
         private void FormPagos_Load(object sender, EventArgs e)
         {
-            this.cmbEmpresas.Items.AddRange(DB.DB.Instancia.obtenerEmpresas(null, null, null).ToArray());
-            this.cmbCliente.Items.AddRange(DB.DB.Instancia.obtenerClientes(null, null, 0).ToArray());
+            this.cmbEmpresas.Items.AddRange(DB.DB.Instancia.obtenerEmpresas(null, null, null, false).ToArray());
+            this.cmbCliente.Items.AddRange(DB.DB.Instancia.obtenerClientes(null, null, 0, false).ToArray());
             this.cmbFormaPago.Items.AddRange(DB.DB.Instancia.obtenerFormasDePago().ToArray());
         }
 

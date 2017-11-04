@@ -13,6 +13,7 @@ namespace PagoAgilFrba.Dominio
         private string cuit;
         private string direccion;
         private Rubro rubro;
+        private bool activo = true;
 
         public string Nombre
         {
@@ -70,6 +71,18 @@ namespace PagoAgilFrba.Dominio
             set
             {
                 this.direccion = value;
+            }
+        }
+
+        public bool Activo
+        {
+            get
+            {
+                return this.activo;
+            }
+            set
+            {
+                this.activo = value;
             }
         }
 

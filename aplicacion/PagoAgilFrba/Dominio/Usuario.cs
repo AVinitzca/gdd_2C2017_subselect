@@ -22,6 +22,8 @@ namespace PagoAgilFrba.Dominio
         {
             this.Username = username;
             this.Password = password;
+            this.posiblesRoles = new List<Rol>();
+            this.posiblesSucursales = new List<Sucursal>();
         }
 
         public Respuesta logear()
@@ -29,8 +31,8 @@ namespace PagoAgilFrba.Dominio
             Respuesta respuesta = DB.DB.Instancia.logear(this);
             if(respuesta.Codigo == 0)
             {
-                this.posiblesRoles = DB.DB.Instancia.obtenerRolesParaUsuario(this);
-                this.posiblesSucursales = DB.DB.Instancia.obtenerSucursalesParaUsuario(this);
+                DB.DB.Instancia.obtenerRolesParaUsuario(this);
+                DB.DB.Instancia.obtenerSucursalesParaUsuario(this);
                 logeado = this;
             }
             return respuesta;            

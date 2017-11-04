@@ -16,6 +16,7 @@ namespace PagoAgilFrba.Dominio
         private string direccion;
         private int codigoPostal;
         private DateTime fechaDeNacimiento;
+        private bool activo = true;
 
         public Cliente()
         {
@@ -131,6 +132,19 @@ namespace PagoAgilFrba.Dominio
             get
             {
                 return this.nombre + " " + this.apellido;
+            }
+        }
+
+        public bool Activo
+        {
+            get
+            {
+                return activo;
+            }
+
+            set
+            {
+                activo = value;
             }
         }
     }

@@ -14,6 +14,8 @@ namespace PagoAgilFrba.Dominio
 
         private List<Funcionalidad> funcionalidades = new List<Funcionalidad>();
 
+        private bool activo = true;
+
         public string Nombre
         {
             get
@@ -43,11 +45,24 @@ namespace PagoAgilFrba.Dominio
         {
             get
             {
-                return this.funcionalidades.Aggregate("", (prev, next) => prev + ", " + next.Descripcion);
+                return this.funcionalidades.Aggregate("", (prev, next) => (prev == "") ? next.Descripcion : (prev + ", " + next.Descripcion));
             }
         }
 
-        public void agregarFuncionadlidad(Funcionalidad funcionalidad)
+        public bool Activo
+        {
+            get
+            {
+                return activo;
+            }
+
+            set
+            {
+                activo = value;
+            }
+        }
+
+        public void agregarFuncionalidad(Funcionalidad funcionalidad)
         {
             this.funcionalidades.Add(funcionalidad);
         }

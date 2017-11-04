@@ -1,4 +1,5 @@
-﻿using PagoAgilFrba.Dominio;
+﻿using PagoAgilFrba.DB;
+using PagoAgilFrba.Dominio;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -76,9 +77,8 @@ namespace PagoAgilFrba.AbmRol
                     this.gpbNuevoRol.Tag = rol;
                 }
                 else if (senderGrid.Columns[e.ColumnIndex].Name == "dgvColumnBorrar")
-                {
-                    DB.DB.Instancia.eliminarRol(this.roles[e.RowIndex]);
-                    this.roles.RemoveAt(e.RowIndex);
+                {                    
+                    DB.DB.Instancia.cambiarEstado(this.roles[e.RowIndex]);                    
                     if(this.gpbNuevoRol.Tag != null)
                     {
                         this.cancelar();
@@ -165,7 +165,7 @@ namespace PagoAgilFrba.AbmRol
 
         protected void cargarRoles()
         {
-            this.roles = new BindingList<Rol>(DB.DB.Instancia.obtenerRoles(""));
+            this.roles = new BindingList<Rol>(DB.DB.Instancia.obtenerRoles("", false));
         }
 
     }

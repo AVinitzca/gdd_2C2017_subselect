@@ -84,8 +84,7 @@ namespace PagoAgilFrba.Forms.AbmEmpresa
                 }
                 else if (senderGrid.Columns[e.ColumnIndex].Name == "dgvColumnBorrar")
                 {
-                    DB.DB.Instancia.eliminarEmpresa(this.empresas[e.RowIndex]);
-                    this.empresas.RemoveAt(e.RowIndex);
+                    DB.DB.Instancia.cambiarEstado(this.empresas[e.RowIndex]);
                     if (this.gpbIngreso != null)
                     {
                         this.cancelar();
@@ -167,8 +166,8 @@ namespace PagoAgilFrba.Forms.AbmEmpresa
 
         protected void cargarEmpresas()
         {
-            this.empresas = new BindingList<Empresa>(DB.DB.Instancia.obtenerEmpresas(this.txtFiltroNombre.Text, this.txtFiltroCuit.Text, (Rubro)this.cmbFiltroRubro.SelectedItem));
-            this.dgvEmpresas.DataSource = empresas;
+            this.empresas = new BindingList<Empresa>(DB.DB.Instancia.obtenerEmpresas(this.txtFiltroNombre.Text, this.txtFiltroCuit.Text, (Rubro)this.cmbFiltroRubro.SelectedItem, false));
+            this.dgvEmpresas.DataSource = this.empresas;
         }
 
         private void txtFiltroNombre_TextChanged(object sender, EventArgs e)

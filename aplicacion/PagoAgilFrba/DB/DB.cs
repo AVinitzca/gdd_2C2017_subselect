@@ -1,4 +1,5 @@
 ﻿using PagoAgilFrba.Dominio;
+using PagoAgilFrba.Utils;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -261,16 +262,26 @@ namespace PagoAgilFrba.DB
             }
         }
 
-        public bool existe(Type tipo, int id)
+        public bool existe(Type tipo)
         {
-            return this.repositorio.ContainsKey(tipo) && this.repositorio[tipo].ContainsKey(id);
+            return this.repositorio.ContainsKey(tipo);
         }
 
+        public bool existe(Type tipo, int id)
+        {
+            return this.existe(tipo) && this.repositorio[tipo].ContainsKey(id);
+        }
 
         protected int id(object objeto)
         {
             return this.repositorio[objeto.GetType()].FirstOrDefault(x => x.Value == objeto).Key;
         }
+
+        protected List<T> obtenerDeRepositorio<T>(Type t)
+        {
+            return this.repositorio[t].Values.Cast<T>().ToList();
+        }
+
 
         public List<Rubro> obtenerRubros()
         {
@@ -283,142 +294,177 @@ namespace PagoAgilFrba.DB
                     return new Rubro() { Descripcion = Convert.ToString(row["DESCRIPCION"]) };
                 }, "ID_RUBRO");
             }
-            return (List<Rubro>)this.repositorio[typeof(Rubro)].Values.Cast<Rubro>().ToList();
+            return this.obtenerDeRepositorio<Rubro>(typeof(Rubro));
         }
 
-        public List<Empresa> obtenerEmpresas(string nombre, string cuit, Rubro rubro)
-        {
-            this.obtenerRubros();
-            Respuesta respuesta = this.obtener("GET_EMPRESAS_ACTIVAS", new Dictionary<string, object>(){{"nombre", nombre}, {"cuit", cuit}, {"id_rubro", rubro == null ? 0 : this.id(rubro)}});
-
-            return this.agregar<Empresa>(respuesta, delegate (DataRow row)
+        public List<Empresa> obtenerEmpresas(string nombre, string cuit, Rubro rubro, bool activa)
+        {            
+            if(!this.existe(typeof(Empresa)))
             {
-                return new Empresa()
+                this.obtenerRubros();
+                Respuesta respuesta = this.obtener("GET_EMPRESAS_ACTIVAS", new Dictionary<string, object>() { { "nombre", nombre }, { "cuit", cuit }, { "id_rubro", rubro == null ? 0 : this.id(rubro) } });
+
+                this.agregar<Empresa>(respuesta, delegate (DataRow row)
                 {
-                    Nombre    = Convert.ToString(row["NOMBRE"]),
-                    Cuit      = Convert.ToString(row["CUIT"]),
-                    Direccion = Convert.ToString(row["DIRECCION"]),     
-                    Rubro     = (Rubro)this.repositorio[typeof(Rubro)][Convert.ToInt32(row["ID_RUBRO"])]               
-                };
-            }, "ID_EMPRESA");
-            
+                    return new Empresa()
+                    {
+                        Nombre = Convert.ToString(row["NOMBRE"]),
+                        Cuit = Convert.ToString(row["CUIT"]),
+                        Direccion = Convert.ToString(row["DIRECCION"]),
+                        Rubro = (Rubro)this.repositorio[typeof(Rubro)][Convert.ToInt32(row["ID_RUBRO"])],
+                        Activo = Convert.ToBoolean(row["ACTIVO"]),
+                    };
+                }, "ID_EMPRESA");
+            }
+            return this.obtenerDeRepositorio<Empresa>(typeof(Empresa)).Where(empresa =>
+                UtilFunctions.Contains(empresa.Nombre, nombre) &&
+                UtilFunctions.Contains(empresa.Cuit, cuit) &&
+                ((rubro != null) ? empresa.Rubro == rubro : true) &&
+                ((activa == true) ? empresa.Activo : true)
+            ).ToList();
         }
 
 
         public List<Funcionalidad> obtenerFuncionalidades()
         {
-            if (this.repositorio.ContainsKey(typeof(Funcionalidad)))
-            {
-                return this.repositorio[typeof(Funcionalidad)].Values.Cast<Funcionalidad>().ToList();
-            }
-            else
+            if(!this.existe(typeof(Funcionalidad)))
             {
                 Respuesta respuesta = this.obtener("GET_ALL_FUNCIONALIDADES", new Dictionary<string, object>());
-                return this.agregar<Funcionalidad>(respuesta, delegate (DataRow row)
+                this.agregar<Funcionalidad>(respuesta, delegate (DataRow row)
                 {
                     return new Funcionalidad()
-                    {                        
+                    {
                         Descripcion = Convert.ToString(row["DESCRIPCION"])
                     };
-                }, "ID_FUNCIONALIDAD");                
+                }, "ID_FUNCIONALIDAD");
             }
+            return this.obtenerDeRepositorio<Funcionalidad>(typeof(Funcionalidad));
         }
 
         public List<RendicionFacturas> obtenerRendiciones()
         {
-            Respuesta respuesta = this.obtener("GET_RENDICIONES");
-            return this.agregar<RendicionFacturas>(respuesta, delegate (DataRow row)
+            if(!this.existe(typeof(RendicionFacturas)))
             {
-                if (!this.existe(typeof(Empresa), Convert.ToInt32(row["ID_EMPRESA"])))
+                if (!this.existe(typeof(Empresa)))
                 {
-                    this.obtenerEmpresas(null, null, null);
+                    this.obtenerEmpresas(null, null, null, false);
                 }
-                RendicionFacturas rendicion = new RendicionFacturas() { Empresa = (Empresa)this.repositorio[typeof(Empresa)][Convert.ToInt32(row["ID_EMPRESA"])], Fecha = Convert.ToDateTime(row["FECHA"]), Porcentaje = Convert.ToDouble(row["PORCENTAJE"]) };
-                return rendicion;
-            }, "ID_RENDICION");
+
+                Respuesta respuesta = this.obtener("GET_RENDICIONES");
+                this.agregar<RendicionFacturas>(respuesta, delegate (DataRow row)
+                {                    
+                    RendicionFacturas rendicion = new RendicionFacturas() { Empresa = (Empresa)this.repositorio[typeof(Empresa)][Convert.ToInt32(row["ID_EMPRESA"])], Fecha = Convert.ToDateTime(row["FECHA"]), Porcentaje = Convert.ToDouble(row["PORCENTAJE"]) };
+                    return rendicion;
+                }, "ID_RENDICION");
+            }
+            return this.obtenerDeRepositorio<RendicionFacturas>(typeof(RendicionFacturas));            
         }
 
-        public List<Rol> obtenerRolesParaUsuario(Usuario usuario)
+        public void obtenerRolesParaUsuario(Usuario usuario)
         {
+            if(!this.existe(typeof(Rol)))
+            {
+                this.obtenerRoles("", false);
+            }
+                        
             Respuesta respuesta = this.obtenerConEfecto("GET_ROLES_POR_USUARIO", new Dictionary<string, object>() { { "ID_USUARIO", this.repositorio[typeof(Usuario)].Keys.FirstOrDefault() } });
-
-            return this.agregar<Rol>(respuesta,
-                delegate (DataRow row)
-                {
-                    return new Rol()
-                    {
-                        Nombre = Convert.ToString(row["DESCRIPCION"]),
-                        Funcionalidades = this.obtenerFuncionalidadesPorRol(Convert.ToString(row["DESCRIPCION"]))
-                    };
-                }, "ID_ROL");
+            
+            foreach(DataRow row in respuesta.Tabla.Rows)
+            {
+                usuario.Roles.Add((Rol)this.repositorio[typeof(Rol)][Convert.ToInt32(row["ID_ROL"])]);
+            }
         }
 
-        protected List<Funcionalidad> obtenerFuncionalidadesPorRol(string descripcion)
+        protected void obtenerFuncionalidadesPorRol(Rol rol)
         {
-            Respuesta respuesta = this.obtenerConEfecto("GET_FUNCIONALIDADES_POR_ROL", new Dictionary<string, object>() { { "DESCRIPCION", descripcion } });
+            if(!this.existe(typeof(Funcionalidad)))
+            {
+                this.obtenerFuncionalidades();
+            }
 
-            return this.agregar<Funcionalidad>(respuesta,
-                delegate (DataRow row)
-                {
-                    return new Funcionalidad() { Descripcion = Convert.ToString(row["DESCRIPCION"]) };
-                }, "ID_FUNCIONALIDAD");
+            Respuesta respuesta = this.obtenerConEfecto("GET_FUNCIONALIDADES_POR_ROL", new Dictionary<string, object>() { { "DESCRIPCION", rol.Nombre } });
+                        
+            foreach (DataRow row in respuesta.Tabla.Rows)
+            {
+                rol.agregarFuncionalidad((Funcionalidad)this.repositorio[typeof(Funcionalidad)][Convert.ToInt32(row["ID_FUNCIONALIDAD"])]);
+            }
         }
 
-        public List<Sucursal> obtenerSucursalesParaUsuario(Usuario usuario)
+        public void obtenerSucursalesParaUsuario(Usuario usuario)
         {
+            if (!this.existe(typeof(Sucursal)))
+            {
+                this.obtenerSucursales("", "", 0, false);
+            }
+
             Respuesta respuesta = this.obtenerConEfecto("GET_SUCURSALES_POR_USUARIO", new Dictionary<string, object>() { { "ID_USUARIO", this.repositorio[typeof(Usuario)].Keys.FirstOrDefault() } });
-
-            return this.agregar<Sucursal>(respuesta,
-                delegate (DataRow row)
-                {
-                    return new Sucursal()
-                    {
-                        Nombre = Convert.ToString(row["NOMBRE"]),
-                    };
-                }, "ID_SUCURSAL");
+            
+            foreach (DataRow row in respuesta.Tabla.Rows)
+            {
+                usuario.Sucursales.Add((Sucursal)this.repositorio[typeof(Sucursal)][Convert.ToInt32(row["ID_SUCURSAL"])]);
+            }
         }
 
-        public List<Sucursal> obtenerSucursales(string nombre, string direccion, int codigoPostal)
+        public List<Sucursal> obtenerSucursales(string nombre, string direccion, int codigoPostal, bool activas)
         {
-            Respuesta respuesta = this.obtenerConEfecto("GET_SUCURSALES_ACTIVAS", new Dictionary<string, object>() {
-                { "nombre", nombre},
-                { "direccion", direccion},
-                { "codigo_postal", codigoPostal},
-            });
+            if (!this.existe(typeof(Sucursal)))
+            {
+                Respuesta respuesta = this.obtener("GET_SUCURSALES", new Dictionary<string, object>() {
+                    { "nombre", ""},
+                    { "direccion", ""},
+                    { "codigo_postal", 0},
+                });
 
-            return this.agregar<Sucursal>(respuesta,
-                delegate (DataRow row)
-                {
-                    return new Sucursal()
+                this.agregar<Sucursal>(respuesta,
+                    delegate (DataRow row)
                     {
-                        Nombre = Convert.ToString(row["NOMBRE"]),
-                        Direccion = Convert.ToString(row["DIRECCION"]),
-                        CodigoPostal = Convert.ToInt32(row["CODIGO_POSTAL"]),
-                    };
+                        return new Sucursal()
+                        {
+                            Nombre = Convert.ToString(row["NOMBRE"]),
+                            Direccion = Convert.ToString(row["DIRECCION"]),
+                            CodigoPostal = Convert.ToInt32(row["CODIGO_POSTAL"]),
+                            Activa = Convert.ToBoolean(row["ACTIVO"])
+                        };
                 }, "ID_SUCURSAL");
+            }
+
+            return this.obtenerDeRepositorio<Sucursal>(typeof(Sucursal)).Where(sucursal =>
+                UtilFunctions.Contains(sucursal.Nombre, nombre) &&
+                UtilFunctions.Contains(sucursal.Direccion, direccion) &&
+                sucursal.CodigoPostal == codigoPostal &&
+                (activas == true ? (sucursal.Activa) : true)).ToList();
         }
 
         public List<Factura> obtenerFacturas(Empresa empresa)
         {
-            Respuesta respuesta = this.obtenerConEfecto("GET_FACTURA_POR_EMPRESA", new Dictionary<string, object>() {{ "id_empresa", this.id(empresa) }});
-
-            return this.agregar<Factura>(respuesta,
-                delegate (DataRow row)
+            if (!this.existe(typeof(Factura)))
+            {
+                if (!this.existe(typeof(Empresa)))
                 {
-                    if (!this.existe(typeof(Cliente), Convert.ToInt32(row["ID_CLIENTE"])))
+                    this.obtenerEmpresas("", "", null, false);
+                }
+                Respuesta respuesta = this.obtenerConEfecto("GET_FACTURA_POR_EMPRESA", new Dictionary<string, object>() { { "id_empresa", this.id(empresa) } });
+
+                this.agregar<Factura>(respuesta,
+                    delegate (DataRow row)
                     {
-                        this.obtenerClientes(null, null, 0);
-                    }
-                    return new Factura()
-                    {
-                        NumeroFactura = Convert.ToInt32(row["NRO_FACTURA"]),
-                        Cliente = (Cliente)this.repositorio[typeof(Cliente)][Convert.ToInt32(row["ID_CLIENTE"])],
-                        Empresa = empresa,
-                        Creacion = Convert.ToDateTime(row["FECHA"]),
-                        Vencimiento = Convert.ToDateTime(row["FECHA_VENCIMIENTO"]),
-                        Total = Convert.ToDouble(row["TOTAL"]),
-                    };
-                }, "ID_FACTURA");
+                        if (!this.existe(typeof(Cliente), Convert.ToInt32(row["ID_CLIENTE"])))
+                        {
+                            this.obtenerClientes(null, null, 0, false);
+                        }
+                        return new Factura()
+                        {
+                            NumeroFactura = Convert.ToInt32(row["NRO_FACTURA"]),
+                            Cliente = (Cliente)this.repositorio[typeof(Cliente)][Convert.ToInt32(row["ID_CLIENTE"])],
+                            Empresa = empresa,
+                            Creacion = Convert.ToDateTime(row["FECHA"]),
+                            Vencimiento = Convert.ToDateTime(row["FECHA_VENCIMIENTO"]),
+                            Total = Convert.ToDouble(row["TOTAL"]),
+                        };
+                    }, "ID_FACTURA");
+            }
+
+            return this.obtenerDeRepositorio<Factura>(typeof(Factura)).Where(factura => empresa == null || factura.Empresa == empresa).ToList();
         }
 
         public List<Factura> obtenerFacturasPagas()
@@ -427,64 +473,71 @@ namespace PagoAgilFrba.DB
         }
         
 
-        public List<Rol> obtenerRoles(string descripcion)
+        public List<Rol> obtenerRoles(string descripcion, bool activo)
         {
-            Respuesta respuesta = this.obtener("GET_ROLES_POR_DESCRIPCION", new Dictionary<string, object>() { { "DESCRIPCION_ROL", descripcion } });
-            foreach (DataRow row in respuesta.Tabla.Rows)
+            if(!this.existe(typeof(Rol)))
             {
-                if (Convert.ToInt32(row["ACTIVO"]) != 1)
-                {
-                    respuesta.Tabla.Rows.Remove(row);
-                }
-            }
-            
-            return this.agregar<Rol>(respuesta,
-                delegate (DataRow row)
-                {
-                    return new Rol()
+                Respuesta respuesta = this.obtener("GET_ROLES_POR_DESCRIPCION", new Dictionary<string, object>() { { "DESCRIPCION_ROL", "" } });
+                
+                this.agregar<Rol>(respuesta,
+                    delegate (DataRow row)
                     {
-                        Nombre = Convert.ToString(row["DESCRIPCION"]),
-                        Funcionalidades = this.obtenerFuncionalidadesPorRol(Convert.ToString(row["DESCRIPCION"]))
-                    };                    
+                        Rol rol = new Rol()
+                        {
+                            Nombre = Convert.ToString(row["DESCRIPCION"]),
+                            Activo = Convert.ToBoolean(row["ACTIVO"]),                                             
+                        };
+                        this.obtenerFuncionalidadesPorRol(rol);
+                        return rol;
                 }, "ID_ROL");
+            }
+
+            return this.obtenerDeRepositorio<Rol>(typeof(Rol)).Where(rol => UtilFunctions.Contains(rol.Nombre, descripcion) && (activo == true) ? rol.Activo : true).ToList();
         }
 
 
-        public List<Cliente> obtenerClientes(string nombre, string apellido, int dni)
+        public List<Cliente> obtenerClientes(string nombre, string apellido, int dni, bool activo)
         {
-            Respuesta respuesta = this.obtener("GET_CLIENTES_ACTIVOS", new Dictionary<string, object>() {
-                { "nombre", nombre},
-                { "apellido", apellido},
-                { "DNI", dni}, }
-            );
-            return this.agregar<Cliente>(respuesta,
-                delegate (DataRow row)
+            if (!this.existe(typeof(Cliente)))
+            {
+                Respuesta respuesta = this.obtener("GET_CLIENTES", new Dictionary<string, object>()
                 {
-                    return new Cliente()
+                    { "nombre", ""},
+                    { "apellido", ""},
+                    { "DNI", 0}, }
+                );
+                this.agregar<Cliente>(respuesta,
+                    delegate (DataRow row)
                     {
-                        Nombre = Convert.ToString(row["NOMBRE"]),
-                        Apellido = Convert.ToString(row["APELLIDO"]),
-                        DNI = Convert.ToInt32(row["DNI"]),
-                        Direccion = Convert.ToString(row["DIRECCION"]),
-                        Telefono = Convert.ToInt32(row["TELEFONO"]),
-                        Email = Convert.ToString(row["MAIL"]),
-                        FechaDeNacimiento = Convert.ToDateTime(row["F_NACIMIENTO"]),
-                        CodigoPostal = Convert.ToInt32(row["CODIGO_POSTAL"]),                        
-                    };
-                }, "ID_CLIENTE");
+                        return new Cliente()
+                        {
+                            Nombre = Convert.ToString(row["NOMBRE"]),
+                            Apellido = Convert.ToString(row["APELLIDO"]),
+                            DNI = Convert.ToInt32(row["DNI"]),
+                            Direccion = Convert.ToString(row["DIRECCION"]),
+                            Telefono = Convert.ToInt32(row["TELEFONO"]),
+                            Email = Convert.ToString(row["MAIL"]),
+                            FechaDeNacimiento = Convert.ToDateTime(row["F_NACIMIENTO"]),
+                            CodigoPostal = Convert.ToInt32(row["CODIGO_POSTAL"]),
+                            Activo = Convert.ToBoolean(row["ACTIVO"]),
+                        };
+                    }, "ID_CLIENTE");
+            }
+            return this.obtenerDeRepositorio<Cliente>(typeof(Cliente)).Where(cliente => 
+                UtilFunctions.Contains(cliente.Nombre, nombre) &&
+                UtilFunctions.Contains(cliente.Apellido, apellido) && 
+                ((dni != 0) ? cliente.DNI == dni : true) &&
+                ((activo == true) ? cliente.Activo : true)
+            ).ToList();
         }
 
         public List<FormaDePago> obtenerFormasDePago()
         {
-            if(this.repositorio.ContainsKey(typeof(FormaDePago)))
+            if (!this.existe(typeof(Cliente)))
             {
-                return this.repositorio[typeof(FormaDePago)].Values.Cast<FormaDePago>().ToList();
-            }
-            else
-            {
-                Respuesta respuesta = this.obtenerConEfecto("GET_FORMAS_PAGO", new Dictionary<string, object>(){});
-                
-                return this.agregar<FormaDePago>(respuesta,
+                Respuesta respuesta = this.obtenerConEfecto("GET_FORMAS_PAGO", new Dictionary<string, object>() { });
+
+                this.agregar<FormaDePago>(respuesta,
                     delegate (DataRow row)
                     {
                         return new FormaDePago()
@@ -493,6 +546,7 @@ namespace PagoAgilFrba.DB
                         };
                     }, "ID_FORMA_PAGO");
             }
+            return this.obtenerDeRepositorio<FormaDePago>(typeof(FormaDePago));
         }
 
 
@@ -521,27 +575,38 @@ namespace PagoAgilFrba.DB
 
         public Respuesta crearEmpresa(Empresa nueva)
         {
-            return this.crear("SP_ABM_EMPRESA_ALTA", new Dictionary<string, object>() {
+            Respuesta respuesta =  this.crear("SP_ABM_EMPRESA_ALTA", new Dictionary<string, object>() {
                 {"nombre", nueva.Nombre},
                 {"cuit", nueva.Cuit},
                 {"direccion", nueva.Direccion},
                 {"id_rubro", this.id(nueva.Rubro)},                
             }, nueva);
+            if(respuesta.Codigo == 0)
+            {
+                this.crearSiNoExiste(typeof(Empresa), respuesta.Id, nueva);
+            }
+            return respuesta;
         }
 
         public Respuesta crearSucursal(Sucursal nueva)
         {
-            return this.crear("SP_ABM_SUCURSAL_ALTA", new Dictionary<string, object>() {
+            Respuesta respuesta = this.crear("SP_ABM_SUCURSAL_ALTA", new Dictionary<string, object>() {
                 {"nombre", nueva.Nombre},                
                 {"direccion", nueva.Direccion},
                 {"codigo_postal", nueva.CodigoPostal },
             }, nueva);
+
+            if (respuesta.Codigo == 0)
+            {
+                this.crearSiNoExiste(typeof(Sucursal), respuesta.Id, nueva);
+            }
+            return respuesta;
         }
 
 
         public Respuesta crearCliente(Cliente nuevo)
         {
-            return this.crear("SP_ABM_CLIENTE_ALTA", new Dictionary<string, object>() {
+            Respuesta respuesta = this.crear("SP_ABM_CLIENTE_ALTA", new Dictionary<string, object>() {
                 {"nombre", nuevo.Nombre},
                 {"apellido", nuevo.Apellido},
                 {"DNI", nuevo.DNI },                
@@ -551,6 +616,12 @@ namespace PagoAgilFrba.DB
                 {"fec_nac", nuevo.FechaDeNacimiento },
                 {"codigo_postal", nuevo.CodigoPostal },
             }, nuevo);
+
+            if (respuesta.Codigo == 0)
+            {
+                this.crearSiNoExiste(typeof(Cliente), respuesta.Id, nuevo);
+            }
+            return respuesta;
         }
 
 
@@ -581,7 +652,7 @@ namespace PagoAgilFrba.DB
 
         public Respuesta crearPago(Pago pago)
         {
-            return this.crear("SP_ABM_FACTURACION_ALTA", new Dictionary<string, object>() {
+            Respuesta respuesta = this.crear("SP_ABM_FACTURACION_ALTA", new Dictionary<string, object>() {
                 {"fecha", pago.Fecha},
                 {"total", pago.Total},
                 {"id_forma_pago", this.id(pago.FormaDePago)},
@@ -590,17 +661,30 @@ namespace PagoAgilFrba.DB
                 {"id_empresa", this.id(pago.Empresa) },
                 {"item_pago", 0 },
             }, pago, "NRO_PAGO");
+
+
+            if (respuesta.Codigo == 0)
+            {
+                this.crearSiNoExiste(typeof(Pago), respuesta.Id, pago);
+            }
+            return respuesta;
         }
 
         public Respuesta crearRendicion(RendicionFacturas rendicion)
         {
-            return this.crear("SP_ABM_RENDICION_ALTA", new Dictionary<string, object>()
+            Respuesta respuesta = this.crear("SP_ABM_RENDICION_ALTA", new Dictionary<string, object>()
             {
                 {"fecha_rendicion", rendicion.Fecha },
                 {"id_empresa", this.id(rendicion.Empresa) },
                 {"item", 0 },
                 {"porcentaje", rendicion.Porcentaje }                
             }, rendicion, "NRO_RENDICION");
+
+            if (respuesta.Codigo == 0)
+            {
+                this.crearSiNoExiste(typeof(RendicionFacturas), respuesta.Id, rendicion);
+            }
+            return respuesta;
         }
 
         public Respuesta modificarEmpresa(Empresa modificada)
@@ -646,25 +730,45 @@ namespace PagoAgilFrba.DB
         }
 
 
-        public Respuesta eliminarEmpresa(Empresa empresa)
-        {
-            return this.modificacion("SP_ABM_EMPRESA_ACTIVAR_DESACTIVAR", new Dictionary<string, object>() { { "id_empresa", this.id(empresa)}, { "activo", 1}});
+        public Respuesta cambiarEstado(Empresa empresa)
+        {            
+            Respuesta respuesta = this.modificacion("SP_ABM_EMPRESA_ACTIVAR_DESACTIVAR", new Dictionary<string, object>() { { "id_empresa", this.id(empresa)}, { "activo", empresa.Activo}});
+            if(respuesta.Codigo == 0)
+            {
+                empresa.Activo = !empresa.Activo;
+            }
+            return respuesta;
         }
 
-        public Respuesta eliminarRol(Rol rol)
+        public Respuesta cambiarEstado(Rol rol)
         {
-            return this.modificacion("SP_ABM_ROL_ACTIVAR_DESACTIVAR", new Dictionary<string, object>() { { "id_rol", this.id(rol) }, { "activo", 1 } });
+            Respuesta respuesta = this.modificacion("SP_ABM_ROL_ACTIVAR_DESACTIVAR", new Dictionary<string, object>() { { "id_rol", this.id(rol) }, { "activo", rol.Activo } });
+            if (respuesta.Codigo == 0)
+            {
+                rol.Activo = !rol.Activo;
+            }
+            return respuesta;
         }
 
 
-        public Respuesta eliminarSucursal(Sucursal sucursal)
+        public Respuesta cambiarEstado(Sucursal sucursal)
         {
-            return this.modificacion("SP_ABM_SUCURSAL_ACTIVAR_DESACTIVAR", new Dictionary<string, object>() { { "id_sucursal", this.id(sucursal) }, { "activo", 1 } });
+            Respuesta respuesta = this.modificacion("SP_ABM_SUCURSAL_ACTIVAR_DESACTIVAR", new Dictionary<string, object>() { { "id_sucursal", this.id(sucursal) }, { "activo", sucursal.Activa } });
+            if (respuesta.Codigo == 0)
+            {
+                sucursal.Activa = !sucursal.Activa;
+            }
+            return respuesta;
         }
 
-        public Respuesta eliminarCliente(Cliente cliente)
+        public Respuesta cambiarEstado(Cliente cliente)
         {
-            return this.modificacion("SP_ABM_CLIENTE_ACTIVAR_DESACTIVAR", new Dictionary<string, object>() { { "id_cliente", this.id(cliente) }, { "activo", 1 } });
+            Respuesta respuesta =  this.modificacion("SP_ABM_CLIENTE_ACTIVAR_DESACTIVAR", new Dictionary<string, object>() { { "id_cliente", this.id(cliente) }, { "activo", cliente.Activo } });
+            if (respuesta.Codigo == 0)
+            {
+                cliente.Activo = !cliente.Activo;
+            }
+            return respuesta;
         }
 
         public Respuesta devolverFactura(Factura factura, string motivo)

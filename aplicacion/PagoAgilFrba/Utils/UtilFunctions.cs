@@ -26,5 +26,12 @@ namespace PagoAgilFrba.Utils
                 }
             }
         }
+        public static bool Contains(string source, string toCheck)
+        {
+            if (string.IsNullOrEmpty(toCheck) || string.IsNullOrEmpty(source))
+                return true;
+
+            return source.IndexOf(toCheck, StringComparison.OrdinalIgnoreCase) >= 0;
+        }
     }
 }

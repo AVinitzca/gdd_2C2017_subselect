@@ -72,8 +72,7 @@ namespace PagoAgilFrba.Forms.AbmSucursal
                 }
                 else if (senderGrid.Columns[e.ColumnIndex].Name == "dgvColumnBorrar")
                 {
-                    DB.DB.Instancia.eliminarSucursal(this.sucursales[e.RowIndex]);
-                    this.sucursales.RemoveAt(e.RowIndex);
+                    DB.DB.Instancia.cambiarEstado(this.sucursales[e.RowIndex]);
                     if(this.gpbIngreso.Tag != null)
                     {
                         this.cancelar();
@@ -150,7 +149,7 @@ namespace PagoAgilFrba.Forms.AbmSucursal
         protected void cargarSucursales()
         {
             this.sucursales.Clear();
-            this.sucursales = new BindingList<Sucursal>(DB.DB.Instancia.obtenerSucursales(this.txtFiltroNombre.Text, this.txtFiltroCuit.Text, (this.txtFiltroCodigoPostal.Text == "") ? -1 : Int32.Parse(this.txtFiltroCodigoPostal.Text)));
+            this.sucursales = new BindingList<Sucursal>(DB.DB.Instancia.obtenerSucursales(this.txtFiltroNombre.Text, this.txtFiltroCuit.Text, (this.txtFiltroCodigoPostal.Text == "") ? -1 : Int32.Parse(this.txtFiltroCodigoPostal.Text), false));
         }
         
         private void txtCodigoPostal_KeyPress(object sender, KeyPressEventArgs e)

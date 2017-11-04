@@ -9,8 +9,7 @@ namespace PagoAgilFrba.Dominio
 {
     public class Funcionalidad
     {
-        private string descripcion;
-        private Form acceso;
+        private string descripcion;        
 
         public string Descripcion
         {

@@ -21,8 +21,8 @@ namespace PagoAgilFrba.AbmFactura
 
         private void FormFactura_Load(object sender, EventArgs e)
         {
-            this.cmbCliente.Items.AddRange(DB.DB.Instancia.obtenerClientes("", "", 0).ToArray());
-            this.cmbEmpresa.Items.AddRange(DB.DB.Instancia.obtenerEmpresas("", "", null).ToArray());
+            this.cmbCliente.Items.AddRange(DB.DB.Instancia.obtenerClientes("", "", 0, false).ToArray());
+            this.cmbEmpresa.Items.AddRange(DB.DB.Instancia.obtenerEmpresas("", "", null, false).ToArray());
         }
         
 

@@ -78,8 +78,7 @@ namespace PagoAgilFrba.AbmCliente
                 }
                 else if (senderGrid.Columns[e.ColumnIndex].Name == "dgvColumnBorrar")
                 {                                  
-                    DB.DB.Instancia.eliminarCliente(this.clientes[e.RowIndex]);
-                    this.clientes.RemoveAt(e.RowIndex);
+                    DB.DB.Instancia.cambiarEstado(this.clientes[e.RowIndex]);                    
                     if (this.gpbIngreso != null)
                     {
                         this.cancelar();
@@ -169,9 +168,9 @@ namespace PagoAgilFrba.AbmCliente
         }
 
         protected void cargarClientes()
-        {
-            this.clientes.Clear();
-            this.clientes = new BindingList<Cliente>(DB.DB.Instancia.obtenerClientes(this.txtFiltroNombre.Text, this.txtFiltroApellido.Text, Int32.Parse(this.txtFiltroDNI.Text)));
+        {        
+            this.clientes = new BindingList<Cliente>(DB.DB.Instancia.obtenerClientes(this.txtFiltroNombre.Text, this.txtFiltroApellido.Text, this.txtFiltroDNI.Text == "" ? 0 : Int32.Parse(this.txtFiltroDNI.Text), false));
+            this.dgvClientes.DataSource = this.clientes;
         }
 
         private void txtCodigoPostal_KeyPress(object sender, KeyPressEventArgs e)

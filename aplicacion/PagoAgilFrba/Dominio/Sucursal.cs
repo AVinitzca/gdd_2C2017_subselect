@@ -11,6 +11,7 @@ namespace PagoAgilFrba.Dominio
         private string nombre;
         private string direccion;
         private int codigoPostal;
+        private bool activa = true;
 
         public string Nombre
         {
@@ -47,6 +48,18 @@ namespace PagoAgilFrba.Dominio
             set
             {
                 direccion = value;
+            }
+        }
+
+        public bool Activa
+        {
+            get
+            {
+                return this.activa;
+            }
+            set
+            {
+                this.activa = value;
             }
         }
     }

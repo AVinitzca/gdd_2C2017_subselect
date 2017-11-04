@@ -20,7 +20,7 @@ namespace PagoAgilFrba.Rendicion
 
         private void FormRendiciones_Load(object sender, EventArgs e)
         {
-            this.cmbEmpresas.Items.AddRange(DB.DB.Instancia.obtenerEmpresas(null, null, null).ToArray());
+            this.cmbEmpresas.Items.AddRange(DB.DB.Instancia.obtenerEmpresas(null, null, null, true).ToArray());
         }
 
         private void btnRendir_Click(object sender, EventArgs e)
