@@ -368,16 +368,16 @@ namespace PagoAgilFrba.DB
             {
                 if (!this.existe(typeof(Empresa)))
                 {
-                    this.obtenerEmpresas(null, null, null, false);
+                    this.obtenerEmpresas("", "", null, false);
                 }
 
                 this.parcialmenteCargados.Remove(typeof(RendicionFacturas));
                 Respuesta respuesta = this.obtener("GET_RENDICIONES");
                 this.agregar<RendicionFacturas>(respuesta, delegate (DataRow row)
                 {                    
-                    RendicionFacturas rendicion = new RendicionFacturas() { Empresa = (Empresa)this.repositorio[typeof(Empresa)][Convert.ToInt32(row["ID_EMPRESA"])], Fecha = Convert.ToDateTime(row["FECHA"]), Porcentaje = Convert.ToDouble(row["PORCENTAJE"]) };
+                    RendicionFacturas rendicion = new RendicionFacturas() { Empresa = (Empresa)this.repositorio[typeof(Empresa)][Convert.ToInt32(row["ID_EMPRESA"])], Fecha = Convert.ToDateTime(row["FECHA_REDENCION"])};
                     return rendicion;
-                }, "ID_RENDICION");                
+                }, "NRO_REDENCION");                
             }
             return this.obtenerDeRepositorio<RendicionFacturas>(typeof(RendicionFacturas));            
         }
@@ -473,7 +473,7 @@ namespace PagoAgilFrba.DB
                 {
                     this.obtenerEmpresas("", "", null, false);
                 }
-                Respuesta respuesta = this.obtenerConEfecto("GET_FACTURA_POR_EMPRESA", new Dictionary<string, object>() { { "id_empresa", this.id(empresa) } });
+                Respuesta respuesta = this.obtener("GET_FACTURA_POR_EMPRESA", new Dictionary<string, object>() { { "id_empresa", this.id(empresa) } });
 
                 this.parcialmenteCargados.Remove(typeof(Factura));
                 this.agregar<Factura>(respuesta,
@@ -492,7 +492,7 @@ namespace PagoAgilFrba.DB
                             Vencimiento = Convert.ToDateTime(row["FECHA_VENCIMIENTO"]),
                             Total = Convert.ToDouble(row["TOTAL"]),
                         };
-                    }, "ID_FACTURA");                
+                    }, "NRO_FACTURA");                
             }
 
             return this.obtenerDeRepositorio<Factura>(typeof(Factura)).Where(factura => empresa == null || factura.Empresa == empresa).ToList();
@@ -500,7 +500,17 @@ namespace PagoAgilFrba.DB
 
         public List<Factura> obtenerFacturasPagas()
         {
-            return null;
+            Respuesta respuesta = this.obtener("GET_FACTURAS_PAGAS_NO_RENDIDAS", new Dictionary<string, object>());
+
+            List<Factura> facturas = new List<Factura>();
+            if(respuesta.Codigo == 0)
+            {
+                foreach(DataRow row in respuesta.Tabla.Rows)
+                {
+                    facturas.Add(new Factura() {NumeroFactura = Convert.ToInt32(row["NRO_FACTURA"]), Total = Convert.ToDouble(row["TOTAL"])});
+                }
+            }
+            return facturas;
         }
         
 
@@ -567,9 +577,9 @@ namespace PagoAgilFrba.DB
 
         public List<FormaDePago> obtenerFormasDePago()
         {
-            if (!this.existe(typeof(Cliente)))
+            if (!this.existe(typeof(FormaDePago)))
             {
-                Respuesta respuesta = this.obtenerConEfecto("GET_FORMAS_PAGO", new Dictionary<string, object>() { });
+                Respuesta respuesta = this.obtener("GET_FORMAS_PAGO", new Dictionary<string, object>() { });
 
                 this.parcialmenteCargados.Remove(typeof(FormaDePago));
                 this.agregar<FormaDePago>(respuesta,
@@ -687,22 +697,33 @@ namespace PagoAgilFrba.DB
 
         public Respuesta crearPago(Pago pago)
         {
-            Respuesta respuesta = this.crear("SP_ABM_FACTURACION_ALTA", new Dictionary<string, object>() {
+            Respuesta respuesta = this.crear("SP_ABM_PAGO_ALTA", new Dictionary<string, object>() {
                 {"fecha", pago.Fecha},
                 {"total", pago.Total},
                 {"id_forma_pago", this.id(pago.FormaDePago)},
                 {"id_sucursal", this.id(Usuario.Logeado.Sucursal)},
                 {"id_cliente", this.id(pago.Cliente)},
                 {"id_empresa", this.id(pago.Empresa) },
-                {"item_pago", 0 },
+                {"item_pago", 0 },                
             }, pago, "NRO_PAGO");
-
 
             if (respuesta.Codigo == 0)
             {
+                foreach (Factura factura in pago.Facturas)
+                {
+                    this.crearPagoFactura(pago, factura, respuesta.Id);
+                }
                 this.crearSiNoExiste(typeof(Pago), respuesta.Id, pago);
             }
             return respuesta;
+        }
+
+        protected Respuesta crearPagoFactura(Pago pago, Factura factura, int nroPago)
+        {
+            return this.modificacion("SP_ABM_PAGO_FACTURA_ALTA", new Dictionary<string, object>() {
+                {"nro_pago", nroPago},
+                {"nro_factura", this.id(factura)},
+            });
         }
 
         public Respuesta crearRendicion(RendicionFacturas rendicion)
@@ -813,7 +834,7 @@ namespace PagoAgilFrba.DB
         
         public Respuesta devolverRendicion(RendicionFacturas rendicion, string motivo)
         {
-            return this.modificacion("DEVOLUCION_RENDICION", new Dictionary<string, object>() { { "nro_factura", this.id(rendicion) }, { "motivo", motivo } });
+            return this.modificacion("DEVOLUCION_RENDICION", new Dictionary<string, object>() { { "nro_rendicion", this.id(rendicion) }, { "motivo", motivo } });
         }
 
         public List<object> obtenerListado(Type tipoListado, int anio, int trimestre)

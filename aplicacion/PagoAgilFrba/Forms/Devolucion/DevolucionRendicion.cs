@@ -12,9 +12,9 @@ using System.Windows.Forms;
 
 namespace PagoAgilFrba.Forms.Devolucion
 {
-    public partial class DevolucionRendicion : Form
+    public partial class FormDevolucionRendicion : Form
     {
-        public DevolucionRendicion()
+        public FormDevolucionRendicion()
         {
             InitializeComponent();
         }

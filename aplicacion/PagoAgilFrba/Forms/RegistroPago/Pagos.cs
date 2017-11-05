@@ -21,8 +21,8 @@ namespace PagoAgilFrba.RegistroPago
 
         private void FormPagos_Load(object sender, EventArgs e)
         {
-            this.cmbEmpresas.Items.AddRange(DB.DB.Instancia.obtenerEmpresas(null, null, null, false).ToArray());
-            this.cmbCliente.Items.AddRange(DB.DB.Instancia.obtenerClientes(null, null, 0, false).ToArray());
+            this.cmbEmpresas.Items.AddRange(DB.DB.Instancia.obtenerEmpresas("", "", null, false).ToArray());
+            this.cmbCliente.Items.AddRange(DB.DB.Instancia.obtenerClientes("", "", 0, false).ToArray());
             this.cmbFormaPago.Items.AddRange(DB.DB.Instancia.obtenerFormasDePago().ToArray());
         }
 
@@ -31,7 +31,7 @@ namespace PagoAgilFrba.RegistroPago
             if(this.cmbEmpresas.SelectedItem != null)
             {
                 this.lstFacturas.Items.Clear();
-                this.lstFacturas.Items.AddRange(DB.DB.Instancia.obtenerFacturas((Empresa)this.cmbEmpresas.SelectedItem).ToArray()   );
+                this.lstFacturas.Items.AddRange(DB.DB.Instancia.obtenerFacturas((Empresa)this.cmbEmpresas.SelectedItem).Where(factura => factura.Vencimiento < Configuracion.Configuracion.fecha()).ToArray());
             }
         }
 
@@ -65,7 +65,7 @@ namespace PagoAgilFrba.RegistroPago
                     facturas.Add((Factura)item);
                 }
                 pago.Facturas = facturas;
-                pago.Fecha = (DateTime)Configuracion.Configuracion.valor("fecha");
+                pago.Fecha = Configuracion.Configuracion.fecha();
                 pago.Sucursal = Usuario.Logeado.Sucursal;                
                 DB.DB.Instancia.crearPago(pago);
                 this.Hide();
@@ -82,6 +82,13 @@ namespace PagoAgilFrba.RegistroPago
                 suma += ((Factura)item).Total;
             }
             this.lblImporte.Text = "Importe: " + suma.ToString();
+        }
+
+        private void btnVolver_Click(object sender, EventArgs e)
+        {
+            FormMenuPrincipal menuPrincipal = new FormMenuPrincipal();
+            this.Hide();
+            menuPrincipal.Show();
         }
     }
 }

@@ -41,7 +41,7 @@ namespace PagoAgilFrba.Forms.MenuPrincipal
         public void irAFormulario(object sender, EventArgs e)
         {
             Funcionalidad funcionalidad = ((Funcionalidad)((ToolStripButton)sender).Tag);
-            Type form = Assembly.GetExecutingAssembly().GetTypes().Where(type => type.Name.Equals("Form" + funcionalidad.Descripcion)).FirstOrDefault();
+            Type form = Assembly.GetExecutingAssembly().GetTypes().Where(type => type.Name.Equals("Form" + funcionalidad.Descripcion.Replace(" ", ""))).FirstOrDefault();
             if(form == null)
             {
                 throw new Exception("Funcionalidad no encontrada");

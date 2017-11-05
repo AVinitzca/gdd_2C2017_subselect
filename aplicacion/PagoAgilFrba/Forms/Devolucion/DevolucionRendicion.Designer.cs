@@ -1,6 +1,6 @@
 ﻿namespace PagoAgilFrba.Forms.Devolucion
 {
-    partial class DevolucionRendicion
+    partial class FormDevolucionRendicion
     {
         /// <summary>
         /// Required designer variable.
@@ -97,7 +97,7 @@
             this.btnVolver.UseVisualStyleBackColor = true;
             this.btnVolver.Click += new System.EventHandler(this.btnVolver_Click);
             // 
-            // DevolucionRendicion
+            // FormDevolucionRendicion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -111,7 +111,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "DevolucionRendicion";
+            this.Name = "FormDevolucionRendicion";
             this.Text = "DevolucionRendicion";
             this.Load += new System.EventHandler(this.DevolucionRendicion_Load);
             this.ResumeLayout(false);
