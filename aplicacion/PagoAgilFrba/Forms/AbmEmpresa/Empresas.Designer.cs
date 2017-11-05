@@ -54,7 +54,7 @@
             // 
             this.dgvEmpresas.AllowUserToAddRows = false;
             this.dgvEmpresas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvEmpresas.Location = new System.Drawing.Point(386, 129);
+            this.dgvEmpresas.Location = new System.Drawing.Point(426, 152);
             this.dgvEmpresas.Name = "dgvEmpresas";
             this.dgvEmpresas.ReadOnly = true;
             this.dgvEmpresas.RowTemplate.Height = 24;
@@ -75,7 +75,7 @@
             this.gpbIngreso.Controls.Add(this.txtNombre);
             this.gpbIngreso.Controls.Add(this.lblNombre);
             this.gpbIngreso.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gpbIngreso.Location = new System.Drawing.Point(12, 96);
+            this.gpbIngreso.Location = new System.Drawing.Point(52, 119);
             this.gpbIngreso.Name = "gpbIngreso";
             this.gpbIngreso.Size = new System.Drawing.Size(368, 455);
             this.gpbIngreso.TabIndex = 2;
@@ -181,7 +181,7 @@
             // txtFiltroNombre
             // 
             this.txtFiltroNombre.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtFiltroNombre.Location = new System.Drawing.Point(473, 93);
+            this.txtFiltroNombre.Location = new System.Drawing.Point(513, 116);
             this.txtFiltroNombre.Name = "txtFiltroNombre";
             this.txtFiltroNombre.Size = new System.Drawing.Size(156, 30);
             this.txtFiltroNombre.TabIndex = 12;
@@ -191,7 +191,7 @@
             // 
             this.lblFiltroNombre.AutoSize = true;
             this.lblFiltroNombre.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblFiltroNombre.Location = new System.Drawing.Point(386, 96);
+            this.lblFiltroNombre.Location = new System.Drawing.Point(426, 119);
             this.lblFiltroNombre.Name = "lblFiltroNombre";
             this.lblFiltroNombre.Size = new System.Drawing.Size(81, 25);
             this.lblFiltroNombre.TabIndex = 11;
@@ -200,7 +200,7 @@
             // txtFiltroCuit
             // 
             this.txtFiltroCuit.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtFiltroCuit.Location = new System.Drawing.Point(688, 93);
+            this.txtFiltroCuit.Location = new System.Drawing.Point(728, 116);
             this.txtFiltroCuit.Name = "txtFiltroCuit";
             this.txtFiltroCuit.Size = new System.Drawing.Size(156, 30);
             this.txtFiltroCuit.TabIndex = 14;
@@ -210,7 +210,7 @@
             // 
             this.lblFiltroCuit.AutoSize = true;
             this.lblFiltroCuit.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblFiltroCuit.Location = new System.Drawing.Point(635, 96);
+            this.lblFiltroCuit.Location = new System.Drawing.Point(675, 119);
             this.lblFiltroCuit.Name = "lblFiltroCuit";
             this.lblFiltroCuit.Size = new System.Drawing.Size(47, 25);
             this.lblFiltroCuit.TabIndex = 13;
@@ -221,7 +221,7 @@
             this.cmbFiltroRubro.DisplayMember = "Descripcion";
             this.cmbFiltroRubro.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbFiltroRubro.FormattingEnabled = true;
-            this.cmbFiltroRubro.Location = new System.Drawing.Point(866, 90);
+            this.cmbFiltroRubro.Location = new System.Drawing.Point(906, 113);
             this.cmbFiltroRubro.Name = "cmbFiltroRubro";
             this.cmbFiltroRubro.Size = new System.Drawing.Size(188, 33);
             this.cmbFiltroRubro.TabIndex = 15;
@@ -231,7 +231,7 @@
             // btnVolver
             // 
             this.btnVolver.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.btnVolver.Location = new System.Drawing.Point(12, 12);
+            this.btnVolver.Location = new System.Drawing.Point(52, 35);
             this.btnVolver.Name = "btnVolver";
             this.btnVolver.Size = new System.Drawing.Size(175, 57);
             this.btnVolver.TabIndex = 11;
@@ -243,7 +243,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1175, 566);
+            this.ClientSize = new System.Drawing.Size(1266, 639);
             this.Controls.Add(this.btnVolver);
             this.Controls.Add(this.cmbFiltroRubro);
             this.Controls.Add(this.txtFiltroCuit);

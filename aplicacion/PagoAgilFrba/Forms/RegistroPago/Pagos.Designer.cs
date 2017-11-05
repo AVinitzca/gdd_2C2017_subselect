@@ -141,7 +141,7 @@
             // btnPagar
             // 
             this.btnPagar.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.btnPagar.Location = new System.Drawing.Point(147, 630);
+            this.btnPagar.Location = new System.Drawing.Point(143, 641);
             this.btnPagar.Name = "btnPagar";
             this.btnPagar.Size = new System.Drawing.Size(204, 60);
             this.btnPagar.TabIndex = 9;

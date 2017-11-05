@@ -53,7 +53,7 @@
             this.gpbNuevoRol.Controls.Add(this.lblNombre);
             this.gpbNuevoRol.Controls.Add(this.lstFuncionalidades);
             this.gpbNuevoRol.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gpbNuevoRol.Location = new System.Drawing.Point(12, 75);
+            this.gpbNuevoRol.Location = new System.Drawing.Point(105, 113);
             this.gpbNuevoRol.Name = "gpbNuevoRol";
             this.gpbNuevoRol.Size = new System.Drawing.Size(368, 455);
             this.gpbNuevoRol.TabIndex = 0;
@@ -126,7 +126,7 @@
             // 
             this.dgvRoles.AllowUserToAddRows = false;
             this.dgvRoles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvRoles.Location = new System.Drawing.Point(386, 91);
+            this.dgvRoles.Location = new System.Drawing.Point(479, 129);
             this.dgvRoles.Name = "dgvRoles";
             this.dgvRoles.ReadOnly = true;
             this.dgvRoles.RowTemplate.Height = 24;
@@ -141,7 +141,7 @@
             // btnVolver
             // 
             this.btnVolver.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.btnVolver.Location = new System.Drawing.Point(12, 6);
+            this.btnVolver.Location = new System.Drawing.Point(105, 44);
             this.btnVolver.Name = "btnVolver";
             this.btnVolver.Size = new System.Drawing.Size(175, 57);
             this.btnVolver.TabIndex = 12;
@@ -153,7 +153,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1256, 552);
+            this.ClientSize = new System.Drawing.Size(1410, 620);
             this.Controls.Add(this.btnVolver);
             this.Controls.Add(this.dgvRoles);
             this.Controls.Add(this.gpbNuevoRol);

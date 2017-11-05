@@ -33,13 +33,14 @@
             this.lblPorcentaje = new System.Windows.Forms.Label();
             this.txtPorcentaje = new System.Windows.Forms.TextBox();
             this.btnRendir = new System.Windows.Forms.Button();
+            this.btnVolver = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lblEmpresa
             // 
             this.lblEmpresa.AutoSize = true;
             this.lblEmpresa.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.lblEmpresa.Location = new System.Drawing.Point(12, 9);
+            this.lblEmpresa.Location = new System.Drawing.Point(63, 117);
             this.lblEmpresa.Name = "lblEmpresa";
             this.lblEmpresa.Size = new System.Drawing.Size(90, 25);
             this.lblEmpresa.TabIndex = 0;
@@ -50,7 +51,7 @@
             this.cmbEmpresas.DisplayMember = "Nombre";
             this.cmbEmpresas.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.cmbEmpresas.FormattingEnabled = true;
-            this.cmbEmpresas.Location = new System.Drawing.Point(15, 48);
+            this.cmbEmpresas.Location = new System.Drawing.Point(66, 156);
             this.cmbEmpresas.Name = "cmbEmpresas";
             this.cmbEmpresas.Size = new System.Drawing.Size(248, 33);
             this.cmbEmpresas.TabIndex = 1;
@@ -60,7 +61,7 @@
             // 
             this.lblPorcentaje.AutoSize = true;
             this.lblPorcentaje.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.lblPorcentaje.Location = new System.Drawing.Point(12, 103);
+            this.lblPorcentaje.Location = new System.Drawing.Point(63, 211);
             this.lblPorcentaje.Name = "lblPorcentaje";
             this.lblPorcentaje.Size = new System.Drawing.Size(214, 25);
             this.lblPorcentaje.TabIndex = 2;
@@ -69,7 +70,7 @@
             // txtPorcentaje
             // 
             this.txtPorcentaje.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.txtPorcentaje.Location = new System.Drawing.Point(15, 147);
+            this.txtPorcentaje.Location = new System.Drawing.Point(66, 255);
             this.txtPorcentaje.Name = "txtPorcentaje";
             this.txtPorcentaje.Size = new System.Drawing.Size(215, 30);
             this.txtPorcentaje.TabIndex = 3;
@@ -78,7 +79,7 @@
             // btnRendir
             // 
             this.btnRendir.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.btnRendir.Location = new System.Drawing.Point(116, 204);
+            this.btnRendir.Location = new System.Drawing.Point(167, 312);
             this.btnRendir.Name = "btnRendir";
             this.btnRendir.Size = new System.Drawing.Size(147, 54);
             this.btnRendir.TabIndex = 4;
@@ -86,11 +87,23 @@
             this.btnRendir.UseVisualStyleBackColor = true;
             this.btnRendir.Click += new System.EventHandler(this.btnRendir_Click);
             // 
+            // btnVolver
+            // 
+            this.btnVolver.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F);
+            this.btnVolver.Location = new System.Drawing.Point(27, 25);
+            this.btnVolver.Name = "btnVolver";
+            this.btnVolver.Size = new System.Drawing.Size(136, 62);
+            this.btnVolver.TabIndex = 5;
+            this.btnVolver.Text = "Volver";
+            this.btnVolver.UseVisualStyleBackColor = true;
+            this.btnVolver.Click += new System.EventHandler(this.btnVolver_Click);
+            // 
             // FormRendiciones
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(375, 293);
+            this.ClientSize = new System.Drawing.Size(489, 397);
+            this.Controls.Add(this.btnVolver);
             this.Controls.Add(this.btnRendir);
             this.Controls.Add(this.txtPorcentaje);
             this.Controls.Add(this.lblPorcentaje);
@@ -114,5 +127,6 @@
         private System.Windows.Forms.Label lblPorcentaje;
         private System.Windows.Forms.TextBox txtPorcentaje;
         private System.Windows.Forms.Button btnRendir;
+        private System.Windows.Forms.Button btnVolver;
     }
 }

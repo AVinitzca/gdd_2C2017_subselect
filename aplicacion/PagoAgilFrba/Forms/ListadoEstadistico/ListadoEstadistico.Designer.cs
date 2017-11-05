@@ -44,7 +44,7 @@
             // numTrimestre
             // 
             this.numTrimestre.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F);
-            this.numTrimestre.Location = new System.Drawing.Point(361, 56);
+            this.numTrimestre.Location = new System.Drawing.Point(398, 83);
             this.numTrimestre.Maximum = new decimal(new int[] {
             4,
             0,
@@ -69,7 +69,7 @@
             // 
             this.lblAnio.AutoSize = true;
             this.lblAnio.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F);
-            this.lblAnio.Location = new System.Drawing.Point(288, 12);
+            this.lblAnio.Location = new System.Drawing.Point(325, 39);
             this.lblAnio.Name = "lblAnio";
             this.lblAnio.Size = new System.Drawing.Size(67, 29);
             this.lblAnio.TabIndex = 2;
@@ -79,7 +79,7 @@
             // 
             this.lblTrimestre.AutoSize = true;
             this.lblTrimestre.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F);
-            this.lblTrimestre.Location = new System.Drawing.Point(232, 61);
+            this.lblTrimestre.Location = new System.Drawing.Point(269, 88);
             this.lblTrimestre.Name = "lblTrimestre";
             this.lblTrimestre.Size = new System.Drawing.Size(123, 29);
             this.lblTrimestre.TabIndex = 3;
@@ -88,7 +88,7 @@
             // btnVolver
             // 
             this.btnVolver.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F);
-            this.btnVolver.Location = new System.Drawing.Point(36, 12);
+            this.btnVolver.Location = new System.Drawing.Point(73, 39);
             this.btnVolver.Name = "btnVolver";
             this.btnVolver.Size = new System.Drawing.Size(146, 81);
             this.btnVolver.TabIndex = 4;
@@ -101,7 +101,7 @@
             this.cmbListado.DisplayMember = "Nombre";
             this.cmbListado.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F);
             this.cmbListado.FormattingEnabled = true;
-            this.cmbListado.Location = new System.Drawing.Point(518, 53);
+            this.cmbListado.Location = new System.Drawing.Point(555, 80);
             this.cmbListado.Name = "cmbListado";
             this.cmbListado.Size = new System.Drawing.Size(526, 37);
             this.cmbListado.TabIndex = 5;
@@ -112,7 +112,7 @@
             // 
             this.lblListado.AutoSize = true;
             this.lblListado.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F);
-            this.lblListado.Location = new System.Drawing.Point(513, 14);
+            this.lblListado.Location = new System.Drawing.Point(550, 41);
             this.lblListado.Name = "lblListado";
             this.lblListado.Size = new System.Drawing.Size(189, 29);
             this.lblListado.TabIndex = 6;
@@ -123,7 +123,7 @@
             this.dgvListado.AllowUserToAddRows = false;
             this.dgvListado.AllowUserToDeleteRows = false;
             this.dgvListado.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvListado.Location = new System.Drawing.Point(36, 109);
+            this.dgvListado.Location = new System.Drawing.Point(73, 136);
             this.dgvListado.Name = "dgvListado";
             this.dgvListado.ReadOnly = true;
             this.dgvListado.RowTemplate.Height = 24;
@@ -133,7 +133,7 @@
             // numAnio
             // 
             this.numAnio.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F);
-            this.numAnio.Location = new System.Drawing.Point(361, 10);
+            this.numAnio.Location = new System.Drawing.Point(398, 37);
             this.numAnio.Maximum = new decimal(new int[] {
             2017,
             0,
@@ -158,7 +158,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1096, 481);
+            this.ClientSize = new System.Drawing.Size(1180, 529);
             this.Controls.Add(this.numAnio);
             this.Controls.Add(this.dgvListado);
             this.Controls.Add(this.lblListado);

@@ -1,4 +1,5 @@
 ﻿using PagoAgilFrba.Dominio;
+using PagoAgilFrba.Forms.MenuPrincipal;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -55,6 +56,13 @@ namespace PagoAgilFrba.Rendicion
             {
                 e.Handled = true;
             }
+        }
+
+        private void btnVolver_Click(object sender, EventArgs e)
+        {
+            FormMenuPrincipal menuPrincipal = new FormMenuPrincipal();
+            this.Hide();
+            menuPrincipal.Show();
         }
     }
 }

@@ -41,7 +41,7 @@
             this.cmbFacturas.DisplayMember = "NumeroFactura";
             this.cmbFacturas.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.cmbFacturas.FormattingEnabled = true;
-            this.cmbFacturas.Location = new System.Drawing.Point(18, 54);
+            this.cmbFacturas.Location = new System.Drawing.Point(75, 121);
             this.cmbFacturas.Name = "cmbFacturas";
             this.cmbFacturas.Size = new System.Drawing.Size(281, 33);
             this.cmbFacturas.TabIndex = 0;
@@ -51,7 +51,7 @@
             // 
             this.lblFactura.AutoSize = true;
             this.lblFactura.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.lblFactura.Location = new System.Drawing.Point(13, 13);
+            this.lblFactura.Location = new System.Drawing.Point(70, 80);
             this.lblFactura.Name = "lblFactura";
             this.lblFactura.Size = new System.Drawing.Size(173, 25);
             this.lblFactura.TabIndex = 1;
@@ -60,7 +60,7 @@
             // btnDevolver
             // 
             this.btnDevolver.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.btnDevolver.Location = new System.Drawing.Point(112, 239);
+            this.btnDevolver.Location = new System.Drawing.Point(169, 306);
             this.btnDevolver.Name = "btnDevolver";
             this.btnDevolver.Size = new System.Drawing.Size(173, 61);
             this.btnDevolver.TabIndex = 2;
@@ -72,7 +72,7 @@
             // 
             this.lblMotivo.AutoSize = true;
             this.lblMotivo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.lblMotivo.Location = new System.Drawing.Point(13, 111);
+            this.lblMotivo.Location = new System.Drawing.Point(70, 178);
             this.lblMotivo.Name = "lblMotivo";
             this.lblMotivo.Size = new System.Drawing.Size(70, 25);
             this.lblMotivo.TabIndex = 3;
@@ -81,7 +81,7 @@
             // txtMotivo
             // 
             this.txtMotivo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.txtMotivo.Location = new System.Drawing.Point(18, 152);
+            this.txtMotivo.Location = new System.Drawing.Point(75, 219);
             this.txtMotivo.Name = "txtMotivo";
             this.txtMotivo.Size = new System.Drawing.Size(281, 30);
             this.txtMotivo.TabIndex = 4;
@@ -89,7 +89,7 @@
             // btnVolver
             // 
             this.btnVolver.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.btnVolver.Location = new System.Drawing.Point(112, 317);
+            this.btnVolver.Location = new System.Drawing.Point(169, 384);
             this.btnVolver.Name = "btnVolver";
             this.btnVolver.Size = new System.Drawing.Size(173, 61);
             this.btnVolver.TabIndex = 5;
@@ -101,7 +101,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(399, 390);
+            this.ClientSize = new System.Drawing.Size(501, 514);
             this.Controls.Add(this.btnVolver);
             this.Controls.Add(this.txtMotivo);
             this.Controls.Add(this.lblMotivo);

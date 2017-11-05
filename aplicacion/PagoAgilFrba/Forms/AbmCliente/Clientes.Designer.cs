@@ -85,7 +85,7 @@
             this.gpbIngreso.Controls.Add(this.txtNombre);
             this.gpbIngreso.Controls.Add(this.lblNombre);
             this.gpbIngreso.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gpbIngreso.Location = new System.Drawing.Point(12, 80);
+            this.gpbIngreso.Location = new System.Drawing.Point(97, 129);
             this.gpbIngreso.Name = "gpbIngreso";
             this.gpbIngreso.Size = new System.Drawing.Size(368, 507);
             this.gpbIngreso.TabIndex = 2;
@@ -276,18 +276,18 @@
             this.dgvClientes.AllowUserToAddRows = false;
             this.dgvClientes.AllowUserToDeleteRows = false;
             this.dgvClientes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvClientes.Location = new System.Drawing.Point(386, 136);
+            this.dgvClientes.Location = new System.Drawing.Point(471, 185);
             this.dgvClientes.Name = "dgvClientes";
             this.dgvClientes.ReadOnly = true;
             this.dgvClientes.RowTemplate.Height = 24;
-            this.dgvClientes.Size = new System.Drawing.Size(1580, 453);
+            this.dgvClientes.Size = new System.Drawing.Size(1784, 453);
             this.dgvClientes.TabIndex = 3;
             this.dgvClientes.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvClientes_CellContentClick);
             // 
             // txtFiltroNombre
             // 
             this.txtFiltroNombre.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtFiltroNombre.Location = new System.Drawing.Point(473, 94);
+            this.txtFiltroNombre.Location = new System.Drawing.Point(558, 143);
             this.txtFiltroNombre.Name = "txtFiltroNombre";
             this.txtFiltroNombre.Size = new System.Drawing.Size(215, 30);
             this.txtFiltroNombre.TabIndex = 20;
@@ -297,7 +297,7 @@
             // 
             this.lblFiltroNombre.AutoSize = true;
             this.lblFiltroNombre.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblFiltroNombre.Location = new System.Drawing.Point(386, 97);
+            this.lblFiltroNombre.Location = new System.Drawing.Point(471, 146);
             this.lblFiltroNombre.Name = "lblFiltroNombre";
             this.lblFiltroNombre.Size = new System.Drawing.Size(81, 25);
             this.lblFiltroNombre.TabIndex = 19;
@@ -306,7 +306,7 @@
             // txtFiltroApellido
             // 
             this.txtFiltroApellido.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtFiltroApellido.Location = new System.Drawing.Point(781, 94);
+            this.txtFiltroApellido.Location = new System.Drawing.Point(866, 143);
             this.txtFiltroApellido.Name = "txtFiltroApellido";
             this.txtFiltroApellido.Size = new System.Drawing.Size(215, 30);
             this.txtFiltroApellido.TabIndex = 20;
@@ -316,7 +316,7 @@
             // 
             this.lblFiltroApellido.AutoSize = true;
             this.lblFiltroApellido.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblFiltroApellido.Location = new System.Drawing.Point(694, 97);
+            this.lblFiltroApellido.Location = new System.Drawing.Point(779, 146);
             this.lblFiltroApellido.Name = "lblFiltroApellido";
             this.lblFiltroApellido.Size = new System.Drawing.Size(82, 25);
             this.lblFiltroApellido.TabIndex = 19;
@@ -325,7 +325,7 @@
             // txtFiltroDNI
             // 
             this.txtFiltroDNI.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtFiltroDNI.Location = new System.Drawing.Point(1055, 94);
+            this.txtFiltroDNI.Location = new System.Drawing.Point(1140, 143);
             this.txtFiltroDNI.Name = "txtFiltroDNI";
             this.txtFiltroDNI.Size = new System.Drawing.Size(251, 30);
             this.txtFiltroDNI.TabIndex = 20;
@@ -336,7 +336,7 @@
             // 
             this.lblFiltroDNI.AutoSize = true;
             this.lblFiltroDNI.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblFiltroDNI.Location = new System.Drawing.Point(1004, 97);
+            this.lblFiltroDNI.Location = new System.Drawing.Point(1089, 146);
             this.lblFiltroDNI.Name = "lblFiltroDNI";
             this.lblFiltroDNI.Size = new System.Drawing.Size(45, 25);
             this.lblFiltroDNI.TabIndex = 19;
@@ -345,7 +345,7 @@
             // btnVolver
             // 
             this.btnVolver.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.btnVolver.Location = new System.Drawing.Point(12, 6);
+            this.btnVolver.Location = new System.Drawing.Point(97, 55);
             this.btnVolver.Name = "btnVolver";
             this.btnVolver.Size = new System.Drawing.Size(175, 49);
             this.btnVolver.TabIndex = 20;
@@ -361,7 +361,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1978, 599);
+            this.ClientSize = new System.Drawing.Size(2283, 715);
             this.Controls.Add(this.btnVolver);
             this.Controls.Add(this.txtFiltroDNI);
             this.Controls.Add(this.lblFiltroDNI);

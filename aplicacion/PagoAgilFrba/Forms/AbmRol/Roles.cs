@@ -64,13 +64,10 @@ namespace PagoAgilFrba.AbmRol
                 if(senderGrid.Columns[e.ColumnIndex].Name == "dgvColumnModificar" && this.gpbNuevoRol.Tag == null)
                 {
                     Rol rol = this.roles[e.RowIndex];
-                    this.txtNombre.Text = rol.Nombre;                    
-                    for(int index = 0; index < this.lstFuncionalidades.Items.Count; index++)
+                    this.txtNombre.Text = rol.Nombre;    
+                    foreach (Funcionalidad funcionalidad in rol.Funcionalidades)
                     {
-                        if(rol.Funcionalidades.Contains(((Funcionalidad)this.lstFuncionalidades.Items[index])))
-                        {
-                            this.lstFuncionalidades.SelectedIndices.Add(index);
-                        }                        
+                        this.lstFuncionalidades.SelectedItems.Add(funcionalidad);
                     }
                     this.btnModificar.Visible = true;
                     this.btnCancelar.Visible = true;
