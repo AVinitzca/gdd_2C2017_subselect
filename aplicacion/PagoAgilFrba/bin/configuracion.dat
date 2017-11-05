@@ -1,2 +1,6 @@
 nombre_db=SUBSELECT
 fecha=2017-11-03 01:40:52
+ListadoCobrosPorEmpresa=GET_LISTADO_1
+ListadoEmpresasMayorMonto=GET_LISTADO_2
+ListadoClientesMasPagos=GET_LISTADO_3
+ListadoClientesCumplidores=GET_LISTADO_4

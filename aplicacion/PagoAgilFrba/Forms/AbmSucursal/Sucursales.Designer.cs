@@ -45,6 +45,7 @@
             this.lblCodigoPostal = new System.Windows.Forms.Label();
             this.txtFiltroCodigoPostal = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.btnVolver = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSucursales)).BeginInit();
             this.gpbIngreso.SuspendLayout();
             this.SuspendLayout();
@@ -52,7 +53,7 @@
             // txtFiltroNombre
             // 
             this.txtFiltroNombre.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtFiltroNombre.Location = new System.Drawing.Point(481, 15);
+            this.txtFiltroNombre.Location = new System.Drawing.Point(473, 81);
             this.txtFiltroNombre.Name = "txtFiltroNombre";
             this.txtFiltroNombre.Size = new System.Drawing.Size(156, 30);
             this.txtFiltroNombre.TabIndex = 19;
@@ -62,7 +63,7 @@
             // 
             this.lblFiltroNombre.AutoSize = true;
             this.lblFiltroNombre.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblFiltroNombre.Location = new System.Drawing.Point(394, 18);
+            this.lblFiltroNombre.Location = new System.Drawing.Point(386, 84);
             this.lblFiltroNombre.Name = "lblFiltroNombre";
             this.lblFiltroNombre.Size = new System.Drawing.Size(81, 25);
             this.lblFiltroNombre.TabIndex = 18;
@@ -139,7 +140,7 @@
             // txtFiltroCuit
             // 
             this.txtFiltroCuit.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtFiltroCuit.Location = new System.Drawing.Point(743, 16);
+            this.txtFiltroCuit.Location = new System.Drawing.Point(735, 82);
             this.txtFiltroCuit.Name = "txtFiltroCuit";
             this.txtFiltroCuit.Size = new System.Drawing.Size(151, 30);
             this.txtFiltroCuit.TabIndex = 21;
@@ -149,7 +150,7 @@
             // 
             this.lblFiltroDireccion.AutoSize = true;
             this.lblFiltroDireccion.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblFiltroDireccion.Location = new System.Drawing.Point(643, 18);
+            this.lblFiltroDireccion.Location = new System.Drawing.Point(635, 84);
             this.lblFiltroDireccion.Name = "lblFiltroDireccion";
             this.lblFiltroDireccion.Size = new System.Drawing.Size(93, 25);
             this.lblFiltroDireccion.TabIndex = 20;
@@ -159,7 +160,7 @@
             // 
             this.dgvSucursales.AllowUserToAddRows = false;
             this.dgvSucursales.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvSucursales.Location = new System.Drawing.Point(394, 51);
+            this.dgvSucursales.Location = new System.Drawing.Point(386, 117);
             this.dgvSucursales.Name = "dgvSucursales";
             this.dgvSucursales.ReadOnly = true;
             this.dgvSucursales.RowTemplate.Height = 24;
@@ -179,7 +180,7 @@
             this.gpbIngreso.Controls.Add(this.txtNombre);
             this.gpbIngreso.Controls.Add(this.lblNombre);
             this.gpbIngreso.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gpbIngreso.Location = new System.Drawing.Point(20, 18);
+            this.gpbIngreso.Location = new System.Drawing.Point(12, 84);
             this.gpbIngreso.Name = "gpbIngreso";
             this.gpbIngreso.Size = new System.Drawing.Size(368, 455);
             this.gpbIngreso.TabIndex = 16;
@@ -208,7 +209,7 @@
             // txtFiltroCodigoPostal
             // 
             this.txtFiltroCodigoPostal.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtFiltroCodigoPostal.Location = new System.Drawing.Point(1039, 16);
+            this.txtFiltroCodigoPostal.Location = new System.Drawing.Point(1031, 82);
             this.txtFiltroCodigoPostal.Name = "txtFiltroCodigoPostal";
             this.txtFiltroCodigoPostal.Size = new System.Drawing.Size(115, 30);
             this.txtFiltroCodigoPostal.TabIndex = 23;
@@ -219,17 +220,29 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(899, 18);
+            this.label1.Location = new System.Drawing.Point(891, 84);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(134, 25);
             this.label1.TabIndex = 22;
             this.label1.Text = "Codigo Postal";
             // 
+            // btnVolver
+            // 
+            this.btnVolver.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F);
+            this.btnVolver.Location = new System.Drawing.Point(12, 10);
+            this.btnVolver.Name = "btnVolver";
+            this.btnVolver.Size = new System.Drawing.Size(142, 52);
+            this.btnVolver.TabIndex = 13;
+            this.btnVolver.Text = "Volver";
+            this.btnVolver.UseVisualStyleBackColor = true;
+            this.btnVolver.Click += new System.EventHandler(this.btnVolver_Click);
+            // 
             // FormSucursales
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1175, 485);
+            this.ClientSize = new System.Drawing.Size(1175, 551);
+            this.Controls.Add(this.btnVolver);
             this.Controls.Add(this.txtFiltroCodigoPostal);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtFiltroNombre);
@@ -270,5 +283,6 @@
         private System.Windows.Forms.TextBox txtFiltroCodigoPostal;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtCodigoPostal;
+        private System.Windows.Forms.Button btnVolver;
     }
 }

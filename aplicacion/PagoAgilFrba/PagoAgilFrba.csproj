@@ -54,6 +54,11 @@
     <Compile Include="Dominio\FormaDePago.cs" />
     <Compile Include="Dominio\Funcionalidad.cs" />
     <Compile Include="Dominio\ItemFactura.cs" />
+    <Compile Include="Dominio\ListadoClientesCumplidores.cs" />
+    <Compile Include="Dominio\ListadoClientesMasPagos.cs" />
+    <Compile Include="Dominio\ListadoCobrosPorEmpresa.cs" />
+    <Compile Include="Dominio\Listado.cs" />
+    <Compile Include="Dominio\ListadoEmpresasMayorMonto.cs" />
     <Compile Include="Dominio\Pago.cs" />
     <Compile Include="Dominio\RendicionFacturas.cs" />
     <Compile Include="Dominio\Rol.cs" />

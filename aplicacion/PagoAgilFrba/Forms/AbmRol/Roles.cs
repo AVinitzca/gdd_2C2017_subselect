@@ -1,5 +1,6 @@
 ﻿using PagoAgilFrba.DB;
 using PagoAgilFrba.Dominio;
+using PagoAgilFrba.Forms.MenuPrincipal;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -168,5 +169,11 @@ namespace PagoAgilFrba.AbmRol
             this.roles = new BindingList<Rol>(DB.DB.Instancia.obtenerRoles("", false));
         }
 
+        private void btnVolver_Click(object sender, EventArgs e)
+        {
+            FormMenuPrincipal menuPrincipal = new FormMenuPrincipal();
+            this.Hide();
+            menuPrincipal.Show();
+        }
     }
 }

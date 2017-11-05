@@ -23,7 +23,7 @@ namespace PagoAgilFrba
 
         private void Login_Load(object sender, EventArgs e)
         {
-            this.FormBorderStyle = FormBorderStyle.FixedSingle;            
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;                     
         }
 
         private void btnEntrar_Click(object sender, EventArgs e)

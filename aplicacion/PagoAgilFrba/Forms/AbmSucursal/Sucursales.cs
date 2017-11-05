@@ -1,4 +1,5 @@
 ﻿using PagoAgilFrba.Dominio;
+using PagoAgilFrba.Forms.MenuPrincipal;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -24,7 +25,6 @@ namespace PagoAgilFrba.Forms.AbmSucursal
         {
             this.sucursales = new BindingList<Sucursal>();
             this.cargarSucursales();
-            this.dgvSucursales.DataSource = sucursales;
             DataGridViewButtonColumn modificar = new DataGridViewButtonColumn();
             DataGridViewButtonColumn borrar = new DataGridViewButtonColumn();
             modificar.Name = "dgvColumnModificar";
@@ -148,8 +148,8 @@ namespace PagoAgilFrba.Forms.AbmSucursal
 
         protected void cargarSucursales()
         {
-            this.sucursales.Clear();
-            this.sucursales = new BindingList<Sucursal>(DB.DB.Instancia.obtenerSucursales(this.txtFiltroNombre.Text, this.txtFiltroCuit.Text, (this.txtFiltroCodigoPostal.Text == "") ? -1 : Int32.Parse(this.txtFiltroCodigoPostal.Text), false));
+            this.sucursales = new BindingList<Sucursal>(DB.DB.Instancia.obtenerSucursales(this.txtFiltroNombre.Text, this.txtFiltroCuit.Text, (this.txtFiltroCodigoPostal.Text == "") ? 0 : Int32.Parse(this.txtFiltroCodigoPostal.Text), false));
+            this.dgvSucursales.DataSource = this.sucursales;
         }
         
         private void txtCodigoPostal_KeyPress(object sender, KeyPressEventArgs e)
@@ -194,6 +194,12 @@ namespace PagoAgilFrba.Forms.AbmSucursal
                 e.Handled = true;
             }
         }
-        
+
+        private void btnVolver_Click(object sender, EventArgs e)
+        {
+            FormMenuPrincipal menuPrincipal = new FormMenuPrincipal();
+            this.Hide();
+            menuPrincipal.Show();
+        }
     }
 }

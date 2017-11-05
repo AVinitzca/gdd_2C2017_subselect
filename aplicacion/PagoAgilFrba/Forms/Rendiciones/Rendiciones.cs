@@ -37,7 +37,7 @@ namespace PagoAgilFrba.Rendicion
             {
                 RendicionFacturas rendicion = new RendicionFacturas();
                 rendicion.Empresa = (Empresa)this.cmbEmpresas.SelectedItem;
-                rendicion.Fecha = (DateTime)Configuracion.Configuracion.valor("fecha");
+                rendicion.Fecha = Configuracion.Configuracion.fecha();
                 rendicion.Porcentaje = Double.Parse(this.txtPorcentaje.Text);
                 DB.DB.Instancia.crearRendicion(rendicion);
             }

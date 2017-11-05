@@ -28,6 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.lblCliente = new System.Windows.Forms.Label();
             this.cmbCliente = new System.Windows.Forms.ComboBox();
             this.cmbEmpresa = new System.Windows.Forms.ComboBox();
@@ -45,14 +48,18 @@
             this.btnCrear = new System.Windows.Forms.Button();
             this.lblTotal = new System.Windows.Forms.Label();
             this.btnVolver = new System.Windows.Forms.Button();
+            this.dgvFacturas = new System.Windows.Forms.DataGridView();
+            this.gpbIngreso = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvItems)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvFacturas)).BeginInit();
+            this.gpbIngreso.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblCliente
             // 
             this.lblCliente.AutoSize = true;
             this.lblCliente.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCliente.Location = new System.Drawing.Point(12, 9);
+            this.lblCliente.Location = new System.Drawing.Point(6, 70);
             this.lblCliente.Name = "lblCliente";
             this.lblCliente.Size = new System.Drawing.Size(73, 25);
             this.lblCliente.TabIndex = 0;
@@ -63,9 +70,9 @@
             this.cmbCliente.DisplayMember = "NombreCompleto";
             this.cmbCliente.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.cmbCliente.FormattingEnabled = true;
-            this.cmbCliente.Location = new System.Drawing.Point(271, 6);
+            this.cmbCliente.Location = new System.Drawing.Point(221, 67);
             this.cmbCliente.Name = "cmbCliente";
-            this.cmbCliente.Size = new System.Drawing.Size(335, 33);
+            this.cmbCliente.Size = new System.Drawing.Size(236, 33);
             this.cmbCliente.TabIndex = 1;
             // 
             // cmbEmpresa
@@ -73,16 +80,16 @@
             this.cmbEmpresa.DisplayMember = "Nombre";
             this.cmbEmpresa.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.cmbEmpresa.FormattingEnabled = true;
-            this.cmbEmpresa.Location = new System.Drawing.Point(271, 53);
+            this.cmbEmpresa.Location = new System.Drawing.Point(221, 114);
             this.cmbEmpresa.Name = "cmbEmpresa";
-            this.cmbEmpresa.Size = new System.Drawing.Size(335, 33);
+            this.cmbEmpresa.Size = new System.Drawing.Size(236, 33);
             this.cmbEmpresa.TabIndex = 3;
             // 
             // lblEmpresa
             // 
             this.lblEmpresa.AutoSize = true;
             this.lblEmpresa.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblEmpresa.Location = new System.Drawing.Point(12, 56);
+            this.lblEmpresa.Location = new System.Drawing.Point(6, 117);
             this.lblEmpresa.Name = "lblEmpresa";
             this.lblEmpresa.Size = new System.Drawing.Size(90, 25);
             this.lblEmpresa.TabIndex = 2;
@@ -93,24 +100,24 @@
             this.dateTimePicker1.Enabled = false;
             this.dateTimePicker1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateTimePicker1.Location = new System.Drawing.Point(271, 101);
+            this.dateTimePicker1.Location = new System.Drawing.Point(221, 162);
             this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(335, 30);
+            this.dateTimePicker1.Size = new System.Drawing.Size(236, 30);
             this.dateTimePicker1.TabIndex = 6;
             // 
             // dtpFechaVencimiento
             // 
             this.dtpFechaVencimiento.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.dtpFechaVencimiento.Location = new System.Drawing.Point(271, 141);
+            this.dtpFechaVencimiento.Location = new System.Drawing.Point(221, 202);
             this.dtpFechaVencimiento.Name = "dtpFechaVencimiento";
-            this.dtpFechaVencimiento.Size = new System.Drawing.Size(334, 30);
+            this.dtpFechaVencimiento.Size = new System.Drawing.Size(235, 30);
             this.dtpFechaVencimiento.TabIndex = 7;
             // 
             // lblFecha
             // 
             this.lblFecha.AutoSize = true;
             this.lblFecha.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblFecha.Location = new System.Drawing.Point(12, 102);
+            this.lblFecha.Location = new System.Drawing.Point(6, 163);
             this.lblFecha.Name = "lblFecha";
             this.lblFecha.Size = new System.Drawing.Size(67, 25);
             this.lblFecha.TabIndex = 8;
@@ -120,7 +127,7 @@
             // 
             this.lblFechaVencimiento.AutoSize = true;
             this.lblFechaVencimiento.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblFechaVencimiento.Location = new System.Drawing.Point(12, 143);
+            this.lblFechaVencimiento.Location = new System.Drawing.Point(6, 204);
             this.lblFechaVencimiento.Name = "lblFechaVencimiento";
             this.lblFechaVencimiento.Size = new System.Drawing.Size(207, 25);
             this.lblFechaVencimiento.TabIndex = 9;
@@ -128,16 +135,40 @@
             // 
             // dgvItems
             // 
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvItems.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvItems.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvItems.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dgvColumnItems,
             this.dgvColumnMonto,
             this.dgvColumnCantidad,
             this.dgvColumnTotal});
-            this.dgvItems.Location = new System.Drawing.Point(17, 271);
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvItems.DefaultCellStyle = dataGridViewCellStyle2;
+            this.dgvItems.Location = new System.Drawing.Point(11, 298);
             this.dgvItems.Name = "dgvItems";
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvItems.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dgvItems.RowTemplate.Height = 24;
-            this.dgvItems.Size = new System.Drawing.Size(589, 178);
+            this.dgvItems.Size = new System.Drawing.Size(445, 178);
             this.dgvItems.TabIndex = 10;
             this.dgvItems.CellValidated += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvItems_CellValidated);
             this.dgvItems.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dgvItems_EditingControlShowing);
@@ -167,7 +198,7 @@
             // 
             this.lblItems.AutoSize = true;
             this.lblItems.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblItems.Location = new System.Drawing.Point(12, 229);
+            this.lblItems.Location = new System.Drawing.Point(6, 256);
             this.lblItems.Name = "lblItems";
             this.lblItems.Size = new System.Drawing.Size(59, 25);
             this.lblItems.TabIndex = 11;
@@ -176,7 +207,7 @@
             // btnCrear
             // 
             this.btnCrear.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.btnCrear.Location = new System.Drawing.Point(226, 529);
+            this.btnCrear.Location = new System.Drawing.Point(132, 504);
             this.btnCrear.Name = "btnCrear";
             this.btnCrear.Size = new System.Drawing.Size(175, 84);
             this.btnCrear.TabIndex = 12;
@@ -188,7 +219,7 @@
             // 
             this.lblTotal.AutoSize = true;
             this.lblTotal.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTotal.Location = new System.Drawing.Point(221, 485);
+            this.lblTotal.Location = new System.Drawing.Point(367, 270);
             this.lblTotal.Name = "lblTotal";
             this.lblTotal.Size = new System.Drawing.Size(78, 25);
             this.lblTotal.TabIndex = 13;
@@ -197,7 +228,7 @@
             // btnVolver
             // 
             this.btnVolver.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.btnVolver.Location = new System.Drawing.Point(17, 529);
+            this.btnVolver.Location = new System.Drawing.Point(12, 12);
             this.btnVolver.Name = "btnVolver";
             this.btnVolver.Size = new System.Drawing.Size(175, 84);
             this.btnVolver.TabIndex = 14;
@@ -205,24 +236,48 @@
             this.btnVolver.UseVisualStyleBackColor = true;
             this.btnVolver.Click += new System.EventHandler(this.btnVolver_Click);
             // 
+            // dgvFacturas
+            // 
+            this.dgvFacturas.AllowUserToAddRows = false;
+            this.dgvFacturas.AllowUserToDeleteRows = false;
+            this.dgvFacturas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvFacturas.Location = new System.Drawing.Point(504, 114);
+            this.dgvFacturas.Name = "dgvFacturas";
+            this.dgvFacturas.ReadOnly = true;
+            this.dgvFacturas.RowTemplate.Height = 24;
+            this.dgvFacturas.Size = new System.Drawing.Size(1074, 604);
+            this.dgvFacturas.TabIndex = 15;
+            // 
+            // gpbIngreso
+            // 
+            this.gpbIngreso.Controls.Add(this.dtpFechaVencimiento);
+            this.gpbIngreso.Controls.Add(this.lblCliente);
+            this.gpbIngreso.Controls.Add(this.cmbCliente);
+            this.gpbIngreso.Controls.Add(this.lblTotal);
+            this.gpbIngreso.Controls.Add(this.lblEmpresa);
+            this.gpbIngreso.Controls.Add(this.btnCrear);
+            this.gpbIngreso.Controls.Add(this.cmbEmpresa);
+            this.gpbIngreso.Controls.Add(this.lblItems);
+            this.gpbIngreso.Controls.Add(this.dateTimePicker1);
+            this.gpbIngreso.Controls.Add(this.dgvItems);
+            this.gpbIngreso.Controls.Add(this.lblFecha);
+            this.gpbIngreso.Controls.Add(this.lblFechaVencimiento);
+            this.gpbIngreso.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F);
+            this.gpbIngreso.Location = new System.Drawing.Point(12, 114);
+            this.gpbIngreso.Name = "gpbIngreso";
+            this.gpbIngreso.Size = new System.Drawing.Size(463, 604);
+            this.gpbIngreso.TabIndex = 16;
+            this.gpbIngreso.TabStop = false;
+            this.gpbIngreso.Text = "Nueva Factura";
+            // 
             // FormAltaFactura
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(618, 673);
+            this.ClientSize = new System.Drawing.Size(1733, 738);
+            this.Controls.Add(this.gpbIngreso);
+            this.Controls.Add(this.dgvFacturas);
             this.Controls.Add(this.btnVolver);
-            this.Controls.Add(this.lblTotal);
-            this.Controls.Add(this.btnCrear);
-            this.Controls.Add(this.lblItems);
-            this.Controls.Add(this.dgvItems);
-            this.Controls.Add(this.lblFechaVencimiento);
-            this.Controls.Add(this.lblFecha);
-            this.Controls.Add(this.dtpFechaVencimiento);
-            this.Controls.Add(this.dateTimePicker1);
-            this.Controls.Add(this.cmbEmpresa);
-            this.Controls.Add(this.lblEmpresa);
-            this.Controls.Add(this.cmbCliente);
-            this.Controls.Add(this.lblCliente);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -230,8 +285,10 @@
             this.Text = "Registro de Facturas";
             this.Load += new System.EventHandler(this.FormFactura_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvItems)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvFacturas)).EndInit();
+            this.gpbIngreso.ResumeLayout(false);
+            this.gpbIngreso.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -254,5 +311,7 @@
         private System.Windows.Forms.Button btnCrear;
         private System.Windows.Forms.Label lblTotal;
         private System.Windows.Forms.Button btnVolver;
+        private System.Windows.Forms.DataGridView dgvFacturas;
+        private System.Windows.Forms.GroupBox gpbIngreso;
     }
 }

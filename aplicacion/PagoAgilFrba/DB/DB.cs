@@ -17,11 +17,14 @@ namespace PagoAgilFrba.DB
         private SqlConnection conexion;
 
         private Dictionary<Type, Dictionary<int, object>> repositorio;
-
+        private List<Type> parcialmenteCargados;
+        private List<Listado> listados;
 
         private DB()
         {
-            this.repositorio = new Dictionary<Type, Dictionary<int, object>>();            
+            this.repositorio = new Dictionary<Type, Dictionary<int, object>>();
+            this.listados = new List<Listado>();
+            this.parcialmenteCargados = new List<Type>();
 
             this.conexion = new SqlConnection();
             this.conexion.ConnectionString = "Data Source=RONAN-PC\\SQLEXPRESS;Initial Catalog=GD2C2017;Integrated Security=True";
@@ -238,13 +241,28 @@ namespace PagoAgilFrba.DB
             return respuesta;
         }
 
+        protected void agregarParcialmenteCargado(Type tipo)
+        {
+            if(!this.parcialmenteCargados.Contains(tipo))
+            {
+                this.parcialmenteCargados.Add(tipo);
+            }
+        }
+
         public List<T> agregar<T>(Respuesta respuesta, Func<DataRow, T> funcion, string id)
         {
             List<T> lista = new List<T>();
             foreach(var row in respuesta.Tabla.AsEnumerable())
             {
                 T nuevo = funcion(row);
-                this.crearSiNoExiste(nuevo.GetType(), Convert.ToInt32(row[id]), nuevo);
+                if(this.existe(nuevo.GetType(), Convert.ToInt32(row[id])))
+                {
+                    this.repositorio[nuevo.GetType()][Convert.ToInt32(row[id])] = nuevo;
+                }
+                else
+                {
+                    this.crearSiNoExiste(nuevo.GetType(), Convert.ToInt32(row[id]), nuevo);
+                }                
                 lista.Add(nuevo);
             }
             return lista;
@@ -264,7 +282,7 @@ namespace PagoAgilFrba.DB
 
         public bool existe(Type tipo)
         {
-            return this.repositorio.ContainsKey(tipo);
+            return this.repositorio.ContainsKey(tipo) && !this.parcialmenteCargados.Contains(tipo);
         }
 
         public bool existe(Type tipo, int id)
@@ -302,8 +320,9 @@ namespace PagoAgilFrba.DB
             if(!this.existe(typeof(Empresa)))
             {
                 this.obtenerRubros();
-                Respuesta respuesta = this.obtener("GET_EMPRESAS_ACTIVAS", new Dictionary<string, object>() { { "nombre", nombre }, { "cuit", cuit }, { "id_rubro", rubro == null ? 0 : this.id(rubro) } });
+                Respuesta respuesta = this.obtener("GET_EMPRESAS", new Dictionary<string, object>() { { "nombre", nombre }, { "cuit", cuit }, { "id_rubro", rubro == null ? 0 : this.id(rubro) } });
 
+                this.parcialmenteCargados.Remove(typeof(Empresa));
                 this.agregar<Empresa>(respuesta, delegate (DataRow row)
                 {
                     return new Empresa()
@@ -330,13 +349,15 @@ namespace PagoAgilFrba.DB
             if(!this.existe(typeof(Funcionalidad)))
             {
                 Respuesta respuesta = this.obtener("GET_ALL_FUNCIONALIDADES", new Dictionary<string, object>());
+
+                this.parcialmenteCargados.Remove(typeof(Funcionalidad));
                 this.agregar<Funcionalidad>(respuesta, delegate (DataRow row)
                 {
                     return new Funcionalidad()
                     {
                         Descripcion = Convert.ToString(row["DESCRIPCION"])
                     };
-                }, "ID_FUNCIONALIDAD");
+                }, "ID_FUNCIONALIDAD");                
             }
             return this.obtenerDeRepositorio<Funcionalidad>(typeof(Funcionalidad));
         }
@@ -350,57 +371,65 @@ namespace PagoAgilFrba.DB
                     this.obtenerEmpresas(null, null, null, false);
                 }
 
+                this.parcialmenteCargados.Remove(typeof(RendicionFacturas));
                 Respuesta respuesta = this.obtener("GET_RENDICIONES");
                 this.agregar<RendicionFacturas>(respuesta, delegate (DataRow row)
                 {                    
                     RendicionFacturas rendicion = new RendicionFacturas() { Empresa = (Empresa)this.repositorio[typeof(Empresa)][Convert.ToInt32(row["ID_EMPRESA"])], Fecha = Convert.ToDateTime(row["FECHA"]), Porcentaje = Convert.ToDouble(row["PORCENTAJE"]) };
                     return rendicion;
-                }, "ID_RENDICION");
+                }, "ID_RENDICION");                
             }
             return this.obtenerDeRepositorio<RendicionFacturas>(typeof(RendicionFacturas));            
         }
 
         public void obtenerRolesParaUsuario(Usuario usuario)
         {
-            if(!this.existe(typeof(Rol)))
-            {
-                this.obtenerRoles("", false);
-            }
-                        
             Respuesta respuesta = this.obtenerConEfecto("GET_ROLES_POR_USUARIO", new Dictionary<string, object>() { { "ID_USUARIO", this.repositorio[typeof(Usuario)].Keys.FirstOrDefault() } });
-            
-            foreach(DataRow row in respuesta.Tabla.Rows)
+
+            foreach (DataRow row in respuesta.Tabla.Rows)
             {
-                usuario.Roles.Add((Rol)this.repositorio[typeof(Rol)][Convert.ToInt32(row["ID_ROL"])]);
+                int id = Convert.ToInt32(row["ID_ROL"]);
+                if (!this.existe(typeof(Rol), id))
+                {
+                    Rol rol = new Rol() { Nombre = Convert.ToString(row["DESCRIPCION"]), Activo = Convert.ToBoolean(row["ACTIVO"])};
+                    this.obtenerFuncionalidadesPorRol(rol);
+                    this.crearSiNoExiste(typeof(Rol), id, rol);
+                    this.agregarParcialmenteCargado(typeof(Rol));
+                }
+                usuario.Roles.Add((Rol)this.repositorio[typeof(Rol)][id]);
             }
         }
 
         protected void obtenerFuncionalidadesPorRol(Rol rol)
         {
-            if(!this.existe(typeof(Funcionalidad)))
-            {
-                this.obtenerFuncionalidades();
-            }
-
             Respuesta respuesta = this.obtenerConEfecto("GET_FUNCIONALIDADES_POR_ROL", new Dictionary<string, object>() { { "DESCRIPCION", rol.Nombre } });
-                        
+             
             foreach (DataRow row in respuesta.Tabla.Rows)
             {
-                rol.agregarFuncionalidad((Funcionalidad)this.repositorio[typeof(Funcionalidad)][Convert.ToInt32(row["ID_FUNCIONALIDAD"])]);
+                int id = Convert.ToInt32(row["ID_FUNCIONALIDAD"]);
+                if (!this.existe(typeof(Funcionalidad), id))
+                {
+                    Funcionalidad funcionalidadDeRol = new Funcionalidad() { Descripcion = Convert.ToString(row["DESCRIPCION"]) };
+                    this.crearSiNoExiste(typeof(Funcionalidad), id, funcionalidadDeRol);
+                    this.agregarParcialmenteCargado(typeof(Funcionalidad));
+                }
+                rol.agregarFuncionalidad((Funcionalidad)this.repositorio[typeof(Funcionalidad)][id]);
             }
         }
 
         public void obtenerSucursalesParaUsuario(Usuario usuario)
         {
-            if (!this.existe(typeof(Sucursal)))
-            {
-                this.obtenerSucursales("", "", 0, false);
-            }
-
             Respuesta respuesta = this.obtenerConEfecto("GET_SUCURSALES_POR_USUARIO", new Dictionary<string, object>() { { "ID_USUARIO", this.repositorio[typeof(Usuario)].Keys.FirstOrDefault() } });
             
             foreach (DataRow row in respuesta.Tabla.Rows)
             {
+                int id = Convert.ToInt32(row["ID_SUCURSAL"]);
+                if (!this.existe(typeof(Sucursal), id))
+                {
+                    Sucursal sucursalDeUsuario = new Sucursal() { Nombre = Convert.ToString(row["NOMBRE"]) };
+                    this.crearSiNoExiste(typeof(Sucursal), id, sucursalDeUsuario);
+                    this.agregarParcialmenteCargado(typeof(Sucursal));
+                }
                 usuario.Sucursales.Add((Sucursal)this.repositorio[typeof(Sucursal)][Convert.ToInt32(row["ID_SUCURSAL"])]);
             }
         }
@@ -415,6 +444,7 @@ namespace PagoAgilFrba.DB
                     { "codigo_postal", 0},
                 });
 
+                this.parcialmenteCargados.Remove(typeof(Sucursal));
                 this.agregar<Sucursal>(respuesta,
                     delegate (DataRow row)
                     {
@@ -425,13 +455,13 @@ namespace PagoAgilFrba.DB
                             CodigoPostal = Convert.ToInt32(row["CODIGO_POSTAL"]),
                             Activa = Convert.ToBoolean(row["ACTIVO"])
                         };
-                }, "ID_SUCURSAL");
+                }, "ID_SUCURSAL");                
             }
 
             return this.obtenerDeRepositorio<Sucursal>(typeof(Sucursal)).Where(sucursal =>
                 UtilFunctions.Contains(sucursal.Nombre, nombre) &&
                 UtilFunctions.Contains(sucursal.Direccion, direccion) &&
-                sucursal.CodigoPostal == codigoPostal &&
+                ((codigoPostal != 0) ? sucursal.CodigoPostal == codigoPostal : true) &&
                 (activas == true ? (sucursal.Activa) : true)).ToList();
         }
 
@@ -445,6 +475,7 @@ namespace PagoAgilFrba.DB
                 }
                 Respuesta respuesta = this.obtenerConEfecto("GET_FACTURA_POR_EMPRESA", new Dictionary<string, object>() { { "id_empresa", this.id(empresa) } });
 
+                this.parcialmenteCargados.Remove(typeof(Factura));
                 this.agregar<Factura>(respuesta,
                     delegate (DataRow row)
                     {
@@ -461,7 +492,7 @@ namespace PagoAgilFrba.DB
                             Vencimiento = Convert.ToDateTime(row["FECHA_VENCIMIENTO"]),
                             Total = Convert.ToDouble(row["TOTAL"]),
                         };
-                    }, "ID_FACTURA");
+                    }, "ID_FACTURA");                
             }
 
             return this.obtenerDeRepositorio<Factura>(typeof(Factura)).Where(factura => empresa == null || factura.Empresa == empresa).ToList();
@@ -478,7 +509,8 @@ namespace PagoAgilFrba.DB
             if(!this.existe(typeof(Rol)))
             {
                 Respuesta respuesta = this.obtener("GET_ROLES_POR_DESCRIPCION", new Dictionary<string, object>() { { "DESCRIPCION_ROL", "" } });
-                
+
+                this.parcialmenteCargados.Remove(typeof(Rol));
                 this.agregar<Rol>(respuesta,
                     delegate (DataRow row)
                     {
@@ -489,7 +521,7 @@ namespace PagoAgilFrba.DB
                         };
                         this.obtenerFuncionalidadesPorRol(rol);
                         return rol;
-                }, "ID_ROL");
+                }, "ID_ROL");                
             }
 
             return this.obtenerDeRepositorio<Rol>(typeof(Rol)).Where(rol => UtilFunctions.Contains(rol.Nombre, descripcion) && (activo == true) ? rol.Activo : true).ToList();
@@ -506,6 +538,8 @@ namespace PagoAgilFrba.DB
                     { "apellido", ""},
                     { "DNI", 0}, }
                 );
+
+                this.parcialmenteCargados.Remove(typeof(Cliente));
                 this.agregar<Cliente>(respuesta,
                     delegate (DataRow row)
                     {
@@ -521,7 +555,7 @@ namespace PagoAgilFrba.DB
                             CodigoPostal = Convert.ToInt32(row["CODIGO_POSTAL"]),
                             Activo = Convert.ToBoolean(row["ACTIVO"]),
                         };
-                    }, "ID_CLIENTE");
+                    }, "ID_CLIENTE");                
             }
             return this.obtenerDeRepositorio<Cliente>(typeof(Cliente)).Where(cliente => 
                 UtilFunctions.Contains(cliente.Nombre, nombre) &&
@@ -537,6 +571,7 @@ namespace PagoAgilFrba.DB
             {
                 Respuesta respuesta = this.obtenerConEfecto("GET_FORMAS_PAGO", new Dictionary<string, object>() { });
 
+                this.parcialmenteCargados.Remove(typeof(FormaDePago));
                 this.agregar<FormaDePago>(respuesta,
                     delegate (DataRow row)
                     {
@@ -544,7 +579,7 @@ namespace PagoAgilFrba.DB
                         {
                             Descripcion = Convert.ToString(row["DESCRIPCION"])
                         };
-                    }, "ID_FORMA_PAGO");
+                    }, "ID_FORMA_PAGO");                
             }
             return this.obtenerDeRepositorio<FormaDePago>(typeof(FormaDePago));
         }
@@ -780,5 +815,32 @@ namespace PagoAgilFrba.DB
         {
             return this.modificacion("DEVOLUCION_RENDICION", new Dictionary<string, object>() { { "nro_factura", this.id(rendicion) }, { "motivo", motivo } });
         }
+
+        public List<object> obtenerListado(Type tipoListado, int anio, int trimestre)
+        {
+            Listado seleccionado = this.listados.Find(listado => listado.GetType() == tipoListado && listado.Anio == anio && listado.Trimestre == trimestre);
+            if(seleccionado == null)
+            {
+                Respuesta respuesta = this.obtener(Configuracion.Configuracion.valor(tipoListado.Name).ToString(), new Dictionary<string, object>()
+                {
+                    {"ANO", anio},
+                    {"MES_INI", trimestre * 3 - 2},
+                    {"MES_FIN", trimestre * 3},
+                });
+                if(respuesta.Codigo == 0)
+                {
+                    Listado listado = (Listado)tipoListado.GetConstructors()[0].Invoke(new object[2] {anio, trimestre});
+                    listado.procesar(respuesta.Tabla);                    
+                    this.listados.Add(listado);
+                    return listado.Filas;
+                }
+                else
+                {
+                    return new List<object>();
+                }
+            }
+            return seleccionado.Filas;
+        }
+
     }
 }

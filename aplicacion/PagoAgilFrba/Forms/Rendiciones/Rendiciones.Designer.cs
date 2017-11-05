@@ -47,6 +47,7 @@
             // 
             // cmbEmpresas
             // 
+            this.cmbEmpresas.DisplayMember = "Nombre";
             this.cmbEmpresas.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.cmbEmpresas.FormattingEnabled = true;
             this.cmbEmpresas.Location = new System.Drawing.Point(15, 48);
