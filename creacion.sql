@@ -2573,6 +2573,8 @@ BEGIN
 	(NRO_PAGO,NRO_FACTURA)	
 	VALUES
 		(@NRO_PAGO,@NRO_FACTURA);
+	SET @FLAG_ERROR = 0;
+	SET @MENSAJE = 'Se asocio el pago a la factura';
 END
 
 GO
