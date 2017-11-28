@@ -271,7 +271,7 @@ namespace PagoAgilFrba.AbmCliente
 
         private void txtNombre_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if(!char.IsLetter(e.KeyChar) && !char.IsWhiteSpace(e.KeyChar))
+            if(!char.IsControl(e.KeyChar) && !char.IsLetter(e.KeyChar) && !char.IsWhiteSpace(e.KeyChar))
             {
                 e.Handled = true;
             }
@@ -279,7 +279,7 @@ namespace PagoAgilFrba.AbmCliente
 
         private void txtApellido_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (!char.IsLetter(e.KeyChar) && !char.IsWhiteSpace(e.KeyChar))
+            if (!char.IsControl(e.KeyChar) && !char.IsLetter(e.KeyChar) && !char.IsWhiteSpace(e.KeyChar))
             {
                 e.Handled = true;
             }
