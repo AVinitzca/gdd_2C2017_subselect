@@ -16,7 +16,6 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static PagoAgilFrba.Dominio.Rol;
 
 namespace PagoAgilFrba.Forms.MenuPrincipal
 {

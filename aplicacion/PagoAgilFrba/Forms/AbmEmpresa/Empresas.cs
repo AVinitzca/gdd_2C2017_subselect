@@ -1,4 +1,5 @@
-﻿using PagoAgilFrba.Dominio;
+﻿using PagoAgilFrba.DB;
+using PagoAgilFrba.Dominio;
 using PagoAgilFrba.Forms.MenuPrincipal;
 using PagoAgilFrba.Utils;
 using System;
@@ -84,11 +85,18 @@ namespace PagoAgilFrba.Forms.AbmEmpresa
                 }
                 else if (senderGrid.Columns[e.ColumnIndex].Name == "dgvColumnBorrar")
                 {
-                    DB.DB.Instancia.cambiarEstado(this.empresas[e.RowIndex]);
-                    if (this.gpbIngreso != null)
+                    Respuesta respuesta = DB.DB.Instancia.cambiarEstado(this.empresas[e.RowIndex]);
+                    if(respuesta.Codigo != 0)
                     {
-                        this.cancelar();
+                        MessageBox.Show(respuesta.Mensaje);
                     }
+                    else
+                    {
+                        if (this.gpbIngreso != null)
+                        {
+                            this.cancelar();
+                        }
+                    }                    
                 }
             }
         }

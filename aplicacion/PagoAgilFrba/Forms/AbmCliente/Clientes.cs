@@ -130,7 +130,23 @@ namespace PagoAgilFrba.AbmCliente
             int i;
             if (this.txtNombre.Text == "")
             {
-                MessageBox.Show("Error: El nombre de la cliente no puede estar vacio");
+                MessageBox.Show("Error: El nombre del cliente no puede estar vacio");
+            }
+            else if(this.txtApellido.Text == "")
+            {
+                MessageBox.Show("Error: El apellido del cliente no puede estar vacio");
+            }
+            else if(this.txtDNI.Text == "")
+            {
+                MessageBox.Show("Error: El DNI del cliente no puede estar vacio");
+            }
+            else if(this.txtTelefono.Text == "")
+            {
+                MessageBox.Show("Error: El telefono no puede estar vacio");
+            }
+            else if(this.txtEmail.Text == "")
+            {
+                MessageBox.Show("Error: El email no puede estar vacio");
             }
             else if (this.txtDireccion.Text == "")
             {
@@ -251,6 +267,22 @@ namespace PagoAgilFrba.AbmCliente
             FormMenuPrincipal menuPrincipal = new FormMenuPrincipal();
             menuPrincipal.Show();
             this.Hide();
+        }
+
+        private void txtNombre_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if(!char.IsLetter(e.KeyChar) && !char.IsWhiteSpace(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void txtApellido_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsLetter(e.KeyChar) && !char.IsWhiteSpace(e.KeyChar))
+            {
+                e.Handled = true;
+            }
         }
     }
 }
