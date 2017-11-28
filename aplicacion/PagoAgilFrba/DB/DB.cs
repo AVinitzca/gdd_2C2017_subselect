@@ -21,64 +21,7 @@ namespace PagoAgilFrba.DB
         private Dictionary<Type, Dictionary<int, object>> repositorio;
         private List<Type> parcialmenteCargados;
         private List<Listado> listados;
-
-		private static Dictionary<String, String> dictionary { get; set; }
-
-
-		private static String filename
-		{
-			get
-			{
-				string path = Path.Combine(Application.StartupPath, "properties.txt");
-				return path;
-			}
-		}
-
-
-		public static IDictionary ReadDictionaryFile()
-		{
-			dictionary = new Dictionary<string, string>();
-			foreach (string line in File.ReadAllLines(filename))
-			{
-				if ((!string.IsNullOrEmpty(line)) &&
-					(!line.StartsWith(";")) &&
-					(!line.StartsWith("#")) &&
-					(!line.StartsWith("'")) &&
-					(line.Contains('=')))
-				{
-					int index = line.IndexOf('=');
-					string key = line.Substring(0, index).Trim();
-					string value = line.Substring(index + 1).Trim();
-
-					if ((value.StartsWith("\"") && value.EndsWith("\"")) ||
-						(value.StartsWith("'") && value.EndsWith("'")))
-					{
-						value = value.Substring(1, value.Length - 2);
-					}
-					dictionary.Add(key, value);
-				}
-			}
-
-			return dictionary;
-		}
-
-		public static DateTime getFechaActual
-		{
-			get
-			{
-				if (dictionary == null)
-				{
-					ReadDictionaryFile();
-				}
-				String fecha = dictionary["FECHA"];
-				DateTime myDate = new DateTime();
-
-				myDate = DateTime.ParseExact(fecha, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
-
-				return myDate;
-			}
-		}
-
+        
 		private DB()
         {
             this.repositorio = new Dictionary<Type, Dictionary<int, object>>();
@@ -86,8 +29,8 @@ namespace PagoAgilFrba.DB
             this.parcialmenteCargados = new List<Type>();
 
             this.conexion = new SqlConnection();
-			//this.conexion.ConnectionString = "Data Source=RONAN-PC\\SQLEXPRESS;Initial Catalog=GD2C2017;Integrated Security=True";
-			this.conexion.ConnectionString = "Data Source=localhost\\SQLSERVER2012;Initial Catalog=GD2C2017;Integrated Security=True";
+			this.conexion.ConnectionString = "Data Source=RONAN-PC\\SQLEXPRESS;Initial Catalog=GD2C2017;Integrated Security=True";
+			//this.conexion.ConnectionString = "Data Source=localhost\\SQLSERVER2012;Initial Catalog=GD2C2017;Integrated Security=True";
 			this.conexion.Open();
         }
 

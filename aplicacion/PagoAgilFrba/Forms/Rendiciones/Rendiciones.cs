@@ -30,7 +30,7 @@ namespace PagoAgilFrba.Rendicion
             {
                 MessageBox.Show("Error: Se debe seleccionar una empresa para rendir");
             }
-            else if(this.txtPorcentaje.Text == null)
+            else if(this.txtPorcentaje.Text == "")
             {
                 MessageBox.Show("Error: Se debe ingresar un porcentaje de comision para la rendicion");
             }

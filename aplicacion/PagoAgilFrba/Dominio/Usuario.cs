@@ -27,7 +27,7 @@ namespace PagoAgilFrba.Dominio
         }
 
         public Respuesta logear()
-        {            
+        {
             Respuesta respuesta = DB.DB.Instancia.logear(this);
             if(respuesta.Codigo == 0)
             {

@@ -93,8 +93,9 @@ namespace PagoAgilFrba.Forms.AbmSucursal
             this.gpbIngreso.Text = "Nueva Sucursal";
             this.btnCancelar.Visible = false;
             this.btnModificar.Visible = false;
-            this.btnCrear.Visible = true;
+            this.btnCrear.Visible = true;            
             DB.DB.Instancia.modificarSucursal(modificada);
+            this.gpbIngreso.Tag = null;
         }
 
         private void btnCancelar_Click(object sender, EventArgs e)

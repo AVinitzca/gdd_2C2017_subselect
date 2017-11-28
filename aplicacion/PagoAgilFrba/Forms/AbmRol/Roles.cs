@@ -130,7 +130,7 @@ namespace PagoAgilFrba.AbmRol
             {
                 return true;
             }
-            return true;
+            return false;
         }
 
         protected void llenar(ref Rol rol)
