@@ -59,9 +59,16 @@ namespace PagoAgilFrba.Forms.AbmEmpresa
             }
             
             Empresa nueva = new Empresa();
-            this.llenar(ref nueva);
-            this.empresas.Add(nueva);
-            DB.DB.Instancia.crearEmpresa(nueva);
+            this.llenar(ref nueva);            
+            Respuesta respuesta = DB.DB.Instancia.crearEmpresa(nueva);
+            if (respuesta.Codigo == 0)
+            {
+                this.empresas.Add(nueva);
+            }
+            else
+            {
+                MessageBox.Show(respuesta.Mensaje);
+            }
         }
 
         private void dgvEmpresas_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -92,6 +99,7 @@ namespace PagoAgilFrba.Forms.AbmEmpresa
                     }
                     else
                     {
+                        this.empresas.ResetItem(e.RowIndex);
                         if (this.gpbIngreso != null)
                         {
                             this.cancelar();
@@ -114,7 +122,11 @@ namespace PagoAgilFrba.Forms.AbmEmpresa
             this.btnCancelar.Visible = false;
             this.btnModificar.Visible = false;
             this.btnCrear.Visible = true;
-            DB.DB.Instancia.modificarEmpresa(modificada);
+            Respuesta respuesta = DB.DB.Instancia.modificarEmpresa(modificada);
+            if(respuesta.Codigo == 0)
+            {
+                this.empresas.ResetItem(this.empresas.IndexOf(modificada));
+            }            
         }
 
         private void btnCancelar_Click(object sender, EventArgs e)

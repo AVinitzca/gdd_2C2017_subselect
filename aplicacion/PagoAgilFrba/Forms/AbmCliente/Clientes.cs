@@ -1,4 +1,5 @@
-﻿using PagoAgilFrba.Dominio;
+﻿using PagoAgilFrba.DB;
+using PagoAgilFrba.Dominio;
 using PagoAgilFrba.Forms.MenuPrincipal;
 using System;
 using System.Collections.Generic;
@@ -49,8 +50,15 @@ namespace PagoAgilFrba.AbmCliente
 
             Cliente nuevo = new Cliente();
             this.llenar(ref nuevo);
-            this.clientes.Add(nuevo);
-            DB.DB.Instancia.crearCliente(nuevo);
+            Respuesta respuesta = DB.DB.Instancia.crearCliente(nuevo);
+            if(respuesta.Codigo == 0)
+            {
+                this.clientes.Add(nuevo);
+            }
+            else
+            {
+                MessageBox.Show(respuesta.Mensaje);
+            }
         }
 
         private void dgvClientes_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -78,11 +86,19 @@ namespace PagoAgilFrba.AbmCliente
                 }
                 else if (senderGrid.Columns[e.ColumnIndex].Name == "dgvColumnBorrar")
                 {                                  
-                    DB.DB.Instancia.cambiarEstado(this.clientes[e.RowIndex]);                    
-                    if (this.gpbIngreso != null)
+                    Respuesta respuesta = DB.DB.Instancia.cambiarEstado(this.clientes[e.RowIndex]);          
+                    if(respuesta.Codigo == 0)
                     {
-                        this.cancelar();
-                    }                                 
+                        this.clientes.ResetItem(e.RowIndex);
+                        if (this.gpbIngreso != null)
+                        {
+                            this.cancelar();
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show(respuesta.Mensaje);
+                    }                               
                 }
             }
         }
@@ -101,6 +117,8 @@ namespace PagoAgilFrba.AbmCliente
             this.btnModificar.Visible = false;
             this.btnCrear.Visible = true;
             DB.DB.Instancia.modificarCliente(modificada);
+            this.clientes.ResetItem(this.clientes.IndexOf(modificada));
+            this.gpbIngreso.Tag = null;
         }
 
         private void btnCancelar_Click(object sender, EventArgs e)
@@ -186,7 +204,7 @@ namespace PagoAgilFrba.AbmCliente
         protected void cargarClientes()
         {        
             this.clientes = new BindingList<Cliente>(DB.DB.Instancia.obtenerClientes(this.txtFiltroNombre.Text, this.txtFiltroApellido.Text, this.txtFiltroDNI.Text == "" ? 0 : Int32.Parse(this.txtFiltroDNI.Text), false));
-            this.dgvClientes.DataSource = this.clientes;
+            this.dgvClientes.DataSource = this.clientes;            
         }
 
         private void txtCodigoPostal_KeyPress(object sender, KeyPressEventArgs e)

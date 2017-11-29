@@ -1,4 +1,5 @@
-﻿using PagoAgilFrba.Dominio;
+﻿using PagoAgilFrba.DB;
+using PagoAgilFrba.Dominio;
 using PagoAgilFrba.Forms.MenuPrincipal;
 using System;
 using System.Collections.Generic;
@@ -48,8 +49,16 @@ namespace PagoAgilFrba.Forms.AbmSucursal
 
             Sucursal nueva = new Sucursal();
             this.llenar(ref nueva);
-            this.sucursales.Add(nueva);
-            DB.DB.Instancia.crearSucursal(nueva);
+            
+            Respuesta respuesta = DB.DB.Instancia.crearSucursal(nueva);
+            if(respuesta.Codigo != 0)
+            {
+                MessageBox.Show(respuesta.Mensaje);
+            }
+            else
+            {
+                this.sucursales.Add(nueva);
+            }               
         }
 
         private void dgvSucursales_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -72,11 +81,19 @@ namespace PagoAgilFrba.Forms.AbmSucursal
                 }
                 else if (senderGrid.Columns[e.ColumnIndex].Name == "dgvColumnBorrar")
                 {
-                    DB.DB.Instancia.cambiarEstado(this.sucursales[e.RowIndex]);
-                    if(this.gpbIngreso.Tag != null)
+                    Respuesta respuesta = DB.DB.Instancia.cambiarEstado(this.sucursales[e.RowIndex]);
+                    if(respuesta.Codigo == 0)
                     {
-                        this.cancelar();
+                        this.sucursales.ResetItem(e.RowIndex);
+                        if (this.gpbIngreso.Tag != null)
+                        {
+                            this.cancelar();
+                        }
                     }
+                    else
+                    {
+                        MessageBox.Show(respuesta.Mensaje);
+                    }                    
                 }
             }
         }
@@ -94,7 +111,15 @@ namespace PagoAgilFrba.Forms.AbmSucursal
             this.btnCancelar.Visible = false;
             this.btnModificar.Visible = false;
             this.btnCrear.Visible = true;            
-            DB.DB.Instancia.modificarSucursal(modificada);
+            Respuesta respuesta = DB.DB.Instancia.modificarSucursal(modificada);
+            if(respuesta.Codigo != 0)
+            {
+                MessageBox.Show(respuesta.Mensaje);
+            }
+            else
+            {
+                this.sucursales.ResetItem(this.sucursales.IndexOf(modificada));
+            }
             this.gpbIngreso.Tag = null;
         }
 

@@ -52,8 +52,15 @@ namespace PagoAgilFrba.AbmRol
 
             Rol rolNuevo = new Rol();
             this.llenar(ref rolNuevo);
-            this.roles.Add(rolNuevo);
-            DB.DB.Instancia.crearRol(rolNuevo);
+            Respuesta respuesta = DB.DB.Instancia.crearRol(rolNuevo);
+            if(respuesta.Codigo == 0)
+            {
+                this.roles.Add(rolNuevo);
+            }
+            else
+            {
+                MessageBox.Show(respuesta.Mensaje);
+            }
         }
 
         private void dgvRoles_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -75,12 +82,20 @@ namespace PagoAgilFrba.AbmRol
                     this.gpbNuevoRol.Tag = rol;
                 }
                 else if (senderGrid.Columns[e.ColumnIndex].Name == "dgvColumnBorrar")
-                {                    
-                    DB.DB.Instancia.cambiarEstado(this.roles[e.RowIndex]);                    
-                    if(this.gpbNuevoRol.Tag != null)
+                {
+                    Respuesta respuesta = DB.DB.Instancia.cambiarEstado(this.roles[e.RowIndex]);
+                    if (respuesta.Codigo != 0)
                     {
-                        this.cancelar();
+                        MessageBox.Show(respuesta.Mensaje);
                     }
+                    else
+                    {
+                        this.roles.ResetItem(e.RowIndex);
+                        if (this.gpbNuevoRol.Tag != null)
+                        {
+                            this.cancelar();
+                        }
+                    }                    
                 }
             }
         }
@@ -97,7 +112,12 @@ namespace PagoAgilFrba.AbmRol
             this.btnCancelar.Visible = false;
             this.btnModificar.Visible = false;
             this.btnCrear.Visible = true;
-            DB.DB.Instancia.modificarRol(modificado, this.aAgregar, this.aBorrar);
+            Respuesta respuesta = DB.DB.Instancia.modificarRol(modificado, this.aAgregar, this.aBorrar);
+            if (respuesta.Codigo != 0)
+            {
+                MessageBox.Show(respuesta.Mensaje);
+            }
+            this.roles.ResetItem(this.roles.IndexOf(modificado));
             this.gpbNuevoRol.Tag = null;
         }
 

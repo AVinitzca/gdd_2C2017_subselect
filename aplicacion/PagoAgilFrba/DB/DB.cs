@@ -75,9 +75,14 @@ namespace PagoAgilFrba.DB
 
             comando.ExecuteNonQuery();
             Respuesta respuesta = new Respuesta();
-            respuesta.Id = (int)id.Value;
+            
             respuesta.Codigo = (int)retorno.Value;
             respuesta.Mensaje = mensaje.Value.ToString();
+            if(respuesta.Codigo == 0)
+            {
+                respuesta.Id = (int)id.Value;
+            }
+            
 
             return respuesta;
         }
@@ -510,9 +515,30 @@ namespace PagoAgilFrba.DB
             {
                 foreach(DataRow row in respuesta.Tabla.Rows)
                 {
-                    facturas.Add(new Factura() {NumeroFactura = Convert.ToInt32(row["NRO_FACTURA"]), Total = Convert.ToDouble(row["TOTAL"])});
+                    facturas.Add(new Factura() {NumeroFactura = Convert.ToInt32(row["NRO_FACTURA"]), Total = Convert.ToDouble(row["TOTAL"])});                    
+                }
+            }            
+            if(!this.existe(typeof(Factura)))
+            {
+                this.repositorio.Add(typeof(Factura), new Dictionary<int, object>());
+                foreach (Factura factura in facturas)
+                {
+                    if (!this.repositorio[typeof(Factura)].Values.Contains(factura))
+                    {
+                        this.repositorio[typeof(Factura)].Add(factura.NumeroFactura, factura);
+                    }
                 }
             }
+            else
+            {
+                foreach (Factura factura in facturas)
+                {
+                    if (!this.existe(typeof(Factura), factura.NumeroFactura))
+                    {
+                        this.repositorio[typeof(Factura)].Add(factura.NumeroFactura, factura);
+                    }
+                }
+            }            
             return facturas;
         }
         

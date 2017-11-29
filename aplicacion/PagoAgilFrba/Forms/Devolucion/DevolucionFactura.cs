@@ -1,4 +1,5 @@
-﻿using PagoAgilFrba.Dominio;
+﻿using PagoAgilFrba.DB;
+using PagoAgilFrba.Dominio;
 using PagoAgilFrba.Forms.MenuPrincipal;
 using System;
 using System.Collections.Generic;
@@ -36,7 +37,17 @@ namespace PagoAgilFrba.Forms.Devolucion
             }
             else
             {
-                DB.DB.Instancia.devolverFactura((Factura)this.cmbFacturas.SelectedItem, this.txtMotivo.Text);
+                Respuesta respuesta = DB.DB.Instancia.devolverFactura((Factura)this.cmbFacturas.SelectedItem, this.txtMotivo.Text);             
+                if (respuesta.Codigo == 0)
+                {
+                    MessageBox.Show("La rendicion fue devuelta con exito");
+                    this.cmbFacturas.SelectedIndex = -1;
+                    this.txtMotivo.Clear();
+                }
+                else
+                {
+                    MessageBox.Show(respuesta.Mensaje);
+                }
             }
         }
 

@@ -1,4 +1,5 @@
-﻿using PagoAgilFrba.Dominio;
+﻿using PagoAgilFrba.DB;
+using PagoAgilFrba.Dominio;
 using PagoAgilFrba.Forms.MenuPrincipal;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,8 @@ namespace PagoAgilFrba.AbmFactura
 {
     public partial class FormAltaFactura : Form
     {
+        private BindingList<Factura> facturas;
+
         public FormAltaFactura()
         {
             InitializeComponent();
@@ -23,6 +26,7 @@ namespace PagoAgilFrba.AbmFactura
         {
             this.cmbCliente.Items.AddRange(DB.DB.Instancia.obtenerClientes("", "", 0, false).ToArray());
             this.cmbEmpresa.Items.AddRange(DB.DB.Instancia.obtenerEmpresas("", "", null, false).ToArray());
+            //this.facturas = DB.DB.Instancia.obtenerFacturas(null);
         }
         
 
@@ -103,9 +107,17 @@ namespace PagoAgilFrba.AbmFactura
                     itemFactura.Cantidad = Int32.Parse(row.Cells[2].Value.ToString());
                     factura.Items.Add(itemFactura);
                 }
-                DB.DB.Instancia.crearFactura(factura);
+                Respuesta respuesta = DB.DB.Instancia.crearFactura(factura);
+                if(respuesta.Codigo == 0)
+                {
+                    MessageBox.Show("La factura se registro satisfactoriamente");
+                }
+                else
+                {
+                    MessageBox.Show(respuesta.Mensaje);
+                }
                
-                MessageBox.Show("La factura se registro satisfactoriamente");
+                
             }
         }
 

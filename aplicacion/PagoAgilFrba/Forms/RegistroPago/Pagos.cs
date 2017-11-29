@@ -1,4 +1,5 @@
-﻿using PagoAgilFrba.Dominio;
+﻿using PagoAgilFrba.DB;
+using PagoAgilFrba.Dominio;
 using PagoAgilFrba.Forms.MenuPrincipal;
 using System;
 using System.Collections.Generic;
@@ -48,7 +49,7 @@ namespace PagoAgilFrba.RegistroPago
             {
                 MessageBox.Show("Error: Se debe seleccionar una forma de pago");
             }
-            else if (this.lstFacturas.SelectedIndices == null)
+            else if (this.lstFacturas.SelectedIndices == null || this.lstFacturas.SelectedIndices.Count == 0)
             {
                 MessageBox.Show("Error: Se debe seleccionar una o mas facturas");
             }
@@ -66,10 +67,16 @@ namespace PagoAgilFrba.RegistroPago
                 pago.Facturas = facturas;
                 pago.Fecha = Configuracion.Configuracion.fecha();
                 pago.Sucursal = Usuario.Logeado.Sucursal;                
-                DB.DB.Instancia.crearPago(pago);
-                this.Hide();
-                FormMenuPrincipal menu = new FormMenuPrincipal();
-                menu.Show();
+                Respuesta respuesta = DB.DB.Instancia.crearPago(pago);
+                if(respuesta.Codigo == 0)
+                {
+                    this.lstFacturas.Items.Remove(facturas);
+                    MessageBox.Show("La factura fue pagada");                    
+                }
+                else
+                {
+                    MessageBox.Show(respuesta.Mensaje);
+                }
             }
         }
 

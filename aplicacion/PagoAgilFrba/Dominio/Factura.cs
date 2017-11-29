@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PagoAgilFrba.Dominio
 {
-    public class Factura
+    public class Factura : IEquatable<Factura>
     {
         private int numeroFactura;
         private Cliente cliente;
@@ -115,6 +115,16 @@ namespace PagoAgilFrba.Dominio
             {
                 this.numeroFactura = value;
             }
+        }
+
+        public bool Equals(Factura other)
+        {
+            return other.NumeroFactura == this.NumeroFactura;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.NumeroFactura;
         }
     }
 }
