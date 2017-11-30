@@ -26,7 +26,15 @@ namespace PagoAgilFrba.AbmFactura
         {
             this.cmbCliente.Items.AddRange(DB.DB.Instancia.obtenerClientes("", "", 0, false).ToArray());
             this.cmbEmpresa.Items.AddRange(DB.DB.Instancia.obtenerEmpresas("", "", null, false).ToArray());
-            this.facturas = new BindingList<Factura>(DB.DB.Instancia.obtenerFacturas(null));
+            this.facturas = new BindingList<Factura>(DB.DB.Instancia.obtenerFacturas());
+            this.dgvFacturas.DataSource = this.facturas;
+
+            DataGridViewButtonColumn modificar = new DataGridViewButtonColumn();
+            modificar.Name = "dgvColumnModificar";
+            modificar.HeaderText = "Modificar";
+            modificar.Text = modificar.HeaderText;
+            modificar.UseColumnTextForButtonValue = true;
+            this.dgvFacturas.Columns.Add(modificar);
         }
         
 
@@ -126,6 +134,83 @@ namespace PagoAgilFrba.AbmFactura
             FormMenuPrincipal menuPrincipal = new FormMenuPrincipal();
             this.Hide();
             menuPrincipal.Show();
+        }
+
+        private void dgvFacturas_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            var senderGrid = (DataGridView)sender;
+            if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn && e.RowIndex >= 0)
+            {
+                if (senderGrid.Columns[e.ColumnIndex].Name == "dgvColumnModificar" && this.gpbIngreso.Tag == null)
+                {
+                    Factura factura = this.facturas[e.RowIndex];
+                    this.cmbCliente.SelectedItem = factura.Cliente;
+                    this.cmbEmpresa.SelectedItem = factura.Empresa;
+                    this.dtpFechaVencimiento.Value = factura.Vencimiento;
+                    this.dtpCreacion.Value = factura.Creacion;
+                    this.lblTotal.Text = "Total: " + factura.Total;
+
+                    this.btnModificar.Visible = true;
+                    this.btnCancelar.Visible = true;
+                    this.btnCrear.Visible = false;
+                    this.gpbIngreso.Tag = factura;
+                }
+            }
+        }
+
+        private void btnModificar_Click(object sender, EventArgs e)
+        {
+            if (this.cmbCliente.SelectedItem == null)
+            {
+                MessageBox.Show("Error: Se debe seleccionar un cliente");
+            }
+            else if (this.cmbEmpresa.SelectedItem == null)
+            {
+                MessageBox.Show("Error: Se debe seleccionar una empresa");
+            }
+            else if (this.dtpFechaVencimiento.Value < DateTime.Today)
+            {
+                MessageBox.Show("Error: La fecha de vencimiento debe ser mayor a la fecha actual");
+            }
+            else if (this.dgvItems.Rows.Count == 1)
+            {
+                MessageBox.Show("Error: No se ingresaron items para la factura");
+            }
+            else
+            {
+                for (int index = 0; index < this.dgvItems.Rows.Count - 1; index++)
+                {
+                    DataGridViewRow row = this.dgvItems.Rows[index];
+                    if (row.Cells[0].Value == null || row.Cells[1].Value == null || row.Cells[2].Value == null)
+                    {
+                        MessageBox.Show("Error: Un item de la factura se encuentra vacio");
+                        return;
+                    }
+                }
+                Factura factura = ((Factura)this.gpbIngreso.Tag);
+                factura.Cliente = (Cliente)this.cmbCliente.SelectedItem;
+                factura.Empresa = (Empresa)this.cmbEmpresa.SelectedItem;
+                factura.Creacion = this.dtpCreacion.Value;
+                factura.Vencimiento = this.dtpFechaVencimiento.Value;
+                for (int index = 0; index < this.dgvItems.Rows.Count - 1; index++)
+                {
+                    DataGridViewRow row = this.dgvItems.Rows[index];
+                    ItemFactura itemFactura = new ItemFactura();
+                    itemFactura.Factura = factura;
+                    itemFactura.Monto = Double.Parse(row.Cells[1].Value.ToString());
+                    itemFactura.Cantidad = Int32.Parse(row.Cells[2].Value.ToString());
+                    factura.Items.Add(itemFactura);
+                }
+                Respuesta respuesta = DB.DB.Instancia.modificarFactura(factura);
+                if (respuesta.Codigo == 0)
+                {
+                    MessageBox.Show("La factura se registro satisfactoriamente");
+                }
+                else
+                {
+                    MessageBox.Show(respuesta.Mensaje);
+                }
+            }
         }
     }
 }

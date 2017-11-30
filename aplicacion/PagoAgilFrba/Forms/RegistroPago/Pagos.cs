@@ -22,13 +22,14 @@ namespace PagoAgilFrba.RegistroPago
 
         private void FormPagos_Load(object sender, EventArgs e)
         {
-            this.cmbEmpresas.Items.AddRange(DB.DB.Instancia.obtenerEmpresas("", "", null, false).ToArray());
+            this.cmbEmpresas.Items.AddRange(DB.DB.Instancia.obtenerEmpresas("", "", null, true).ToArray());
             this.cmbCliente.Items.AddRange(DB.DB.Instancia.obtenerClientes("", "", 0, false).ToArray());
             this.cmbFormaPago.Items.AddRange(DB.DB.Instancia.obtenerFormasDePago().ToArray());
         }
 
         private void cmbEmpresas_SelectedIndexChanged(object sender, EventArgs e)
         {
+            this.lstFacturas.Items.Clear();
             if(this.cmbEmpresas.SelectedItem != null)
             {
                 this.lstFacturas.Items.AddRange(DB.DB.Instancia.obtenerFacturas((Empresa)this.cmbEmpresas.SelectedItem).Where(factura => factura.Vencimiento < Configuracion.Configuracion.fecha()).ToArray());

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,12 +15,26 @@ namespace PagoAgilFrba.Dominio
         private DateTime creacion;
         private DateTime vencimiento;
         private List<ItemFactura> items;
+        private bool paga = false;
 
         public Factura()
         {
             this.items = new List<ItemFactura>();
         }
 
+        public int NumeroFactura
+        {
+            get
+            {
+                return this.numeroFactura;
+            }
+            set
+            {
+                this.numeroFactura = value;
+            }
+        }
+
+        [Browsable(false)]
         public Cliente Cliente
         {
             get
@@ -33,6 +48,15 @@ namespace PagoAgilFrba.Dominio
             }
         }
 
+        public String NombreCliente
+        {
+            get
+            {
+                return this.cliente.NombreCompleto;
+            }
+        }
+
+        [Browsable(false)]
         public Empresa Empresa
         {
             get
@@ -43,6 +67,14 @@ namespace PagoAgilFrba.Dominio
             set
             {
                 empresa = value;
+            }
+        }
+
+        public String NombreEmpresa
+        {
+            get
+            {
+                return this.empresa.Nombre;
             }
         }
 
@@ -71,7 +103,8 @@ namespace PagoAgilFrba.Dominio
                 vencimiento = value;
             }
         }
-
+        
+        [Browsable(false)]
         public List<ItemFactura> Items
         {
             get
@@ -105,15 +138,15 @@ namespace PagoAgilFrba.Dominio
             }
         }
 
-        public int NumeroFactura
+        public bool Paga
         {
             get
             {
-                return this.numeroFactura;
+                return this.paga;
             }
             set
             {
-                this.numeroFactura = value;
+                this.paga = value;
             }
         }
 

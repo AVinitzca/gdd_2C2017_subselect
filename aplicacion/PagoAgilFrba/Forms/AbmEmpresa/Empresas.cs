@@ -125,6 +125,7 @@ namespace PagoAgilFrba.Forms.AbmEmpresa
             Respuesta respuesta = DB.DB.Instancia.modificarEmpresa(modificada);
             if(respuesta.Codigo == 0)
             {
+                this.gpbIngreso.Tag = null;
                 this.empresas.ResetItem(this.empresas.IndexOf(modificada));
             }            
         }

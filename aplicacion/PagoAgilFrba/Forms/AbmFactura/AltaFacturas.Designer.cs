@@ -32,7 +32,7 @@
             this.cmbCliente = new System.Windows.Forms.ComboBox();
             this.cmbEmpresa = new System.Windows.Forms.ComboBox();
             this.lblEmpresa = new System.Windows.Forms.Label();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+            this.dtpCreacion = new System.Windows.Forms.DateTimePicker();
             this.dtpFechaVencimiento = new System.Windows.Forms.DateTimePicker();
             this.lblFecha = new System.Windows.Forms.Label();
             this.lblFechaVencimiento = new System.Windows.Forms.Label();
@@ -47,6 +47,8 @@
             this.btnVolver = new System.Windows.Forms.Button();
             this.dgvFacturas = new System.Windows.Forms.DataGridView();
             this.gpbIngreso = new System.Windows.Forms.GroupBox();
+            this.btnModificar = new System.Windows.Forms.Button();
+            this.btnCancelar = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvItems)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFacturas)).BeginInit();
             this.gpbIngreso.SuspendLayout();
@@ -92,15 +94,15 @@
             this.lblEmpresa.TabIndex = 2;
             this.lblEmpresa.Text = "Empresa";
             // 
-            // dateTimePicker1
+            // dtpCreacion
             // 
-            this.dateTimePicker1.Enabled = false;
-            this.dateTimePicker1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateTimePicker1.Location = new System.Drawing.Point(221, 162);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(236, 30);
-            this.dateTimePicker1.TabIndex = 6;
+            this.dtpCreacion.Enabled = false;
+            this.dtpCreacion.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.dtpCreacion.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpCreacion.Location = new System.Drawing.Point(221, 162);
+            this.dtpCreacion.Name = "dtpCreacion";
+            this.dtpCreacion.Size = new System.Drawing.Size(236, 30);
+            this.dtpCreacion.TabIndex = 6;
             // 
             // dtpFechaVencimiento
             // 
@@ -220,9 +222,12 @@
             this.dgvFacturas.RowTemplate.Height = 24;
             this.dgvFacturas.Size = new System.Drawing.Size(1074, 604);
             this.dgvFacturas.TabIndex = 15;
+            this.dgvFacturas.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvFacturas_CellContentClick);
             // 
             // gpbIngreso
             // 
+            this.gpbIngreso.Controls.Add(this.btnCancelar);
+            this.gpbIngreso.Controls.Add(this.btnModificar);
             this.gpbIngreso.Controls.Add(this.dtpFechaVencimiento);
             this.gpbIngreso.Controls.Add(this.lblCliente);
             this.gpbIngreso.Controls.Add(this.cmbCliente);
@@ -231,7 +236,7 @@
             this.gpbIngreso.Controls.Add(this.btnCrear);
             this.gpbIngreso.Controls.Add(this.cmbEmpresa);
             this.gpbIngreso.Controls.Add(this.lblItems);
-            this.gpbIngreso.Controls.Add(this.dateTimePicker1);
+            this.gpbIngreso.Controls.Add(this.dtpCreacion);
             this.gpbIngreso.Controls.Add(this.dgvItems);
             this.gpbIngreso.Controls.Add(this.lblFecha);
             this.gpbIngreso.Controls.Add(this.lblFechaVencimiento);
@@ -242,6 +247,29 @@
             this.gpbIngreso.TabIndex = 16;
             this.gpbIngreso.TabStop = false;
             this.gpbIngreso.Text = "Nueva Factura";
+            // 
+            // btnModificar
+            // 
+            this.btnModificar.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
+            this.btnModificar.Location = new System.Drawing.Point(11, 504);
+            this.btnModificar.Name = "btnModificar";
+            this.btnModificar.Size = new System.Drawing.Size(175, 84);
+            this.btnModificar.TabIndex = 14;
+            this.btnModificar.Text = "Modificar";
+            this.btnModificar.UseVisualStyleBackColor = true;
+            this.btnModificar.Visible = false;
+            this.btnModificar.Click += new System.EventHandler(this.btnModificar_Click);
+            // 
+            // btnCancelar
+            // 
+            this.btnCancelar.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
+            this.btnCancelar.Location = new System.Drawing.Point(270, 504);
+            this.btnCancelar.Name = "btnCancelar";
+            this.btnCancelar.Size = new System.Drawing.Size(175, 84);
+            this.btnCancelar.TabIndex = 15;
+            this.btnCancelar.Text = "Cancelar";
+            this.btnCancelar.UseVisualStyleBackColor = true;
+            this.btnCancelar.Visible = false;
             // 
             // FormAltaFactura
             // 
@@ -271,7 +299,7 @@
         private System.Windows.Forms.ComboBox cmbCliente;
         private System.Windows.Forms.ComboBox cmbEmpresa;
         private System.Windows.Forms.Label lblEmpresa;
-        private System.Windows.Forms.DateTimePicker dateTimePicker1;
+        private System.Windows.Forms.DateTimePicker dtpCreacion;
         private System.Windows.Forms.DateTimePicker dtpFechaVencimiento;
         private System.Windows.Forms.Label lblFecha;
         private System.Windows.Forms.Label lblFechaVencimiento;
@@ -286,5 +314,7 @@
         private System.Windows.Forms.Button btnVolver;
         private System.Windows.Forms.DataGridView dgvFacturas;
         private System.Windows.Forms.GroupBox gpbIngreso;
+        private System.Windows.Forms.Button btnCancelar;
+        private System.Windows.Forms.Button btnModificar;
     }
 }

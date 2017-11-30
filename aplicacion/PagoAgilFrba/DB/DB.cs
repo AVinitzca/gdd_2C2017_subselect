@@ -472,12 +472,12 @@ namespace PagoAgilFrba.DB
                 ((codigoPostal != 0) ? sucursal.CodigoPostal == codigoPostal : true) &&
                 (activas == true ? (sucursal.Activa) : true)).ToList();
         }
-        /*
+        
         public List<Factura> obtenerFacturas()
         {
             if (!this.existe(typeof(Factura)))
             {
-                Respuesta respuesta = this.obtener("GET_FACTURAS_NO_PAGA", new Dictionary<string, object>() { { "id_empresa", this.id(empresa) } });
+                Respuesta respuesta = this.obtener("GET_FACTURAS_NO_PAGA");
                     
                 this.parcialmenteCargados.Remove(typeof(Factura));
                 this.agregar<Factura>(respuesta,
@@ -487,19 +487,25 @@ namespace PagoAgilFrba.DB
                         {
                             this.obtenerClientes(null, null, 0, false);
                         }
+                        if (!this.existe(typeof(Empresa), Convert.ToInt32(row["ID_EMPRESA"])))
+                        {
+                            this.obtenerEmpresas(null, null, null, false);
+                        }
+
                         return new Factura()
                         {
                             NumeroFactura = Convert.ToInt32(row["NRO_FACTURA"]),
                             Cliente = (Cliente)this.repositorio[typeof(Cliente)][Convert.ToInt32(row["ID_CLIENTE"])],
-                            Empresa = empresa,
+                            Empresa = (Empresa)this.repositorio[typeof(Empresa)][Convert.ToInt32(row["ID_EMPRESA"])],
                             Creacion = Convert.ToDateTime(row["FECHA"]),
                             Vencimiento = Convert.ToDateTime(row["FECHA_VENCIMIENTO"]),
                             Total = Convert.ToDouble(row["TOTAL"]),
+                            Paga = Convert.ToBoolean(row["PAGADO"]),
                         };
                     }, "NRO_FACTURA");
             }
             return this.obtenerDeRepositorio<Factura>(typeof(Factura)).ToList();
-        }*/
+        }
 
         public List<Factura> obtenerFacturas(Empresa empresa)
         {
@@ -830,6 +836,11 @@ namespace PagoAgilFrba.DB
                 }
             }
             return respuesta;
+        }
+
+        public Respuesta modificarFactura(Factura modificada)
+        {
+            return new Respuesta();
         }
 
         public Respuesta modificarSucursal(Sucursal modificada)
