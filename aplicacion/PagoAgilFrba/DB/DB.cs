@@ -472,6 +472,34 @@ namespace PagoAgilFrba.DB
                 ((codigoPostal != 0) ? sucursal.CodigoPostal == codigoPostal : true) &&
                 (activas == true ? (sucursal.Activa) : true)).ToList();
         }
+        /*
+        public List<Factura> obtenerFacturas()
+        {
+            if (!this.existe(typeof(Factura)))
+            {
+                Respuesta respuesta = this.obtener("GET_FACTURAS_NO_PAGA", new Dictionary<string, object>() { { "id_empresa", this.id(empresa) } });
+                    
+                this.parcialmenteCargados.Remove(typeof(Factura));
+                this.agregar<Factura>(respuesta,
+                    delegate (DataRow row)
+                    {
+                        if (!this.existe(typeof(Cliente), Convert.ToInt32(row["ID_CLIENTE"])))
+                        {
+                            this.obtenerClientes(null, null, 0, false);
+                        }
+                        return new Factura()
+                        {
+                            NumeroFactura = Convert.ToInt32(row["NRO_FACTURA"]),
+                            Cliente = (Cliente)this.repositorio[typeof(Cliente)][Convert.ToInt32(row["ID_CLIENTE"])],
+                            Empresa = empresa,
+                            Creacion = Convert.ToDateTime(row["FECHA"]),
+                            Vencimiento = Convert.ToDateTime(row["FECHA_VENCIMIENTO"]),
+                            Total = Convert.ToDouble(row["TOTAL"]),
+                        };
+                    }, "NRO_FACTURA");
+            }
+            return this.obtenerDeRepositorio<Factura>(typeof(Factura)).ToList();
+        }*/
 
         public List<Factura> obtenerFacturas(Empresa empresa)
         {

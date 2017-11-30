@@ -31,7 +31,7 @@ namespace PagoAgilFrba.RegistroPago
         {
             if(this.cmbEmpresas.SelectedItem != null)
             {
-                this.lstFacturas.DataSource = DB.DB.Instancia.obtenerFacturas((Empresa)this.cmbEmpresas.SelectedItem).Where(factura => factura.Vencimiento < Configuracion.Configuracion.fecha());
+                this.lstFacturas.Items.AddRange(DB.DB.Instancia.obtenerFacturas((Empresa)this.cmbEmpresas.SelectedItem).Where(factura => factura.Vencimiento < Configuracion.Configuracion.fecha()).ToArray());
             }
         }
 
@@ -40,7 +40,7 @@ namespace PagoAgilFrba.RegistroPago
             if(this.cmbEmpresas.SelectedItem == null)
             {
                 MessageBox.Show("Error: Se debe seleccionar una empresa");
-            }
+            }            
             else if (this.cmbCliente.SelectedItem == null)
             {
                 MessageBox.Show("Error: Se debe seleccionar un cliente");
@@ -70,7 +70,10 @@ namespace PagoAgilFrba.RegistroPago
                 Respuesta respuesta = DB.DB.Instancia.crearPago(pago);
                 if(respuesta.Codigo == 0)
                 {
-                    this.lstFacturas.Items.Remove(facturas);
+                    foreach(Factura facturaDevuelta in facturas)
+                    {
+                        this.lstFacturas.Items.Remove(facturaDevuelta);
+                    }                    
                     MessageBox.Show("La factura fue pagada");                    
                 }
                 else

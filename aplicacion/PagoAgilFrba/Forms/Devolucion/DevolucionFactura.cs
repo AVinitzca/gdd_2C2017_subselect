@@ -37,12 +37,14 @@ namespace PagoAgilFrba.Forms.Devolucion
             }
             else
             {
-                Respuesta respuesta = DB.DB.Instancia.devolverFactura((Factura)this.cmbFacturas.SelectedItem, this.txtMotivo.Text);             
+                Factura aDevolver = (Factura)this.cmbFacturas.SelectedItem;
+                Respuesta respuesta = DB.DB.Instancia.devolverFactura(aDevolver, this.txtMotivo.Text);             
                 if (respuesta.Codigo == 0)
                 {
                     MessageBox.Show("La rendicion fue devuelta con exito");
                     this.cmbFacturas.SelectedIndex = -1;
                     this.txtMotivo.Clear();
+                    this.cmbFacturas.Items.Remove(aDevolver);
                 }
                 else
                 {

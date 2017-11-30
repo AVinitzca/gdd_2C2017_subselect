@@ -1,4 +1,5 @@
-﻿using PagoAgilFrba.Dominio;
+﻿using PagoAgilFrba.DB;
+using PagoAgilFrba.Dominio;
 using PagoAgilFrba.Forms.MenuPrincipal;
 using System;
 using System.Collections.Generic;
@@ -40,7 +41,17 @@ namespace PagoAgilFrba.Rendicion
                 rendicion.Empresa = (Empresa)this.cmbEmpresas.SelectedItem;
                 rendicion.Fecha = Configuracion.Configuracion.fecha();
                 rendicion.Porcentaje = Double.Parse(this.txtPorcentaje.Text);
-                DB.DB.Instancia.crearRendicion(rendicion);
+                Respuesta respuesta = DB.DB.Instancia.crearRendicion(rendicion);
+                if(respuesta.Codigo == 0)
+                {
+                    MessageBox.Show("Se rindieron las facturas pagas para la empresa");
+                    this.cmbEmpresas.SelectedIndex = -1;
+                    this.txtPorcentaje.Clear();
+                }
+                else
+                {
+                    MessageBox.Show(respuesta.Mensaje);
+                }
             }
         }
 

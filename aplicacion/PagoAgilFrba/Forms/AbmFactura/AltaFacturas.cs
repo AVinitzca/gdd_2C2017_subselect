@@ -26,7 +26,7 @@ namespace PagoAgilFrba.AbmFactura
         {
             this.cmbCliente.Items.AddRange(DB.DB.Instancia.obtenerClientes("", "", 0, false).ToArray());
             this.cmbEmpresa.Items.AddRange(DB.DB.Instancia.obtenerEmpresas("", "", null, false).ToArray());
-            //this.facturas = DB.DB.Instancia.obtenerFacturas(null);
+            this.facturas = new BindingList<Factura>(DB.DB.Instancia.obtenerFacturas(null));
         }
         
 
