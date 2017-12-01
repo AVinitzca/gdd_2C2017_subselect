@@ -109,9 +109,13 @@ namespace PagoAgilFrba.DB
 
             comando.ExecuteNonQuery();
             Respuesta respuesta = new Respuesta();
-            respuesta.Id = (int)id.Value;
             respuesta.Codigo = (int)retorno.Value;
             respuesta.Mensaje = mensaje.Value.ToString();
+            if (respuesta.Codigo == 0)
+            {
+                respuesta.Id = (int)id.Value;
+            }
+            
 
             return respuesta;
         }
@@ -509,71 +513,12 @@ namespace PagoAgilFrba.DB
 
         public List<Factura> obtenerFacturas(Empresa empresa)
         {
-            if (!this.existe(typeof(Factura)))
-            {
-                if (!this.existe(typeof(Empresa)))
-                {
-                    this.obtenerEmpresas("", "", null, false);
-                }
-                Respuesta respuesta = this.obtener("GET_FACTURA_POR_EMPRESA", new Dictionary<string, object>() { { "id_empresa", this.id(empresa) } });
-
-                this.parcialmenteCargados.Remove(typeof(Factura));
-                this.agregar<Factura>(respuesta,
-                    delegate (DataRow row)
-                    {
-                        if (!this.existe(typeof(Cliente), Convert.ToInt32(row["ID_CLIENTE"])))
-                        {
-                            this.obtenerClientes(null, null, 0, false);
-                        }
-                        return new Factura()
-                        {
-                            NumeroFactura = Convert.ToInt32(row["NRO_FACTURA"]),
-                            Cliente = (Cliente)this.repositorio[typeof(Cliente)][Convert.ToInt32(row["ID_CLIENTE"])],
-                            Empresa = empresa,
-                            Creacion = Convert.ToDateTime(row["FECHA"]),
-                            Vencimiento = Convert.ToDateTime(row["FECHA_VENCIMIENTO"]),
-                            Total = Convert.ToDouble(row["TOTAL"]),
-                        };
-                    }, "NRO_FACTURA");                
-            }
-
-            return this.obtenerDeRepositorio<Factura>(typeof(Factura)).Where(factura => empresa == null || factura.Empresa == empresa).ToList();
+            return this.obtenerFacturas().Where(factura => empresa == null || factura.Empresa == empresa).ToList();
         }
 
         public List<Factura> obtenerFacturasPagas()
         {
-            Respuesta respuesta = this.obtener("GET_FACTURAS_PAGAS_NO_RENDIDAS", new Dictionary<string, object>());
-
-            List<Factura> facturas = new List<Factura>();
-            if(respuesta.Codigo == 0)
-            {
-                foreach(DataRow row in respuesta.Tabla.Rows)
-                {
-                    facturas.Add(new Factura() {NumeroFactura = Convert.ToInt32(row["NRO_FACTURA"]), Total = Convert.ToDouble(row["TOTAL"])});                    
-                }
-            }            
-            if(!this.existe(typeof(Factura)))
-            {
-                this.repositorio.Add(typeof(Factura), new Dictionary<int, object>());
-                foreach (Factura factura in facturas)
-                {
-                    if (!this.repositorio[typeof(Factura)].Values.Contains(factura))
-                    {
-                        this.repositorio[typeof(Factura)].Add(factura.NumeroFactura, factura);
-                    }
-                }
-            }
-            else
-            {
-                foreach (Factura factura in facturas)
-                {
-                    if (!this.existe(typeof(Factura), factura.NumeroFactura))
-                    {
-                        this.repositorio[typeof(Factura)].Add(factura.NumeroFactura, factura);
-                    }
-                }
-            }            
-            return facturas;
+            return this.obtenerFacturas().Where(factura => factura.Paga).ToList();
         }
         
 
@@ -657,6 +602,26 @@ namespace PagoAgilFrba.DB
             return this.obtenerDeRepositorio<FormaDePago>(typeof(FormaDePago));
         }
 
+        public List<ItemFactura> obtenerItemsFactura(Factura factura)
+        {
+            if (!this.existe(typeof(ItemFactura)))
+            {
+                Respuesta respuesta = this.obtener("GET_ITEMS", new Dictionary<string, object>() { {"nro_factura", factura.NumeroFactura } });
+
+                this.agregar<ItemFactura>(respuesta,
+                    delegate (DataRow row)
+                    {
+                        return new ItemFactura()
+                        {
+                            Cantidad = Convert.ToInt32(row["CANTIDAD"]),
+                            Monto = Convert.ToDouble(row["MONTO"]),
+                            Factura = factura,
+                        };
+                    }, "ID_ITEM");
+            }
+            return this.obtenerDeRepositorio<ItemFactura>(typeof(ItemFactura)).Where(item => item.Factura == factura).ToList();
+
+        }
 
         public Respuesta crearRol(Rol rolNuevo)
         {
@@ -838,9 +803,60 @@ namespace PagoAgilFrba.DB
             return respuesta;
         }
 
-        public Respuesta modificarFactura(Factura modificada)
+        public Respuesta modificarFactura(Factura modificada, List<ItemFactura> anteriores)
         {
-            return new Respuesta();
+            Respuesta respuesta = this.modificacion("SP_ABM_FACTURACION_MODIFICACION", new Dictionary<string, object>()
+            {
+                {"nro_factura", modificada.NumeroFactura },
+                {"id_cliente", this.id(modificada.Cliente) },
+                {"id_empresa", this.id(modificada.Empresa) },
+                {"fecha", modificada.Creacion },
+                {"fecha_vencimiento", modificada.Vencimiento },
+                {"total", modificada.Total },
+            });
+
+            if(respuesta.Codigo == 0)
+            {
+                foreach(ItemFactura item in modificada.Items)
+                {
+                    Respuesta respuestaItem;
+                    if (anteriores.Contains(item))
+                    {
+                        respuestaItem = this.modificarItemFactura(item);
+                        if(respuestaItem.Codigo != 0)
+                        {
+                            return respuestaItem;
+                        }
+                    }
+                    else
+                    {
+                        respuestaItem = this.creacion("SP_ABM_ITEM_FACTURA_ALTA", new Dictionary<string, object>() { { "NRO_FACTURA", modificada.NumeroFactura }, { "CANTIDAD", item.Cantidad }, { "MONTO", item.Monto } });
+                        if (respuestaItem.Codigo != 0)
+                        {
+                            return respuestaItem;
+                        }
+                    }
+                    Respuesta respuestaBorrar;
+                    foreach(ItemFactura itemABorrar in anteriores.Except(modificada.Items))
+                    {
+                        respuestaBorrar = this.borrarItemFactura(itemABorrar);
+                        if(respuestaItem.Codigo != 0)
+                        {
+                            return respuestaBorrar;
+                        }
+                    }
+                }
+                return respuesta;
+            }
+            else
+            {
+                return respuesta;
+            }
+        }
+
+        protected Respuesta modificarItemFactura(ItemFactura item)
+        {
+            return this.modificacion("SP_ABM_ITEMS_FACTURA_MODIFICAR", new Dictionary<string, object>() { { "ID_ITEM", this.id(item) }, { "CANTIDAD", item.Cantidad }, { "MONTO", item.Monto } });
         }
 
         public Respuesta modificarSucursal(Sucursal modificada)
@@ -893,6 +909,11 @@ namespace PagoAgilFrba.DB
                 cliente.Activo = !cliente.Activo;
             }
             return respuesta;
+        }
+
+        public Respuesta borrarItemFactura(ItemFactura item)
+        {
+            return this.modificacion("SP_ABM_ITEMS_FACTURA_ELIMINAR", new Dictionary<string, object>() { { "id_item", this.id(item) } });
         }
 
         public Respuesta devolverFactura(Factura factura, string motivo)

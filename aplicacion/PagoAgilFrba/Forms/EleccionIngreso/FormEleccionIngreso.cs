@@ -21,8 +21,8 @@ namespace PagoAgilFrba.EleccionRol
 
         private void formElegirRol_Load(object sender, EventArgs e)
         {            
-            this.cmbRoles.Items.AddRange(Usuario.Logeado.Roles.ToArray());
-            this.cmbSucursales.Items.AddRange(Usuario.Logeado.Sucursales.ToArray());
+            this.cmbRoles.Items.AddRange(Usuario.Logeado.Roles.Where(rol => rol.Activo).ToArray());
+            this.cmbSucursales.Items.AddRange(Usuario.Logeado.Sucursales.Where(sucursal => sucursal.Activa).ToArray());
         }
 
         private void btnContinuar_Click(object sender, EventArgs e)

@@ -37,18 +37,14 @@
             this.lblFecha = new System.Windows.Forms.Label();
             this.lblFechaVencimiento = new System.Windows.Forms.Label();
             this.dgvItems = new System.Windows.Forms.DataGridView();
-            this.dgvColumnItems = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvColumnMonto = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvColumnCantidad = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvColumnTotal = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.lblItems = new System.Windows.Forms.Label();
             this.btnCrear = new System.Windows.Forms.Button();
             this.lblTotal = new System.Windows.Forms.Label();
             this.btnVolver = new System.Windows.Forms.Button();
             this.dgvFacturas = new System.Windows.Forms.DataGridView();
             this.gpbIngreso = new System.Windows.Forms.GroupBox();
-            this.btnModificar = new System.Windows.Forms.Button();
             this.btnCancelar = new System.Windows.Forms.Button();
+            this.btnModificar = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvItems)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFacturas)).BeginInit();
             this.gpbIngreso.SuspendLayout();
@@ -107,6 +103,7 @@
             // dtpFechaVencimiento
             // 
             this.dtpFechaVencimiento.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.dtpFechaVencimiento.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtpFechaVencimiento.Location = new System.Drawing.Point(221, 202);
             this.dtpFechaVencimiento.Name = "dtpFechaVencimiento";
             this.dtpFechaVencimiento.Size = new System.Drawing.Size(235, 30);
@@ -135,11 +132,6 @@
             // dgvItems
             // 
             this.dgvItems.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvItems.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dgvColumnItems,
-            this.dgvColumnMonto,
-            this.dgvColumnCantidad,
-            this.dgvColumnTotal});
             this.dgvItems.Location = new System.Drawing.Point(11, 298);
             this.dgvItems.Name = "dgvItems";
             this.dgvItems.RowTemplate.Height = 24;
@@ -147,27 +139,6 @@
             this.dgvItems.TabIndex = 10;
             this.dgvItems.CellValidated += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvItems_CellValidated);
             this.dgvItems.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dgvItems_EditingControlShowing);
-            // 
-            // dgvColumnItems
-            // 
-            this.dgvColumnItems.HeaderText = "Items";
-            this.dgvColumnItems.Name = "dgvColumnItems";
-            // 
-            // dgvColumnMonto
-            // 
-            this.dgvColumnMonto.HeaderText = "Monto";
-            this.dgvColumnMonto.Name = "dgvColumnMonto";
-            // 
-            // dgvColumnCantidad
-            // 
-            this.dgvColumnCantidad.HeaderText = "Cantidad";
-            this.dgvColumnCantidad.Name = "dgvColumnCantidad";
-            // 
-            // dgvColumnTotal
-            // 
-            this.dgvColumnTotal.HeaderText = "Total";
-            this.dgvColumnTotal.Name = "dgvColumnTotal";
-            this.dgvColumnTotal.ReadOnly = true;
             // 
             // lblItems
             // 
@@ -248,6 +219,18 @@
             this.gpbIngreso.TabStop = false;
             this.gpbIngreso.Text = "Nueva Factura";
             // 
+            // btnCancelar
+            // 
+            this.btnCancelar.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
+            this.btnCancelar.Location = new System.Drawing.Point(270, 504);
+            this.btnCancelar.Name = "btnCancelar";
+            this.btnCancelar.Size = new System.Drawing.Size(175, 84);
+            this.btnCancelar.TabIndex = 15;
+            this.btnCancelar.Text = "Cancelar";
+            this.btnCancelar.UseVisualStyleBackColor = true;
+            this.btnCancelar.Visible = false;
+            this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
+            // 
             // btnModificar
             // 
             this.btnModificar.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
@@ -259,17 +242,6 @@
             this.btnModificar.UseVisualStyleBackColor = true;
             this.btnModificar.Visible = false;
             this.btnModificar.Click += new System.EventHandler(this.btnModificar_Click);
-            // 
-            // btnCancelar
-            // 
-            this.btnCancelar.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.btnCancelar.Location = new System.Drawing.Point(270, 504);
-            this.btnCancelar.Name = "btnCancelar";
-            this.btnCancelar.Size = new System.Drawing.Size(175, 84);
-            this.btnCancelar.TabIndex = 15;
-            this.btnCancelar.Text = "Cancelar";
-            this.btnCancelar.UseVisualStyleBackColor = true;
-            this.btnCancelar.Visible = false;
             // 
             // FormAltaFactura
             // 
@@ -305,10 +277,6 @@
         private System.Windows.Forms.Label lblFechaVencimiento;
         private System.Windows.Forms.DataGridView dgvItems;
         private System.Windows.Forms.Label lblItems;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgvColumnItems;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgvColumnMonto;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgvColumnCantidad;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dgvColumnTotal;
         private System.Windows.Forms.Button btnCrear;
         private System.Windows.Forms.Label lblTotal;
         private System.Windows.Forms.Button btnVolver;

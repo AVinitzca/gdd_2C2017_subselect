@@ -16,6 +16,8 @@ namespace PagoAgilFrba.AbmFactura
     public partial class FormAltaFactura : Form
     {
         private BindingList<Factura> facturas;
+        private BindingList<ItemFactura> itemsFactura;
+        private BindingList<ItemFactura> originales;
 
         public FormAltaFactura()
         {
@@ -27,7 +29,10 @@ namespace PagoAgilFrba.AbmFactura
             this.cmbCliente.Items.AddRange(DB.DB.Instancia.obtenerClientes("", "", 0, false).ToArray());
             this.cmbEmpresa.Items.AddRange(DB.DB.Instancia.obtenerEmpresas("", "", null, false).ToArray());
             this.facturas = new BindingList<Factura>(DB.DB.Instancia.obtenerFacturas());
+            this.itemsFactura = new BindingList<ItemFactura>();
+            this.dgvItems.DataSource = this.itemsFactura;
             this.dgvFacturas.DataSource = this.facturas;
+            this.dtpCreacion.Value = Configuracion.Configuracion.fecha();
 
             DataGridViewButtonColumn modificar = new DataGridViewButtonColumn();
             modificar.Name = "dgvColumnModificar";
@@ -64,10 +69,10 @@ namespace PagoAgilFrba.AbmFactura
             double suma = 0;
             foreach (DataGridViewRow row in this.dgvItems.Rows)
             {
-                double monto = row.Cells[1].Value == null ? 0 : Double.Parse(row.Cells[1].Value.ToString());
-                double cantidad = row.Cells[2].Value == null ? 0 : Double.Parse(row.Cells[2].Value.ToString());
-                row.Cells[3].Value = monto * cantidad;
-                suma += (double)row.Cells[3].Value;
+                if (row.Cells[1] != null && row.Cells[1].Value != null)
+                {
+                    suma += (double)row.Cells[1].Value;
+                }
             }
             this.lblTotal.Text = "Total: " + suma.ToString();
         }
@@ -95,7 +100,7 @@ namespace PagoAgilFrba.AbmFactura
                 for(int index = 0; index < this.dgvItems.Rows.Count - 1; index++)
                 {
                     DataGridViewRow row = this.dgvItems.Rows[index];
-                    if (row.Cells[0].Value == null || row.Cells[1].Value == null || row.Cells[2].Value == null)
+                    if (row.Cells[0].Value == null || row.Cells[1].Value == null)
                     {
                         MessageBox.Show("Error: Un item de la factura se encuentra vacio");
                         return;
@@ -111,21 +116,20 @@ namespace PagoAgilFrba.AbmFactura
                     DataGridViewRow row = this.dgvItems.Rows[index];
                     ItemFactura itemFactura = new ItemFactura();
                     itemFactura.Factura = factura;
-                    itemFactura.Monto = Double.Parse(row.Cells[1].Value.ToString());
-                    itemFactura.Cantidad = Int32.Parse(row.Cells[2].Value.ToString());
+                    itemFactura.Monto = Double.Parse(row.Cells[0].Value.ToString());
+                    itemFactura.Cantidad = Int32.Parse(row.Cells[1].Value.ToString());
                     factura.Items.Add(itemFactura);
                 }
                 Respuesta respuesta = DB.DB.Instancia.crearFactura(factura);
                 if(respuesta.Codigo == 0)
                 {
+                    facturas.Add(factura);
                     MessageBox.Show("La factura se registro satisfactoriamente");
                 }
                 else
                 {
                     MessageBox.Show(respuesta.Mensaje);
                 }
-               
-                
             }
         }
 
@@ -144,12 +148,16 @@ namespace PagoAgilFrba.AbmFactura
                 if (senderGrid.Columns[e.ColumnIndex].Name == "dgvColumnModificar" && this.gpbIngreso.Tag == null)
                 {
                     Factura factura = this.facturas[e.RowIndex];
+                    factura.Items = DB.DB.Instancia.obtenerItemsFactura(factura);
+                    this.itemsFactura = new BindingList<ItemFactura>(factura.Items);
+                    this.originales = new BindingList<ItemFactura>(new List<ItemFactura>(factura.Items.ToArray()));
+                    this.dgvItems.DataSource = this.itemsFactura;
                     this.cmbCliente.SelectedItem = factura.Cliente;
                     this.cmbEmpresa.SelectedItem = factura.Empresa;
                     this.dtpFechaVencimiento.Value = factura.Vencimiento;
                     this.dtpCreacion.Value = factura.Creacion;
                     this.lblTotal.Text = "Total: " + factura.Total;
-
+                    
                     this.btnModificar.Visible = true;
                     this.btnCancelar.Visible = true;
                     this.btnCrear.Visible = false;
@@ -181,7 +189,7 @@ namespace PagoAgilFrba.AbmFactura
                 for (int index = 0; index < this.dgvItems.Rows.Count - 1; index++)
                 {
                     DataGridViewRow row = this.dgvItems.Rows[index];
-                    if (row.Cells[0].Value == null || row.Cells[1].Value == null || row.Cells[2].Value == null)
+                    if (row.Cells[0].Value == null || row.Cells[1].Value == null)
                     {
                         MessageBox.Show("Error: Un item de la factura se encuentra vacio");
                         return;
@@ -192,25 +200,42 @@ namespace PagoAgilFrba.AbmFactura
                 factura.Empresa = (Empresa)this.cmbEmpresa.SelectedItem;
                 factura.Creacion = this.dtpCreacion.Value;
                 factura.Vencimiento = this.dtpFechaVencimiento.Value;
-                for (int index = 0; index < this.dgvItems.Rows.Count - 1; index++)
-                {
-                    DataGridViewRow row = this.dgvItems.Rows[index];
-                    ItemFactura itemFactura = new ItemFactura();
-                    itemFactura.Factura = factura;
-                    itemFactura.Monto = Double.Parse(row.Cells[1].Value.ToString());
-                    itemFactura.Cantidad = Int32.Parse(row.Cells[2].Value.ToString());
-                    factura.Items.Add(itemFactura);
-                }
-                Respuesta respuesta = DB.DB.Instancia.modificarFactura(factura);
+                factura.Items = this.itemsFactura.ToList();
+
+                Respuesta respuesta = DB.DB.Instancia.modificarFactura(factura, originales.ToList());
                 if (respuesta.Codigo == 0)
                 {
-                    MessageBox.Show("La factura se registro satisfactoriamente");
+                    this.gpbIngreso.Tag = null;
+                    this.cmbCliente.SelectedIndex = -1;
+                    this.cmbEmpresa.SelectedIndex = -1;
+                    this.dtpCreacion.Value = Configuracion.Configuracion.fecha();
+                    this.dtpFechaVencimiento.Value = Configuracion.Configuracion.fecha();
+                    this.itemsFactura.Clear();
+                    this.originales.Clear();
+                    this.btnCrear.Show();
+                    this.btnModificar.Hide();
+                    this.btnCancelar.Hide();
+                    MessageBox.Show("La factura se modifico satisfactoriamente");
                 }
                 else
                 {
                     MessageBox.Show(respuesta.Mensaje);
                 }
             }
+        }
+
+        private void btnCancelar_Click(object sender, EventArgs e)
+        {
+            this.gpbIngreso.Tag = null;
+            this.cmbCliente.SelectedIndex = -1;
+            this.cmbEmpresa.SelectedIndex = -1;
+            this.dtpCreacion.Value = Configuracion.Configuracion.fecha();
+            this.dtpFechaVencimiento.Value = Configuracion.Configuracion.fecha();
+            this.itemsFactura.Clear();
+            this.originales.Clear();
+            this.btnCrear.Show();
+            this.btnModificar.Hide();
+            this.btnCancelar.Hide();
         }
     }
 }

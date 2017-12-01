@@ -23,7 +23,7 @@ namespace PagoAgilFrba.RegistroPago
         private void FormPagos_Load(object sender, EventArgs e)
         {
             this.cmbEmpresas.Items.AddRange(DB.DB.Instancia.obtenerEmpresas("", "", null, true).ToArray());
-            this.cmbCliente.Items.AddRange(DB.DB.Instancia.obtenerClientes("", "", 0, false).ToArray());
+            this.cmbCliente.Items.AddRange(DB.DB.Instancia.obtenerClientes("", "", 0, true).ToArray());
             this.cmbFormaPago.Items.AddRange(DB.DB.Instancia.obtenerFormasDePago().ToArray());
         }
 
@@ -73,6 +73,7 @@ namespace PagoAgilFrba.RegistroPago
                 {
                     foreach(Factura facturaDevuelta in facturas)
                     {
+                        facturaDevuelta.Paga = true;
                         this.lstFacturas.Items.Remove(facturaDevuelta);
                     }                    
                     MessageBox.Show("La factura fue pagada");                    

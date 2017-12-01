@@ -35,10 +35,24 @@ namespace PagoAgilFrba
 
             Respuesta respuesta = usuario.logear();
             if(respuesta.Codigo == 0)
-            {                
-                Form formEleccionRol = new FormEleccionRol();                
-                formEleccionRol.Show();
-                this.Hide();
+            {
+                if(usuario.Sucursales.Exists(sucursal => sucursal.Activa))
+                {
+                    if (usuario.Roles.Exists(rol => rol.Activo))
+                    {
+                        Form formEleccionRol = new FormEleccionRol();
+                        formEleccionRol.Show();
+                        this.Hide();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Erorr: El usuario no tiene roles activos");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Erorr: El usuario no tiene sucursales activas");
+                }                
             }
             else
             {
