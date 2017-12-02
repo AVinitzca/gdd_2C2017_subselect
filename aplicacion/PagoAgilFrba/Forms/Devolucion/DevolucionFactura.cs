@@ -41,7 +41,7 @@ namespace PagoAgilFrba.Forms.Devolucion
                 Respuesta respuesta = DB.DB.Instancia.devolverFactura(aDevolver, this.txtMotivo.Text);             
                 if (respuesta.Codigo == 0)
                 {
-                    MessageBox.Show("La rendicion fue devuelta con exito");
+                    MessageBox.Show("La factura fue devuelta con exito");
                     aDevolver.Paga = false;
                     this.cmbFacturas.SelectedIndex = -1;
                     this.txtMotivo.Clear();

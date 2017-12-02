@@ -123,7 +123,7 @@ namespace PagoAgilFrba.AbmFactura
                 Respuesta respuesta = DB.DB.Instancia.crearFactura(factura);
                 if(respuesta.Codigo == 0)
                 {
-                    facturas.Add(factura);
+                    this.facturas.Add(factura);
                     MessageBox.Show("La factura se registro satisfactoriamente");
                 }
                 else
@@ -205,6 +205,7 @@ namespace PagoAgilFrba.AbmFactura
                 Respuesta respuesta = DB.DB.Instancia.modificarFactura(factura, originales.ToList());
                 if (respuesta.Codigo == 0)
                 {
+                    this.facturas.ResetItem(this.facturas.IndexOf(factura));
                     this.gpbIngreso.Tag = null;
                     this.cmbCliente.SelectedIndex = -1;
                     this.cmbEmpresa.SelectedIndex = -1;

@@ -438,7 +438,7 @@ namespace PagoAgilFrba.DB
                 int id = Convert.ToInt32(row["ID_SUCURSAL"]);
                 if (!this.existe(typeof(Sucursal), id))
                 {
-                    Sucursal sucursalDeUsuario = new Sucursal() { Nombre = Convert.ToString(row["NOMBRE"]) };
+                    Sucursal sucursalDeUsuario = new Sucursal() { Nombre = Convert.ToString(row["NOMBRE"]), Activa = Convert.ToBoolean(row["ACTIVO"]) };
                     this.crearSiNoExiste(typeof(Sucursal), id, sucursalDeUsuario);
                     this.agregarParcialmenteCargado(typeof(Sucursal));
                 }
@@ -493,7 +493,7 @@ namespace PagoAgilFrba.DB
                         }
                         if (!this.existe(typeof(Empresa), Convert.ToInt32(row["ID_EMPRESA"])))
                         {
-                            this.obtenerEmpresas(null, null, null, false);
+                            this.obtenerEmpresas("", "", null, false);
                         }
 
                         return new Factura()
@@ -718,6 +718,7 @@ namespace PagoAgilFrba.DB
                         return respuestaItems;
                     }
                 }
+                nueva.NumeroFactura = respuesta.Id;
                 this.crearSiNoExiste(typeof(Factura), respuesta.Id, nueva);                
             }
             return respuesta;
