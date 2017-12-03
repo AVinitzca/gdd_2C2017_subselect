@@ -126,7 +126,7 @@ namespace PagoAgilFrba.Dominio
             {
                 if(this.items.Count != 0)
                 {
-                    return this.items.Aggregate(0d, (prev, next) => prev + next.Cantidad * next.Monto);
+                    return this.items.Aggregate(0d, (prev, next) => prev + next.Monto);
                 }
                 else
                 {

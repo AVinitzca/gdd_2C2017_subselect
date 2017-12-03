@@ -116,8 +116,8 @@ namespace PagoAgilFrba.AbmFactura
                     DataGridViewRow row = this.dgvItems.Rows[index];
                     ItemFactura itemFactura = new ItemFactura();
                     itemFactura.Factura = factura;
-                    itemFactura.Monto = Double.Parse(row.Cells[0].Value.ToString());
-                    itemFactura.Cantidad = Int32.Parse(row.Cells[1].Value.ToString());
+                    itemFactura.Monto = Double.Parse(row.Cells[1].Value.ToString());
+                    itemFactura.Cantidad = Int32.Parse(row.Cells[0].Value.ToString());
                     factura.Items.Add(itemFactura);
                 }
                 Respuesta respuesta = DB.DB.Instancia.crearFactura(factura);
