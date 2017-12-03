@@ -29,7 +29,12 @@ namespace PagoAgilFrba.DB
             this.parcialmenteCargados = new List<Type>();
 
             this.conexion = new SqlConnection();
-			this.conexion.ConnectionString = "Data Source=RONAN-PC\\SQLEXPRESS;Initial Catalog=GD2C2017;Integrated Security=True";
+            this.conexion.ConnectionString =
+                "Data Source=" + Configuracion.Configuracion.valor("db_datasource") +
+                "\\" + Configuracion.Configuracion.valor("db_sqltype") +
+                ";Initial Catalog=" + Configuracion.Configuracion.valor("db_catalog") +
+                ";Integrated Security=True";
+			//this.conexion.ConnectionString = "Data Source=RONAN-PC\\SQLEXPRESS;Initial Catalog=GD2C2017;Integrated Security=True";
 			//this.conexion.ConnectionString = "Data Source=localhost\\SQLSERVER2012;Initial Catalog=GD2C2017;Integrated Security=True";
 			this.conexion.Open();
         }
@@ -505,6 +510,7 @@ namespace PagoAgilFrba.DB
                             Vencimiento = Convert.ToDateTime(row["FECHA_VENCIMIENTO"]),
                             Total = Convert.ToDouble(row["TOTAL"]),
                             Paga = Convert.ToBoolean(row["PAGADO"]),
+                            Rendida = Convert.ToBoolean(row["RENDIDO"])
                         };
                     }, "NRO_FACTURA");
             }
@@ -604,21 +610,19 @@ namespace PagoAgilFrba.DB
 
         public List<ItemFactura> obtenerItemsFactura(Factura factura)
         {
-            if (!this.existe(typeof(ItemFactura)))
-            {
-                Respuesta respuesta = this.obtener("GET_ITEMS", new Dictionary<string, object>() { {"nro_factura", factura.NumeroFactura } });
-
-                this.agregar<ItemFactura>(respuesta,
-                    delegate (DataRow row)
+            Respuesta respuesta = this.obtener("GET_ITEMS", new Dictionary<string, object>() { {"nro_factura", factura.NumeroFactura } });
+                
+            this.agregar<ItemFactura>(respuesta,
+                delegate (DataRow row)
+                {
+                    return new ItemFactura()
                     {
-                        return new ItemFactura()
-                        {
-                            Cantidad = Convert.ToInt32(row["CANTIDAD"]),
-                            Monto = Convert.ToDouble(row["MONTO"]),
-                            Factura = factura,
-                        };
-                    }, "ID_ITEM");
-            }
+                        Cantidad = Convert.ToInt32(row["CANTIDAD"]),
+                        Monto = Convert.ToDouble(row["MONTO"]),
+                        Factura = factura,
+                    };
+                }, "ID_ITEM");
+            
             return this.obtenerDeRepositorio<ItemFactura>(typeof(ItemFactura)).Where(item => item.Factura == factura).ToList();
 
         }
@@ -951,6 +955,16 @@ namespace PagoAgilFrba.DB
                 }
             }
             return seleccionado.Filas;
+        }
+
+        public void recargarFacturas()
+        {
+            // Solo si ya estaban cargadas. Si no, no importa
+            if(this.existe(typeof(Factura)))
+            {
+                this.repositorio.Remove(typeof(Factura));
+                this.obtenerFacturas();
+            }
         }
 
     }

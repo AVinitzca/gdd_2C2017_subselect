@@ -22,7 +22,7 @@ namespace PagoAgilFrba.Forms.Devolucion
 
         private void FormDevolucionFactura_Load(object sender, EventArgs e)
         {
-            this.cmbFacturas.Items.AddRange(DB.DB.Instancia.obtenerFacturasPagas().ToArray());
+            this.cmbFacturas.Items.AddRange(DB.DB.Instancia.obtenerFacturasPagas().Where(factura => !factura.Rendida).ToArray());
         }
 
         private void btnDevolver_Click(object sender, EventArgs e)

@@ -44,9 +44,10 @@ namespace PagoAgilFrba.Rendicion
                 Respuesta respuesta = DB.DB.Instancia.crearRendicion(rendicion);
                 if(respuesta.Codigo == 0)
                 {
-                    MessageBox.Show("Se rindieron las facturas pagas para la empresa");
                     this.cmbEmpresas.SelectedIndex = -1;
                     this.txtPorcentaje.Clear();
+                    DB.DB.Instancia.recargarFacturas();
+                    MessageBox.Show("Se rindieron las facturas pagas para la empresa");                    
                 }
                 else
                 {

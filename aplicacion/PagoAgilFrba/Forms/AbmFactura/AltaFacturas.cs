@@ -46,7 +46,7 @@ namespace PagoAgilFrba.AbmFactura
         private void dgvItems_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
         {
             e.Control.KeyPress -= new KeyPressEventHandler(numericColumnKeyPress);
-            if(this.dgvItems.CurrentCell.ColumnIndex == 1 || this.dgvItems.CurrentCell.ColumnIndex == 2)
+            if(this.dgvItems.CurrentCell.ColumnIndex == 0 || this.dgvItems.CurrentCell.ColumnIndex == 1)
             {
                 TextBox tb = e.Control as TextBox;
                 if (tb != null)
@@ -237,6 +237,9 @@ namespace PagoAgilFrba.AbmFactura
             this.btnCrear.Show();
             this.btnModificar.Hide();
             this.btnCancelar.Hide();
+            this.dgvItems.DataSource = null;
+            this.itemsFactura.Clear();
+            this.originales.Clear();
         }
     }
 }

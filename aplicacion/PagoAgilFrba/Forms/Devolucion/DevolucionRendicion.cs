@@ -40,9 +40,10 @@ namespace PagoAgilFrba.Forms.Devolucion
                 Respuesta respuesta = DB.DB.Instancia.devolverRendicion((RendicionFacturas)this.cmbRendiciones.SelectedItem, this.txtMotivo.Text);                
                 if(respuesta.Codigo == 0)
                 {
-                    MessageBox.Show("La rendicion fue devuelta con exito");
                     this.cmbRendiciones.SelectedIndex = -1;
                     this.txtMotivo.Clear();
+                    DB.DB.Instancia.recargarFacturas();
+                    MessageBox.Show("La rendicion fue devuelta con exito");
                 }
                 else
                 {

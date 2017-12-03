@@ -16,6 +16,7 @@ namespace PagoAgilFrba.Dominio
         private DateTime vencimiento;
         private List<ItemFactura> items;
         private bool paga = false;
+        private bool rendida = false;
 
         public Factura()
         {
@@ -147,6 +148,18 @@ namespace PagoAgilFrba.Dominio
             set
             {
                 this.paga = value;
+            }
+        }
+
+        public bool Rendida
+        {
+            get
+            {
+                return this.rendida;
+            }
+            set
+            {
+                this.rendida = value;
             }
         }
 
