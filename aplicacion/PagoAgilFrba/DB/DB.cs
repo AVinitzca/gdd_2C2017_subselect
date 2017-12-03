@@ -29,8 +29,8 @@ namespace PagoAgilFrba.DB
             this.parcialmenteCargados = new List<Type>();
 
             this.conexion = new SqlConnection();
-			this.conexion.ConnectionString = "Data Source=RONAN-PC\\SQLEXPRESS;Initial Catalog=GD2C2017;Integrated Security=True";
-			//this.conexion.ConnectionString = "Data Source=localhost\\SQLSERVER2012;Initial Catalog=GD2C2017;Integrated Security=True";
+			//this.conexion.ConnectionString = "Data Source=RONAN-PC\\SQLEXPRESS;Initial Catalog=GD2C2017;Integrated Security=True";
+			this.conexion.ConnectionString = "Data Source=localhost\\SQLSERVER2012;Initial Catalog=GD2C2017;Integrated Security=True";
 			this.conexion.Open();
         }
 
