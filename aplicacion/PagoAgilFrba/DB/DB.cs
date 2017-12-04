@@ -771,6 +771,10 @@ namespace PagoAgilFrba.DB
 
             if (respuesta.Codigo == 0)
             {
+                if(!this.existe(typeof(RendicionFacturas)))
+                {
+                    this.obtenerRendiciones();
+                }
                 this.crearSiNoExiste(typeof(RendicionFacturas), respuesta.Id, rendicion);
             }
             return respuesta;
