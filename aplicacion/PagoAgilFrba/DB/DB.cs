@@ -761,17 +761,17 @@ namespace PagoAgilFrba.DB
 
         public Respuesta crearRendicion(RendicionFacturas rendicion)
         {
-            Respuesta respuesta = this.crear("SP_ABM_RENDICION_ALTA", new Dictionary<string, object>()
+            Respuesta respuesta = this.creacion("SP_ABM_RENDICION_ALTA", new Dictionary<string, object>()
             {
                 {"fecha_rendicion", rendicion.Fecha },
                 {"id_empresa", this.id(rendicion.Empresa) },
                 {"item", 0 },
-                {"porcentaje", rendicion.Porcentaje }                
-            }, rendicion, "NRO_RENDICION");
+                {"porcentaje", rendicion.Porcentaje }
+            }, "NRO_RENDICION");
 
             if (respuesta.Codigo == 0)
             {
-                if(!this.existe(typeof(RendicionFacturas)))
+                if(!this.existe(typeof(RendicionFacturas)) || this.repositorio[typeof(RendicionFacturas)].Count <= 1)
                 {
                     this.obtenerRendiciones();
                 }
