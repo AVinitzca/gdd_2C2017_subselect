@@ -87,7 +87,7 @@ namespace PagoAgilFrba.AbmFactura
             {
                 MessageBox.Show("Error: Se debe seleccionar una empresa");
             }
-            else if (this.dtpFechaVencimiento.Value < DateTime.Today)
+            else if (this.dtpFechaVencimiento.Value < Configuracion.Configuracion.fecha())
             {
                 MessageBox.Show("Error: La fecha de vencimiento debe ser mayor a la fecha actual");
             }
@@ -237,7 +237,6 @@ namespace PagoAgilFrba.AbmFactura
             this.btnCrear.Show();
             this.btnModificar.Hide();
             this.btnCancelar.Hide();
-            this.dgvItems.DataSource = null;
             this.itemsFactura.Clear();
             this.originales.Clear();
         }

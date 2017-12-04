@@ -817,7 +817,6 @@ namespace PagoAgilFrba.DB
                 {"id_empresa", this.id(modificada.Empresa) },
                 {"fecha", modificada.Creacion },
                 {"fecha_vencimiento", modificada.Vencimiento },
-                {"total", modificada.Total },
             });
 
             if(respuesta.Codigo == 0)
