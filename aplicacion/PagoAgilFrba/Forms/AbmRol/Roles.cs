@@ -16,8 +16,8 @@ namespace PagoAgilFrba.AbmRol
     public partial class FormRoles : Form
     {
         private BindingList<Rol> roles;
-        private List<Funcionalidad> aBorrar = new List<Funcionalidad>();
-        private List<Funcionalidad> aAgregar = new List<Funcionalidad>();
+        private List<int> aBorrar = new List<int>();
+        private List<int> aAgregar = new List<int>();
         public FormRoles()
         {
             InitializeComponent();
@@ -72,9 +72,9 @@ namespace PagoAgilFrba.AbmRol
                 {
                     Rol rol = this.roles[e.RowIndex];
                     this.txtNombre.Text = rol.Nombre;    
-                    foreach (Funcionalidad funcionalidad in rol.Funcionalidades)
+                    foreach (int funcionalidad in rol.Funcionalidades)
                     {
-                        this.lstFuncionalidades.SelectedItems.Add(funcionalidad);
+                        this.lstFuncionalidades.SelectedItems.Add(DB.DB.Instancia.encontrar(typeof(Funcionalidad), funcionalidad));
                     }
                     this.btnModificar.Visible = true;
                     this.btnCancelar.Visible = true;
@@ -156,19 +156,19 @@ namespace PagoAgilFrba.AbmRol
         protected void llenar(ref Rol rol)
         {
             rol.Nombre = this.txtNombre.Text;            
-            List<Funcionalidad> funcionalidades = new List<Funcionalidad>();
+            List<int> funcionalidades = new List<int>();
             aBorrar.Clear();
             aAgregar.Clear();
             foreach (object item in this.lstFuncionalidades.SelectedItems)
             {
-                Funcionalidad funcionalidad = (Funcionalidad)item;
-                funcionalidades.Add(funcionalidad);
-                if(!rol.Funcionalidades.Contains(funcionalidad))
+                int id = DB.DB.Instancia.id(item);
+                funcionalidades.Add(id);
+                if(!rol.Funcionalidades.Contains(id))
                 {
-                    aAgregar.Add(funcionalidad);
+                    aAgregar.Add(id);
                 }
             }
-            foreach (Funcionalidad funcionalidad in rol.Funcionalidades)
+            foreach (int funcionalidad in rol.Funcionalidades)
             {
                 if (!funcionalidades.Contains(funcionalidad))
                 {

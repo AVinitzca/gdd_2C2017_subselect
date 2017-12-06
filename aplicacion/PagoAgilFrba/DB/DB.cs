@@ -443,12 +443,18 @@ namespace PagoAgilFrba.DB
                 int id = Convert.ToInt32(row["ID_ROL"]);
                 if (!this.existe(typeof(Rol), id))
                 {
-                    Rol rol = new Rol() { Nombre = Convert.ToString(row["DESCRIPCION"]), Activo = Convert.ToBoolean(row["ACTIVO"])};
+                    Rol rol = new Rol() { Nombre = Convert.ToString(row["DESCRIPCION"]), Activo = Convert.ToBoolean(row["ACTIVO"]) };
                     this.obtenerFuncionalidadesPorRol(rol);
-                    this.crearSiNoExiste(typeof(Rol), id, rol);
-                    this.agregarParcialmenteCargado(typeof(Rol));
+                    this.agregarParcialmenteCargado(typeof(Rol), id, rol);
                 }
-                usuario.Roles.Add((Rol)this.repositorio[typeof(Rol)][id]);
+                if (this.repositorio.ContainsKey(typeof(Rol)) && this.repositorio[typeof(Rol)].ContainsKey(id))
+                {
+                    usuario.Roles.Add((Rol)this.repositorio[typeof(Rol)][id]);
+                }
+                else if (this.parcialmenteCargados[typeof(Rol)].ContainsKey(id))
+                {
+                    usuario.Roles.Add((Rol)this.parcialmenteCargados[typeof(Rol)][id]);
+                }
             }
         }
 
@@ -459,13 +465,20 @@ namespace PagoAgilFrba.DB
             foreach (DataRow row in respuesta.Tabla.Rows)
             {
                 int id = Convert.ToInt32(row["ID_FUNCIONALIDAD"]);
+
                 if (!this.existe(typeof(Funcionalidad), id))
                 {
                     Funcionalidad funcionalidadDeRol = new Funcionalidad() { Descripcion = Convert.ToString(row["DESCRIPCION"]) };
-                    this.crearSiNoExiste(typeof(Funcionalidad), id, funcionalidadDeRol);
-                    this.agregarParcialmenteCargado(typeof(Funcionalidad));
+                    this.agregarParcialmenteCargado(typeof(Funcionalidad), id, funcionalidadDeRol);
                 }
-                rol.agregarFuncionalidad((Funcionalidad)this.repositorio[typeof(Funcionalidad)][id]);
+                if (this.repositorio.ContainsKey(typeof(Funcionalidad)) && this.repositorio[typeof(Funcionalidad)].ContainsKey(id))
+                {
+                    rol.Funcionalidades.Add(id);
+                }
+                else if (this.parcialmenteCargados[typeof(Funcionalidad)].ContainsKey(id))
+                {
+                    rol.Funcionalidades.Add(id);
+                }
             }
         }
 
@@ -678,9 +691,9 @@ namespace PagoAgilFrba.DB
             else
             {
                 Respuesta respuestaFuncionalidad;
-                foreach (Funcionalidad funcionalidad in rolNuevo.Funcionalidades)
+                foreach (int funcionalidad in rolNuevo.Funcionalidades)
                 {
-                    respuestaFuncionalidad = this.modificacion("SP_ABM_ROL_AGREGAR_FUNCIONALIDAD", new Dictionary<string, object>() { { "DESC_ROL", rolNuevo.Nombre }, { "DESC_FUNCIONALIDAD", funcionalidad.Descripcion } });
+                    respuestaFuncionalidad = this.modificacion("SP_ABM_ROL_AGREGAR_FUNCIONALIDAD", new Dictionary<string, object>() { { "DESC_ROL", rolNuevo.Nombre }, { "DESC_FUNCIONALIDAD", ((Funcionalidad)this.encontrar(typeof(Funcionalidad), funcionalidad)).Descripcion } });
                     if(respuestaFuncionalidad.Codigo != 0)
                     {
                         return respuestaFuncionalidad;
@@ -827,24 +840,26 @@ namespace PagoAgilFrba.DB
             return this.modificacion("SP_ABM_EMPRESA_MODIFICAR", new Dictionary<string, object>() { {"id_empresa", this.id(modificada) }, { "nombre", modificada.Nombre }, { "cuit", modificada.Cuit }, { "direccion", modificada.Direccion }, { "id_rubro", this.id(modificada.Rubro) }, { "dia_rend", modificada.DiaRendicion } });
         }
 
-        public Respuesta modificarRol(Rol modificado, List<Funcionalidad> aAgregar, List<Funcionalidad> aBorrar)
+        public Respuesta modificarRol(Rol modificado, List<int> aAgregar, List<int> aBorrar)
         {
             Respuesta respuesta = this.modificacion("SP_ABM_ROL_MODIFICAR_NOMBRE", new Dictionary<string, object>() { { "id_rol", this.id(modificado) }, { "desc_rol", modificado.Nombre }});
             if(respuesta.Codigo == 0)
             {
                 Respuesta deFuncionalidad;
-                foreach (Funcionalidad funcionalidad in aAgregar)
+                foreach (int funcionalidad in aAgregar)
                 {
-                    deFuncionalidad = this.modificacion("SP_ABM_ROL_AGREGAR_FUNCIONALIDAD", new Dictionary<string, object>() { { "desc_rol", modificado.Nombre }, { "desc_funcionalidad", funcionalidad.Descripcion } });
+                    Funcionalidad agregar = (Funcionalidad)this.encontrar(typeof(Funcionalidad), funcionalidad);
+                    deFuncionalidad = this.modificacion("SP_ABM_ROL_AGREGAR_FUNCIONALIDAD", new Dictionary<string, object>() { { "desc_rol", modificado.Nombre }, { "desc_funcionalidad", agregar.Descripcion } });
                     if(deFuncionalidad.Codigo != 0)
                     {
                         return deFuncionalidad;
                     }
                 }
                 
-                foreach (Funcionalidad funcionalidad in aBorrar)
+                foreach (int funcionalidad in aBorrar)
                 {
-                    deFuncionalidad = this.modificacion("SP_ABM_ROL_QUITAR_FUNCIONALIDAD", new Dictionary<string, object>() { { "desc_rol", modificado.Nombre }, { "desc_funcionalidad", funcionalidad.Descripcion } });
+                    Funcionalidad borrar = (Funcionalidad)this.encontrar(typeof(Funcionalidad), funcionalidad);
+                    deFuncionalidad = this.modificacion("SP_ABM_ROL_QUITAR_FUNCIONALIDAD", new Dictionary<string, object>() { { "desc_rol", modificado.Nombre }, { "desc_funcionalidad", borrar.Descripcion } });
                     if (deFuncionalidad.Codigo != 0)
                     {
                         return deFuncionalidad;

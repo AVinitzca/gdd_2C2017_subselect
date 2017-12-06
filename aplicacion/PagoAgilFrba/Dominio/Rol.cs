@@ -12,7 +12,7 @@ namespace PagoAgilFrba.Dominio
        
         private string nombre;
 
-        private List<Funcionalidad> funcionalidades = new List<Funcionalidad>();
+        private List<int> funcionalidades = new List<int>();
 
         private bool activo = true;
 
@@ -29,7 +29,7 @@ namespace PagoAgilFrba.Dominio
         }
 
         [Browsable(false)]
-        public List<Funcionalidad> Funcionalidades
+        public List<int> Funcionalidades
         {
             get
             {
@@ -45,7 +45,8 @@ namespace PagoAgilFrba.Dominio
         {
             get
             {
-                return this.funcionalidades.Aggregate("", (prev, next) => (prev == "") ? next.Descripcion : (prev + ", " + next.Descripcion));
+
+                return this.funcionalidades.Select(funcionalidad => DB.DB.Instancia.encontrar(typeof(Funcionalidad), funcionalidad)).Cast<Funcionalidad>().Aggregate("", (prev, next) => (prev == "") ? next.Descripcion : (prev + ", " + next.Descripcion));
             }
         }
 
@@ -64,7 +65,7 @@ namespace PagoAgilFrba.Dominio
 
         public void agregarFuncionalidad(Funcionalidad funcionalidad)
         {
-            this.funcionalidades.Add(funcionalidad);
+            this.funcionalidades.Add(DB.DB.Instancia.id(funcionalidad));
         }
 
 
