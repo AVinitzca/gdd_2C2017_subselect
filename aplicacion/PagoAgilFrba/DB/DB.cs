@@ -943,7 +943,7 @@ namespace PagoAgilFrba.DB
 
         public List<object> obtenerListado(Type tipoListado, int anio, int trimestre)
         {
-            Listado seleccionado = this.listados.Find(listado => listado.GetType() == tipoListado && listado.Anio == anio && listado.Trimestre == trimestre);
+            Listado seleccionado = null;//this.listados.Find(listado => listado.GetType() == tipoListado && listado.Anio == anio && listado.Trimestre == trimestre);
             if(seleccionado == null)
             {
                 Respuesta respuesta = this.obtener(Configuracion.Configuracion.valor(tipoListado.Name).ToString(), new Dictionary<string, object>()
