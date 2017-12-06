@@ -13,8 +13,8 @@ namespace PagoAgilFrba.Dominio
         private string password;
         private List<Rol> posiblesRoles;
         private List<Sucursal> posiblesSucursales;
-        private Rol rolSeleccionado;
-        private Sucursal sucursalSeleccionada;
+        private int rolSeleccionado;
+        private int sucursalSeleccionada;
 
         private static Usuario logeado;
 
@@ -54,19 +54,19 @@ namespace PagoAgilFrba.Dominio
         }
         public void asignarRol(Rol rol)
         {
-            this.rolSeleccionado = rol;
+            this.rolSeleccionado = DB.DB.Instancia.id(rol);
         }
 
         public void asignarSucursal(Sucursal sucursal)
         {
-            this.sucursalSeleccionada = sucursal;
+            this.sucursalSeleccionada = DB.DB.Instancia.id(sucursal);
         }
 
         public Rol Rol
         {
             get
             {
-                return this.rolSeleccionado;
+                return (Rol)DB.DB.Instancia.encontrar(typeof(Rol), this.rolSeleccionado);
             }
         }
 
@@ -82,7 +82,7 @@ namespace PagoAgilFrba.Dominio
         {
             get
             {
-                return this.sucursalSeleccionada;
+                return (Sucursal)DB.DB.Instancia.encontrar(typeof(Sucursal), this.sucursalSeleccionada);
             }
         }
 

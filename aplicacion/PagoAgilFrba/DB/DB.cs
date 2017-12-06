@@ -19,14 +19,14 @@ namespace PagoAgilFrba.DB
         private SqlConnection conexion;
 
         private Dictionary<Type, Dictionary<int, object>> repositorio;
-        private List<Type> parcialmenteCargados;
+        private Dictionary<Type, Dictionary<int, object>> parcialmenteCargados;
         private List<Listado> listados;
         
 		private DB()
         {
             this.repositorio = new Dictionary<Type, Dictionary<int, object>>();
-            this.listados = new List<Listado>();
-            this.parcialmenteCargados = new List<Type>();
+            this.parcialmenteCargados = new Dictionary<Type, Dictionary<int, object>>();
+            this.listados = new List<Listado>();            
 
             this.conexion = new SqlConnection();
             this.conexion.ConnectionString =
@@ -260,26 +260,39 @@ namespace PagoAgilFrba.DB
 
         protected void agregarParcialmenteCargado(Type tipo)
         {
-            if(!this.parcialmenteCargados.Contains(tipo))
+            if(!this.parcialmenteCargados.ContainsKey(tipo))
             {
-                this.parcialmenteCargados.Add(tipo);
+                this.parcialmenteCargados.Add(tipo, new Dictionary<int, object>());
             }
         }
 
-        public List<T> agregar<T>(Respuesta respuesta, Func<DataRow, T> funcion, string id)
+        protected void agregarParcialmenteCargado(Type tipo, int id, object objeto)
+        {
+            this.agregarParcialmenteCargado(tipo);
+            this.parcialmenteCargados[tipo].Add(id, objeto);
+        }
+
+        public List<T> agregar<T>(Respuesta respuesta, Func<DataRow, T> funcion, string idName)
         {
             List<T> lista = new List<T>();
             foreach(var row in respuesta.Tabla.AsEnumerable())
             {
+                int id = Convert.ToInt32(row[idName]);
                 T nuevo = funcion(row);
-                if(this.existe(nuevo.GetType(), Convert.ToInt32(row[id])))
+                if (this.existe(nuevo.GetType(), id))
                 {
-                    this.repositorio[nuevo.GetType()][Convert.ToInt32(row[id])] = nuevo;
+                    this.repositorio[nuevo.GetType()][id] = nuevo;
                 }
                 else
                 {
-                    this.crearSiNoExiste(nuevo.GetType(), Convert.ToInt32(row[id]), nuevo);
-                }                
+                    this.crearSiNoExiste(nuevo.GetType(), id, nuevo);
+                }
+                
+                if(this.parcialmenteCargados.ContainsKey(nuevo.GetType()) && this.parcialmenteCargados[nuevo.GetType()].ContainsKey(id))
+                {
+                    this.parcialmenteCargados[nuevo.GetType()][id] = this.repositorio[nuevo.GetType()][id];
+                }
+                
                 lista.Add(nuevo);
             }
             return lista;
@@ -299,7 +312,7 @@ namespace PagoAgilFrba.DB
 
         public bool existe(Type tipo)
         {
-            return this.repositorio.ContainsKey(tipo) && !this.parcialmenteCargados.Contains(tipo);
+            return this.repositorio.ContainsKey(tipo);
         }
 
         public bool existe(Type tipo, int id)
@@ -307,9 +320,30 @@ namespace PagoAgilFrba.DB
             return this.existe(tipo) && this.repositorio[tipo].ContainsKey(id);
         }
 
-        protected int id(object objeto)
+        public int id(object objeto)
         {
-            return this.repositorio[objeto.GetType()].FirstOrDefault(x => x.Value == objeto).Key;
+            if(this.repositorio.ContainsKey(objeto.GetType()) && this.repositorio[objeto.GetType()].ContainsValue(objeto))
+            {
+                return this.repositorio[objeto.GetType()].FirstOrDefault(x => x.Value == objeto).Key;
+            }
+            else if (this.parcialmenteCargados.ContainsKey(objeto.GetType()) && this.parcialmenteCargados[objeto.GetType()].ContainsValue(objeto))
+            {
+                return this.parcialmenteCargados[objeto.GetType()].FirstOrDefault(x => x.Value == objeto).Key;
+            }
+            return -1;
+        }
+
+        public object encontrar(Type tipo, int id)
+        {
+            if (this.repositorio.ContainsKey(tipo) && this.repositorio[tipo].ContainsKey(id))
+            {
+                return this.repositorio[tipo][id];
+            }
+            else if (this.parcialmenteCargados.ContainsKey(tipo) && this.parcialmenteCargados[tipo].ContainsKey(id))
+            {
+                return this.parcialmenteCargados[tipo][id];
+            }
+            return null;
         }
 
         protected List<T> obtenerDeRepositorio<T>(Type t)
@@ -445,10 +479,16 @@ namespace PagoAgilFrba.DB
                 if (!this.existe(typeof(Sucursal), id))
                 {
                     Sucursal sucursalDeUsuario = new Sucursal() { Nombre = Convert.ToString(row["NOMBRE"]), Activa = Convert.ToBoolean(row["ACTIVO"]) };
-                    this.crearSiNoExiste(typeof(Sucursal), id, sucursalDeUsuario);
-                    this.agregarParcialmenteCargado(typeof(Sucursal));
+                    this.agregarParcialmenteCargado(typeof(Sucursal), id, sucursalDeUsuario);
                 }
-                usuario.Sucursales.Add((Sucursal)this.repositorio[typeof(Sucursal)][Convert.ToInt32(row["ID_SUCURSAL"])]);
+                if(this.repositorio.ContainsKey(typeof(Sucursal)) && this.repositorio[typeof(Sucursal)].ContainsKey(id))
+                {
+                    usuario.Sucursales.Add((Sucursal)this.repositorio[typeof(Sucursal)][id]);
+                }
+                else if(this.parcialmenteCargados[typeof(Sucursal)].ContainsKey(id))
+                {
+                    usuario.Sucursales.Add((Sucursal)this.parcialmenteCargados[typeof(Sucursal)][id]);
+                }
             }
         }
 
@@ -462,7 +502,7 @@ namespace PagoAgilFrba.DB
                     { "codigo_postal", 0},
                 });
 
-                this.parcialmenteCargados.Remove(typeof(Sucursal));
+                //this.parcialmenteCargados.Remove(typeof(Sucursal));
                 this.agregar<Sucursal>(respuesta,
                     delegate (DataRow row)
                     {
