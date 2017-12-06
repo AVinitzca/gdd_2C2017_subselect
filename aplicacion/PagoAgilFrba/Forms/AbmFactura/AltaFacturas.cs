@@ -40,6 +40,13 @@ namespace PagoAgilFrba.AbmFactura
             modificar.Text = modificar.HeaderText;
             modificar.UseColumnTextForButtonValue = true;
             this.dgvFacturas.Columns.Add(modificar);
+
+            DataGridViewButtonColumn borrar = new DataGridViewButtonColumn();
+            borrar.Name = "dgvColumnBorrar";
+            borrar.HeaderText = "Borrar";
+            borrar.Text = borrar.HeaderText;
+            borrar.UseColumnTextForButtonValue = true;
+            this.dgvFacturas.Columns.Add(borrar);
         }
         
 
@@ -163,6 +170,20 @@ namespace PagoAgilFrba.AbmFactura
                     this.btnCrear.Visible = false;
                     this.gpbIngreso.Tag = factura;
                 }
+                else if (senderGrid.Columns[e.ColumnIndex].Name == "dgvColumnBorrar" && this.gpbIngreso.Tag == null)
+                {
+                    Factura factura = this.facturas[e.RowIndex];
+                    Respuesta respuesta = DB.DB.Instancia.borrarFactura(factura.NumeroFactura);
+                    if (respuesta.Codigo == 0)
+                    {
+                        DB.DB.Instancia.recargarFacturas();
+                        this.facturas.Remove(factura);
+                    }
+                    else
+                    {
+                        MessageBox.Show(respuesta.Mensaje);
+                    }
+                }
             }
         }
 
@@ -176,7 +197,7 @@ namespace PagoAgilFrba.AbmFactura
             {
                 MessageBox.Show("Error: Se debe seleccionar una empresa");
             }
-            else if (this.dtpFechaVencimiento.Value < DateTime.Today)
+            else if (this.dtpFechaVencimiento.Value < Configuracion.Configuracion.fecha())
             {
                 MessageBox.Show("Error: La fecha de vencimiento debe ser mayor a la fecha actual");
             }

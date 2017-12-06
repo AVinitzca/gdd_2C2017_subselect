@@ -348,6 +348,7 @@ namespace PagoAgilFrba.DB
                         Cuit = Convert.ToString(row["CUIT"]),
                         Direccion = Convert.ToString(row["DIRECCION"]),
                         Rubro = (Rubro)this.repositorio[typeof(Rubro)][Convert.ToInt32(row["ID_RUBRO"])],
+                        DiaRendicion = Convert.ToInt32(row["DIA_REND"]),
                         Activo = Convert.ToBoolean(row["ACTIVO"]),
                     };
                 }, "ID_EMPRESA");
@@ -656,7 +657,8 @@ namespace PagoAgilFrba.DB
                 {"nombre", nueva.Nombre},
                 {"cuit", nueva.Cuit},
                 {"direccion", nueva.Direccion},
-                {"id_rubro", this.id(nueva.Rubro)},                
+                {"id_rubro", this.id(nueva.Rubro)},  
+                {"dia_rend", nueva.DiaRendicion},  
             }, nueva);
             if(respuesta.Codigo == 0)
             {
@@ -782,7 +784,7 @@ namespace PagoAgilFrba.DB
 
         public Respuesta modificarEmpresa(Empresa modificada)
         {
-            return this.modificacion("SP_ABM_EMPRESA_MODIFICAR", new Dictionary<string, object>() { {"id_empresa", this.id(modificada) }, { "nombre", modificada.Nombre }, { "cuit", modificada.Cuit }, { "direccion", modificada.Direccion }, { "id_rubro", this.id(modificada.Rubro) } });
+            return this.modificacion("SP_ABM_EMPRESA_MODIFICAR", new Dictionary<string, object>() { {"id_empresa", this.id(modificada) }, { "nombre", modificada.Nombre }, { "cuit", modificada.Cuit }, { "direccion", modificada.Direccion }, { "id_rubro", this.id(modificada.Rubro) }, { "dia_rend", modificada.DiaRendicion } });
         }
 
         public Respuesta modificarRol(Rol modificado, List<Funcionalidad> aAgregar, List<Funcionalidad> aBorrar)
@@ -934,6 +936,11 @@ namespace PagoAgilFrba.DB
             return this.modificacion("DEVOLUCION_RENDICION", new Dictionary<string, object>() { { "nro_rendicion", this.id(rendicion) }, { "motivo", motivo } });
         }
 
+        public Respuesta borrarFactura(int nro_factura)
+        {
+            return this.modificacion("BORRAR_FACTURAS", new Dictionary<string, object>() { { "NRO_FACTURA", nro_factura } });
+        }
+
         public List<object> obtenerListado(Type tipoListado, int anio, int trimestre)
         {
             Listado seleccionado = this.listados.Find(listado => listado.GetType() == tipoListado && listado.Anio == anio && listado.Trimestre == trimestre);
@@ -967,6 +974,16 @@ namespace PagoAgilFrba.DB
             {
                 this.repositorio.Remove(typeof(Factura));
                 this.obtenerFacturas();
+            }
+        }
+
+        public void recargarRendiciones()
+        {
+            // Solo si ya estaban cargadas. Si no, no importa
+            if (this.existe(typeof(RendicionFacturas)))
+            {
+                this.repositorio.Remove(typeof(RendicionFacturas));
+                this.obtenerRendiciones();
             }
         }
 

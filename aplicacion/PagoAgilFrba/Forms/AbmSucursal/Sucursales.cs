@@ -106,6 +106,7 @@ namespace PagoAgilFrba.Forms.AbmSucursal
             }
 
             Sucursal modificada = ((Sucursal)this.gpbIngreso.Tag);
+            int codpos = modificada.CodigoPostal;
             this.llenar(ref modificada);
             this.gpbIngreso.Text = "Nueva Sucursal";
             this.btnCancelar.Visible = false;
@@ -118,6 +119,7 @@ namespace PagoAgilFrba.Forms.AbmSucursal
             }
             else
             {
+                modificada.CodigoPostal = codpos;
                 this.sucursales.ResetItem(this.sucursales.IndexOf(modificada));
             }
             this.gpbIngreso.Tag = null;

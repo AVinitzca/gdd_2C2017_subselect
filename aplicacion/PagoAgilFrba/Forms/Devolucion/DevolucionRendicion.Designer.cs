@@ -39,27 +39,30 @@
             // txtMotivo
             // 
             this.txtMotivo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.txtMotivo.Location = new System.Drawing.Point(55, 205);
+            this.txtMotivo.Location = new System.Drawing.Point(41, 167);
+            this.txtMotivo.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtMotivo.Name = "txtMotivo";
-            this.txtMotivo.Size = new System.Drawing.Size(360, 30);
+            this.txtMotivo.Size = new System.Drawing.Size(416, 26);
             this.txtMotivo.TabIndex = 9;
             // 
             // lblMotivo
             // 
             this.lblMotivo.AutoSize = true;
             this.lblMotivo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.lblMotivo.Location = new System.Drawing.Point(50, 164);
+            this.lblMotivo.Location = new System.Drawing.Point(38, 133);
+            this.lblMotivo.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblMotivo.Name = "lblMotivo";
-            this.lblMotivo.Size = new System.Drawing.Size(70, 25);
+            this.lblMotivo.Size = new System.Drawing.Size(55, 20);
             this.lblMotivo.TabIndex = 8;
             this.lblMotivo.Text = "Motivo";
             // 
             // btnDevolver
             // 
             this.btnDevolver.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.btnDevolver.Location = new System.Drawing.Point(149, 292);
+            this.btnDevolver.Location = new System.Drawing.Point(174, 229);
+            this.btnDevolver.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnDevolver.Name = "btnDevolver";
-            this.btnDevolver.Size = new System.Drawing.Size(173, 61);
+            this.btnDevolver.Size = new System.Drawing.Size(130, 50);
             this.btnDevolver.TabIndex = 7;
             this.btnDevolver.Text = "Devolver";
             this.btnDevolver.UseVisualStyleBackColor = true;
@@ -69,9 +72,10 @@
             // 
             this.lblFactura.AutoSize = true;
             this.lblFactura.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.lblFactura.Location = new System.Drawing.Point(50, 66);
+            this.lblFactura.Location = new System.Drawing.Point(38, 54);
+            this.lblFactura.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblFactura.Name = "lblFactura";
-            this.lblFactura.Size = new System.Drawing.Size(193, 25);
+            this.lblFactura.Size = new System.Drawing.Size(155, 20);
             this.lblFactura.TabIndex = 6;
             this.lblFactura.Text = "Rendicion a devolver";
             // 
@@ -80,18 +84,20 @@
             this.cmbRendiciones.DisplayMember = "Detalle";
             this.cmbRendiciones.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.cmbRendiciones.FormattingEnabled = true;
-            this.cmbRendiciones.Location = new System.Drawing.Point(55, 107);
+            this.cmbRendiciones.Location = new System.Drawing.Point(41, 87);
+            this.cmbRendiciones.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.cmbRendiciones.Name = "cmbRendiciones";
-            this.cmbRendiciones.Size = new System.Drawing.Size(360, 33);
+            this.cmbRendiciones.Size = new System.Drawing.Size(416, 28);
             this.cmbRendiciones.TabIndex = 5;
             this.cmbRendiciones.Text = "Rendicion";
             // 
             // btnVolver
             // 
             this.btnVolver.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.btnVolver.Location = new System.Drawing.Point(149, 371);
+            this.btnVolver.Location = new System.Drawing.Point(174, 300);
+            this.btnVolver.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnVolver.Name = "btnVolver";
-            this.btnVolver.Size = new System.Drawing.Size(173, 61);
+            this.btnVolver.Size = new System.Drawing.Size(130, 50);
             this.btnVolver.TabIndex = 10;
             this.btnVolver.Text = "Volver";
             this.btnVolver.UseVisualStyleBackColor = true;
@@ -99,9 +105,9 @@
             // 
             // FormDevolucionRendicion
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(484, 479);
+            this.ClientSize = new System.Drawing.Size(479, 389);
             this.Controls.Add(this.btnVolver);
             this.Controls.Add(this.txtMotivo);
             this.Controls.Add(this.lblMotivo);
@@ -109,6 +115,7 @@
             this.Controls.Add(this.lblFactura);
             this.Controls.Add(this.cmbRendiciones);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FormDevolucionRendicion";

@@ -84,6 +84,7 @@ namespace PagoAgilFrba.Forms.AbmEmpresa
                     this.txtCuit.Text = empresa.Cuit;
                     this.txtDireccion.Text = empresa.Direccion;
                     this.cmbRubro.SelectedItem = empresa.Rubro;
+                    this.numDiasRend.Text = Convert.ToString(empresa.DiaRendicion);
                     this.gpbIngreso.Text = "Modificar Empresa";
                     this.btnModificar.Visible = true;
                     this.btnCancelar.Visible = true;
@@ -117,6 +118,7 @@ namespace PagoAgilFrba.Forms.AbmEmpresa
             }
 
             Empresa modificada = ((Empresa)this.gpbIngreso.Tag);
+            String cuit = modificada.Cuit;
             this.llenar(ref modificada);
             this.gpbIngreso.Text = "Nueva Empresa";            
             this.btnCancelar.Visible = false;
@@ -124,10 +126,15 @@ namespace PagoAgilFrba.Forms.AbmEmpresa
             this.btnCrear.Visible = true;
             Respuesta respuesta = DB.DB.Instancia.modificarEmpresa(modificada);
             if(respuesta.Codigo == 0)
-            {
-                this.gpbIngreso.Tag = null;
+            {       
                 this.empresas.ResetItem(this.empresas.IndexOf(modificada));
-            }            
+            }
+            else
+            {
+                modificada.Cuit = cuit;
+                MessageBox.Show(respuesta.Mensaje);
+            }
+            this.gpbIngreso.Tag = null;
         }
 
         private void btnCancelar_Click(object sender, EventArgs e)
@@ -166,6 +173,10 @@ namespace PagoAgilFrba.Forms.AbmEmpresa
             {
                 MessageBox.Show("Error: El rubro de la empresa no puede estar vacio");
             }
+            else if (this.numDiasRend.Text == null)
+            {
+                MessageBox.Show("Error: El dia de rendicion no puede ser nulo");
+            }
             else
             {
                 return true;
@@ -179,6 +190,7 @@ namespace PagoAgilFrba.Forms.AbmEmpresa
             empresa.Cuit = this.txtCuit.Text;
             empresa.Direccion = this.txtDireccion.Text;
             empresa.Rubro = (Rubro)this.cmbRubro.SelectedItem;
+            empresa.DiaRendicion = Convert.ToInt32(this.numDiasRend.Text);
             this.txtNombre.Clear();
             this.txtCuit.Clear();
             this.txtDireccion.Clear();
@@ -211,6 +223,11 @@ namespace PagoAgilFrba.Forms.AbmEmpresa
             FormMenuPrincipal menuPrincipal = new FormMenuPrincipal();
             this.Hide();
             menuPrincipal.Show();
+        }
+
+        private void numDiasRend_ValueChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

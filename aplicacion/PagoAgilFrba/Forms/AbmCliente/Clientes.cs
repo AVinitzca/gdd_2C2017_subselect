@@ -111,14 +111,25 @@ namespace PagoAgilFrba.AbmCliente
             }
 
             Cliente modificada = ((Cliente)this.gpbIngreso.Tag);
+            String mail = modificada.Email;
             this.llenar(ref modificada);
             this.gpbIngreso.Text = "Nueva Cliente";
             this.btnCancelar.Visible = false;
             this.btnModificar.Visible = false;
             this.btnCrear.Visible = true;
-            DB.DB.Instancia.modificarCliente(modificada);
-            this.clientes.ResetItem(this.clientes.IndexOf(modificada));
+            Respuesta respuesta = DB.DB.Instancia.modificarCliente(modificada);
+            if(respuesta.Codigo == 0)
+            {
+                this.clientes.ResetItem(this.clientes.IndexOf(modificada));
+                
+            }
+            else
+            {
+                modificada.Email = mail;
+                MessageBox.Show(respuesta.Mensaje);
+            }
             this.gpbIngreso.Tag = null;
+            
         }
 
         private void btnCancelar_Click(object sender, EventArgs e)

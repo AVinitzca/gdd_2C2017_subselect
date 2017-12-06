@@ -35,19 +35,24 @@ namespace PagoAgilFrba.Rendicion
             {
                 MessageBox.Show("Error: Se debe ingresar un porcentaje de comision para la rendicion");
             }
+            else if (((Empresa)this.cmbEmpresas.SelectedItem).DiaRendicion != Configuracion.Configuracion.fecha().Day)
+            {
+                MessageBox.Show("Error: La empresa no tiene permitido rendir este dia");
+            }
             else
             {
                 RendicionFacturas rendicion = new RendicionFacturas();
                 rendicion.Empresa = (Empresa)this.cmbEmpresas.SelectedItem;
                 rendicion.Fecha = Configuracion.Configuracion.fecha();
                 rendicion.Porcentaje = Double.Parse(this.txtPorcentaje.Text);
+
                 Respuesta respuesta = DB.DB.Instancia.crearRendicion(rendicion);
-                if(respuesta.Codigo == 0)
+                if (respuesta.Codigo == 0)
                 {
                     this.cmbEmpresas.SelectedIndex = -1;
                     this.txtPorcentaje.Clear();
                     DB.DB.Instancia.recargarFacturas();
-                    MessageBox.Show("Se rindieron las facturas pagas para la empresa");                    
+                    MessageBox.Show("Se rindieron las facturas pagas para la empresa");
                 }
                 else
                 {
