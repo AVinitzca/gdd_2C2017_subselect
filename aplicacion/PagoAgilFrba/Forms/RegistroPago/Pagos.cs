@@ -33,7 +33,7 @@ namespace PagoAgilFrba.RegistroPago
             if(this.cmbEmpresas.SelectedItem != null)
             {
                 this.lstFacturas.Items.AddRange(DB.DB.Instancia.obtenerFacturas((Empresa)this.cmbEmpresas.SelectedItem).Where(
-                    factura => factura.Vencimiento > Configuracion.Configuracion.fecha() && factura.Paga == false).ToArray());
+                    factura => factura.Vencimiento >= Configuracion.Configuracion.fecha() && factura.Paga == false).ToArray());
             }
         }
 
