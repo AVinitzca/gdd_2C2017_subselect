@@ -444,7 +444,6 @@ namespace PagoAgilFrba.DB
                 if (!this.existe(typeof(Rol), id))
                 {
                     Rol rol = new Rol() { Nombre = Convert.ToString(row["DESCRIPCION"]), Activo = Convert.ToBoolean(row["ACTIVO"]) };
-                    this.obtenerFuncionalidadesPorRol(rol);
                     this.agregarParcialmenteCargado(typeof(Rol), id, rol);
                 }
                 if (this.repositorio.ContainsKey(typeof(Rol)) && this.repositorio[typeof(Rol)].ContainsKey(id))
@@ -458,7 +457,7 @@ namespace PagoAgilFrba.DB
             }
         }
 
-        protected void obtenerFuncionalidadesPorRol(Rol rol)
+        public void obtenerFuncionalidadesPorRol(Rol rol)
         {
             Respuesta respuesta = this.obtenerConEfecto("GET_FUNCIONALIDADES_POR_ROL", new Dictionary<string, object>() { { "DESCRIPCION", rol.Nombre } });
              

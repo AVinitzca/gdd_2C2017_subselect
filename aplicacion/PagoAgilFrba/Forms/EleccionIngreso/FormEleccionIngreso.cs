@@ -39,6 +39,7 @@ namespace PagoAgilFrba.EleccionRol
             {
                 Usuario.Logeado.asignarRol((Rol)this.cmbRoles.SelectedItem);
                 Usuario.Logeado.asignarSucursal((Sucursal)this.cmbSucursales.SelectedItem);
+                DB.DB.Instancia.obtenerFuncionalidadesPorRol(Usuario.Logeado.Rol);
                 Form form = new FormMenuPrincipal();
                 form.Show();
                 this.Hide();                
