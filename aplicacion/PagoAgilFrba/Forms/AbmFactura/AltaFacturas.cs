@@ -28,6 +28,7 @@ namespace PagoAgilFrba.AbmFactura
             // Crea la lista de facturas obteniendolas de la DB
             this.facturas = new BindingList<Factura>(DB.DB.Instancia.obtenerFacturas());
             this.itemsFactura = new BindingList<ItemFactura>();
+            this.originales = new BindingList<ItemFactura>();
             this.dgvItems.DataSource = this.itemsFactura;
             this.dgvFacturas.DataSource = this.facturas;
             this.dtpCreacion.Value = Configuracion.Configuracion.fecha();
