@@ -16,6 +16,8 @@ namespace PagoAgilFrba.Dominio
 
         public override void procesar(DataTable tabla)
         {
+            // Agrega al listado los Clientes con mas pagos
+            // Procesando la tabla de la DB
             foreach (DataRow row in tabla.Rows)
             {
                 ClienteMasPagos cobro = new ClienteMasPagos(Convert.ToString(row["NOMBRE"]), Convert.ToString(row["APELLIDO"]), Convert.ToInt32(row["DNI"]), Convert.ToInt32(row["CANTIDAD"]));

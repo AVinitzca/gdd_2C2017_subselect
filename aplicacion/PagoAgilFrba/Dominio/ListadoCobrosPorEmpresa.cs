@@ -14,6 +14,8 @@ namespace PagoAgilFrba.Dominio
            
         public override void procesar(DataTable tabla)
         {
+            // Agrega al listado de mayores cobros por empresa
+            // Procesando la tabla de la DB
             foreach (DataRow row in tabla.Rows)
             {
                 CobroPorEmpresa cobro = new CobroPorEmpresa(Convert.ToString(row["NOMBRE"]), Convert.ToString(row["CUIT"]), Convert.ToDouble(row["TOTAL"]));

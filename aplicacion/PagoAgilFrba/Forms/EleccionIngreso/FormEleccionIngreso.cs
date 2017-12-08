@@ -1,13 +1,8 @@
 ﻿using PagoAgilFrba.Dominio;
 using PagoAgilFrba.Forms.MenuPrincipal;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace PagoAgilFrba.EleccionRol
@@ -21,6 +16,7 @@ namespace PagoAgilFrba.EleccionRol
 
         private void formElegirRol_Load(object sender, EventArgs e)
         {            
+            // Carga los roles y sucursales activas del usuario
             this.cmbRoles.Items.AddRange(Usuario.Logeado.Roles.Where(rol => rol.Activo).ToArray());
             this.cmbSucursales.Items.AddRange(Usuario.Logeado.Sucursales.Where(sucursal => sucursal.Activa).ToArray());
         }
@@ -37,6 +33,9 @@ namespace PagoAgilFrba.EleccionRol
             }
             else
             {
+                // Asigna rol y sucursal seleccionados
+                // Obtiene las funcionalidades del Rol seleccionado
+                // Va al menu principal
                 Usuario.Logeado.asignarRol((Rol)this.cmbRoles.SelectedItem);
                 Usuario.Logeado.asignarSucursal((Sucursal)this.cmbSucursales.SelectedItem);
                 DB.DB.Instancia.obtenerFuncionalidadesPorRol(Usuario.Logeado.Rol);

@@ -25,10 +25,13 @@ namespace PagoAgilFrba.AbmRol
                 
         private void FormRoles_Load(object sender, EventArgs e)
         {
+            // Crea la lista de roles
             this.roles = new BindingList<Rol>();
             this.lstFuncionalidades.Items.AddRange(DB.DB.Instancia.obtenerFuncionalidades().ToArray());
             this.cargarRoles();            
             this.dgvRoles.DataSource = roles;
+
+            // Crea los botones de modificar y borrar
             DataGridViewButtonColumn modificar = new DataGridViewButtonColumn();
             DataGridViewButtonColumn borrar = new DataGridViewButtonColumn();
             modificar.Name = "dgvColumnModificar";
@@ -50,6 +53,11 @@ namespace PagoAgilFrba.AbmRol
                 return;
             }
 
+            // Crea un rol nuevo
+            // Lo llena con los datos del formulario
+            // Trata de crear un Rol nuevo
+            // Si todo sale bien, lo agrega a la lista
+
             Rol rolNuevo = new Rol();
             this.llenar(ref rolNuevo);
             Respuesta respuesta = DB.DB.Instancia.crearRol(rolNuevo);
@@ -65,9 +73,13 @@ namespace PagoAgilFrba.AbmRol
 
         private void dgvRoles_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+            // Escucha clicks del datagridview
             var senderGrid = (DataGridView)sender;
             if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn && e.RowIndex >= 0)
             {
+                // Si se clickeo modificar busca sus funcionalidades y las selecciona de la lista
+                // Tambien agrega el valor de su nombre a los campos
+                // Crea un Tag a ese rol y oculta/muestra botones
                 if(senderGrid.Columns[e.ColumnIndex].Name == "dgvColumnModificar" && this.gpbNuevoRol.Tag == null)
                 {
                     Rol rol = this.roles[e.RowIndex];
@@ -81,6 +93,8 @@ namespace PagoAgilFrba.AbmRol
                     this.btnCrear.Visible = false;
                     this.gpbNuevoRol.Tag = rol;
                 }
+                // Si se quiere borrar, se llama a la DB
+                // Si todo sale bien, se actualiza la lista
                 else if (senderGrid.Columns[e.ColumnIndex].Name == "dgvColumnBorrar")
                 {
                     Respuesta respuesta = DB.DB.Instancia.cambiarEstado(this.roles[e.RowIndex]);
@@ -107,18 +121,29 @@ namespace PagoAgilFrba.AbmRol
                 return;
             }
 
+            // Se modifica el Rol
+            // Se lo llena con los valores de los campos
+            // Se ocultan/muestran botones
+
             Rol modificado = ((Rol)this.gpbNuevoRol.Tag);
             this.llenar(ref modificado);
             this.btnCancelar.Visible = false;
             this.btnModificar.Visible = false;
             this.btnCrear.Visible = true;
+
+            // Se llama a la DB
+            // Si todo sale bien, borra el tag y actualiza el item
+
             Respuesta respuesta = DB.DB.Instancia.modificarRol(modificado, this.aAgregar, this.aBorrar);
             if (respuesta.Codigo != 0)
             {
                 MessageBox.Show(respuesta.Mensaje);
             }
-            this.roles.ResetItem(this.roles.IndexOf(modificado));
-            this.gpbNuevoRol.Tag = null;
+            else
+            {
+                this.roles.ResetItem(this.roles.IndexOf(modificado));
+                this.gpbNuevoRol.Tag = null;
+            }            
         }
 
         private void btnCancelar_Click(object sender, EventArgs e)
@@ -128,6 +153,7 @@ namespace PagoAgilFrba.AbmRol
         
         protected void cancelar()
         {
+            // Limpia los campos y el tag
             this.gpbNuevoRol.Tag = null;
             this.txtNombre.Clear();
             this.lstFuncionalidades.ClearSelected();
@@ -138,6 +164,7 @@ namespace PagoAgilFrba.AbmRol
 
         protected bool validarFormulario()
         {
+            // Valida el formulario
             if (this.txtNombre.Text == "")
             {
                 MessageBox.Show("Error: El nombre del rol no puede estar vacio");                
@@ -155,6 +182,16 @@ namespace PagoAgilFrba.AbmRol
 
         protected void llenar(ref Rol rol)
         {
+            // Llena al Rol con los datos del formulario
+            // Llena dos listas: aAgregar y aBorrar
+            // Cada lista funciona como diferencia con el Rol sin modificar
+            // Es decir, si el Rol tenia la funcionalidad "Facturas" y ahora ya no la tiene
+            // La funcionalidad esta en la lista "aBorrar"
+            // Si el Rol tiene una funcionalidad que antes no tenia "Clientes"
+            // La funcionalidad esta en la lista "aAgregar"
+            // Esto es para comunicacion con la base de datos
+            // Por ultimo limpia los campos
+
             rol.Nombre = this.txtNombre.Text;            
             List<int> funcionalidades = new List<int>();
             aBorrar.Clear();
@@ -183,11 +220,13 @@ namespace PagoAgilFrba.AbmRol
 
         protected void cargarRoles()
         {
+            // Obtiene los roles
             this.roles = new BindingList<Rol>(DB.DB.Instancia.obtenerRoles("", false));
         }
 
         private void btnVolver_Click(object sender, EventArgs e)
         {
+            // Vuelve al menu principal
             FormMenuPrincipal menuPrincipal = new FormMenuPrincipal();
             this.Hide();
             menuPrincipal.Show();

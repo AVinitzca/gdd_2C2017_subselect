@@ -11,6 +11,7 @@ namespace PagoAgilFrba.Utils
     {
         public static void addRange<T>(ref BindingList<T> list, List<T> collection)
         {
+            // Agrega una List a una BindingList
             foreach(T t in collection)
             {
                 if(!list.Contains(t))

@@ -12,6 +12,7 @@ namespace PagoAgilFrba.Dominio
        
         private string nombre;
 
+        // Es un entero para evitar problemas de referencias, se guarda su ID
         private List<int> funcionalidades = new List<int>();
 
         private bool activo = true;
@@ -45,7 +46,8 @@ namespace PagoAgilFrba.Dominio
         {
             get
             {
-
+                // Devuelve la lista de funcionalidades como una cadena de caraceteres
+                // Por Descripcion, separadas por una coma
                 return this.funcionalidades.Select(funcionalidad => DB.DB.Instancia.encontrar(typeof(Funcionalidad), funcionalidad)).Cast<Funcionalidad>().Aggregate("", (prev, next) => (prev == "") ? next.Descripcion : (prev + ", " + next.Descripcion));
             }
         }

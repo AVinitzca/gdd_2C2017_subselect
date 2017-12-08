@@ -25,11 +25,15 @@ namespace PagoAgilFrba.Forms.AbmEmpresa
 
         private void Empresas_Load(object sender, EventArgs e)
         {
+            // Carga la lista de empresas
+            // Tambien la lista de rubros
+
             this.empresas = new BindingList<Empresa>();
             this.cmbRubro.Items.AddRange(DB.DB.Instancia.obtenerRubros().ToArray());
             this.cmbFiltroRubro.Items.AddRange(DB.DB.Instancia.obtenerRubros().ToArray());
             this.cargarEmpresas();
             this.dgvEmpresas.DataSource = empresas;
+            // Pone el nombre de la propiedad en el datagridview
             foreach(DataGridViewColumn c in this.dgvEmpresas.Columns)
             {
                 if(c.Name == "Rubro")
@@ -37,6 +41,7 @@ namespace PagoAgilFrba.Forms.AbmEmpresa
                     c.DataPropertyName = "RubroDescripcion";
                 }
             }
+            // Crea los botones de modificar y borrar
             DataGridViewButtonColumn modificar = new DataGridViewButtonColumn();
             DataGridViewButtonColumn borrar = new DataGridViewButtonColumn();
             modificar.Name = "dgvColumnModificar";
@@ -57,9 +62,12 @@ namespace PagoAgilFrba.Forms.AbmEmpresa
             {
                 return;
             }
-            
+            // Crea una nueva empresa
+            // La llena con los datos del formulario
             Empresa nueva = new Empresa();
             this.llenar(ref nueva);            
+            // Informa a la DB
+            // Si no hubo ningun problema, agrega la empresa
             Respuesta respuesta = DB.DB.Instancia.crearEmpresa(nueva);
             if (respuesta.Codigo == 0)
             {
@@ -73,9 +81,12 @@ namespace PagoAgilFrba.Forms.AbmEmpresa
 
         private void dgvEmpresas_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+            // Se fija que columna fue clickeada
             var senderGrid = (DataGridView)sender;
             if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn && e.RowIndex >= 0)
             {
+                // Si fue clickeada modificar, obtiene al objeto de esa fila y llena los campos con sus datos
+                // Tambien pone un tag para marcar a ese objeto
                 if (senderGrid.Columns[e.ColumnIndex].Name == "dgvColumnModificar" && this.gpbIngreso.Tag == null)
                 {
                     Empresa empresa = this.empresas[e.RowIndex];
@@ -91,6 +102,8 @@ namespace PagoAgilFrba.Forms.AbmEmpresa
                     this.btnCrear.Visible = false;
                     this.gpbIngreso.Tag = empresa;
                 }
+                // Si fue clickeada borrar, trata de borrar al objeto en la DB
+                // Si todo sale bien, actualiza la vista y borra el tag
                 else if (senderGrid.Columns[e.ColumnIndex].Name == "dgvColumnBorrar")
                 {
                     Respuesta respuesta = DB.DB.Instancia.cambiarEstado(this.empresas[e.RowIndex]);
@@ -116,7 +129,9 @@ namespace PagoAgilFrba.Forms.AbmEmpresa
             {
                 return;
             }
-
+            // Modifica una Empresa segun el tag
+            // Llena la empresa con los datos del formulario
+            // Limpia el formulario
             Empresa modificada = ((Empresa)this.gpbIngreso.Tag);
             String cuit = modificada.Cuit;
             this.llenar(ref modificada);
@@ -124,9 +139,12 @@ namespace PagoAgilFrba.Forms.AbmEmpresa
             this.btnCancelar.Visible = false;
             this.btnModificar.Visible = false;
             this.btnCrear.Visible = true;
+            // Llama a la DB
+            // Si no hubo problema en modificar, refresca el item
             Respuesta respuesta = DB.DB.Instancia.modificarEmpresa(modificada);
             if(respuesta.Codigo == 0)
-            {       
+            {
+                this.gpbIngreso.Tag = null;
                 this.empresas.ResetItem(this.empresas.IndexOf(modificada));
             }
             else
@@ -134,7 +152,6 @@ namespace PagoAgilFrba.Forms.AbmEmpresa
                 modificada.Cuit = cuit;
                 MessageBox.Show(respuesta.Mensaje);
             }
-            this.gpbIngreso.Tag = null;
         }
 
         private void btnCancelar_Click(object sender, EventArgs e)
@@ -144,6 +161,7 @@ namespace PagoAgilFrba.Forms.AbmEmpresa
 
         protected void cancelar()
         {
+            // Borra el tag y limpia el formulario
             this.gpbIngreso.Tag = null;
             this.gpbIngreso.Text = "Nueva Empresa";
             this.txtNombre.Clear();
@@ -157,6 +175,7 @@ namespace PagoAgilFrba.Forms.AbmEmpresa
 
         protected bool validarFormulario()
         {
+            // Valida el formulario
             if (this.txtNombre.Text == "")
             {
                 MessageBox.Show("Error: El nombre de la empresa no puede estar vacio");                
@@ -186,6 +205,7 @@ namespace PagoAgilFrba.Forms.AbmEmpresa
 
         protected void llenar(ref Empresa empresa)
         {
+            // Llena la Empresa y limpia el formulario
             empresa.Nombre = this.txtNombre.Text;
             empresa.Cuit = this.txtCuit.Text;
             empresa.Direccion = this.txtDireccion.Text;
@@ -199,6 +219,7 @@ namespace PagoAgilFrba.Forms.AbmEmpresa
 
         protected void cargarEmpresas()
         {
+            // Busca empresas segun los campos de filtro
             this.empresas = new BindingList<Empresa>(DB.DB.Instancia.obtenerEmpresas(this.txtFiltroNombre.Text, this.txtFiltroCuit.Text, (Rubro)this.cmbFiltroRubro.SelectedItem, false));
             this.dgvEmpresas.DataSource = this.empresas;
         }
@@ -220,14 +241,11 @@ namespace PagoAgilFrba.Forms.AbmEmpresa
 
         private void btnVolver_Click(object sender, EventArgs e)
         {
+            // Vuelve al menu principal
             FormMenuPrincipal menuPrincipal = new FormMenuPrincipal();
             this.Hide();
             menuPrincipal.Show();
         }
-
-        private void numDiasRend_ValueChanged(object sender, EventArgs e)
-        {
-
-        }
+        
     }
 }

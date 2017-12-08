@@ -295,7 +295,6 @@
             0,
             0,
             0});
-            this.numDiasRend.ValueChanged += new System.EventHandler(this.numDiasRend_ValueChanged);
             // 
             // FormEmpresas
             // 

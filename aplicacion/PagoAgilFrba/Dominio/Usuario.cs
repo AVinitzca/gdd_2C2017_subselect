@@ -1,9 +1,5 @@
 ﻿using PagoAgilFrba.DB;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PagoAgilFrba.Dominio
 {
@@ -13,6 +9,8 @@ namespace PagoAgilFrba.Dominio
         private string password;
         private List<Rol> posiblesRoles;
         private List<Sucursal> posiblesSucursales;
+        // Son enteros que guardan los IDs seleccionados
+        // Para evitar problemas de sincronizacion
         private int rolSeleccionado;
         private int sucursalSeleccionada;
 
@@ -28,7 +26,10 @@ namespace PagoAgilFrba.Dominio
 
         public Respuesta logear()
         {
+            // Trata de logear en la DB
             Respuesta respuesta = DB.DB.Instancia.logear(this);
+            // Si todo sale bien, busca los roles y sucursales posibles
+            // Tambien se autoasigna como logeado
             if(respuesta.Codigo == 0)
             {
                 DB.DB.Instancia.obtenerRolesParaUsuario(this);

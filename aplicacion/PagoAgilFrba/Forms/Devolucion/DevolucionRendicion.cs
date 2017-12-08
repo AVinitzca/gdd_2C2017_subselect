@@ -22,11 +22,13 @@ namespace PagoAgilFrba.Forms.Devolucion
 
         private void DevolucionRendicion_Load(object sender, EventArgs e)
         {
+            // Obtiene las rendiciones
             this.cmbRendiciones.Items.AddRange(DB.DB.Instancia.obtenerRendiciones().ToArray());
         }
 
         private void btnDevolver_Click(object sender, EventArgs e)
         {
+            // Valida el formulario
             if(this.cmbRendiciones.SelectedItem == null)
             {
                 MessageBox.Show("Error: Se debe especificar el motivo de la devolucion");
@@ -37,6 +39,8 @@ namespace PagoAgilFrba.Forms.Devolucion
             }
             else
             {
+                // Informa a la DB
+                // Si todo sale bien, borra la rendicion de la lista y recarga facturas/rendiciones
                 Respuesta respuesta = DB.DB.Instancia.devolverRendicion((RendicionFacturas)this.cmbRendiciones.SelectedItem, this.txtMotivo.Text);                
                 if(respuesta.Codigo == 0)
                 {
@@ -56,6 +60,7 @@ namespace PagoAgilFrba.Forms.Devolucion
 
         private void btnVolver_Click(object sender, EventArgs e)
         {
+            // Vuelve al menu principal
             FormMenuPrincipal menuPrincipal = new FormMenuPrincipal();
             this.Hide();
             menuPrincipal.Show();

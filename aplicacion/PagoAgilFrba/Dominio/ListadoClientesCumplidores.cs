@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PagoAgilFrba.Dominio
 {
@@ -13,6 +9,8 @@ namespace PagoAgilFrba.Dominio
 
         public override void procesar(DataTable tabla)
         {
+            // Agrega al listado los clientes cumplidores
+            // Procesando la tabla
             foreach(DataRow row in tabla.Rows)
             {
                 ClienteCumplidor cumplidor = new ClienteCumplidor(Convert.ToString(row["NOMBRE"]), Convert.ToString(row["APELLIDO"]), Convert.ToInt32(row["DNI"]), Convert.ToInt32(row["TOTAL"]));

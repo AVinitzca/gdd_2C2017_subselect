@@ -37,8 +37,11 @@ namespace PagoAgilFrba.Dominio
             }
         }
 
+        // Metodo para ser pisado por clases herederas
+        // Procesa la tabla, cada listado lo hace a su manera
         public abstract void procesar(DataTable tabla);
 
+        // Obtiene todos los listados existentes
         public static List<Listado> Listados
         {
             get

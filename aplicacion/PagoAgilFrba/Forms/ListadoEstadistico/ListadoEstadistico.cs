@@ -22,6 +22,7 @@ namespace PagoAgilFrba.ListadoEstadistico
 
         private void FormListadoEstadistico_Load(object sender, EventArgs e)
         {
+            // Configura los campos
             this.numAnio.Maximum = Configuracion.Configuracion.fecha().Year;
             this.numAnio.Value = this.numAnio.Maximum;
             this.cmbListado.Items.AddRange(Listado.Listados.ToArray());
@@ -44,6 +45,7 @@ namespace PagoAgilFrba.ListadoEstadistico
 
         protected void recalcularListado()
         {
+            // Recarga el listado en base a filtros y el listado seleccionado
             if(this.cmbListado.SelectedItem != null)
             {
                 this.dgvListado.DataSource = DB.DB.Instancia.obtenerListado(this.cmbListado.SelectedItem.GetType(), Convert.ToInt32(this.numAnio.Value), Convert.ToInt32(this.numTrimestre.Value));
@@ -52,6 +54,7 @@ namespace PagoAgilFrba.ListadoEstadistico
 
         private void btnVolver_Click(object sender, EventArgs e)
         {
+            // Vuelve al menu principal
             FormMenuPrincipal menuPrincipal = new FormMenuPrincipal();
             this.Hide();
             menuPrincipal.Show();

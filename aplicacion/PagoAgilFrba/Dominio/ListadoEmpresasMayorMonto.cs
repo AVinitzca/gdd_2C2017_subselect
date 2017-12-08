@@ -13,6 +13,8 @@ namespace PagoAgilFrba.Dominio
 
         public override void procesar(DataTable tabla)
         {
+            // Agrega al listado de mayores montos cobrados por empresa
+            // Procesando la tabla de la DB
             foreach (DataRow row in tabla.Rows)
             {
                 EmpresaMayorMonto empresa = new EmpresaMayorMonto(Convert.ToString(row["NOMBRE"]), Convert.ToString(row["CUIT"]), Convert.ToDouble(row["MAXIMA"]));

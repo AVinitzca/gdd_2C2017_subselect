@@ -24,9 +24,12 @@ namespace PagoAgilFrba.AbmCliente
 
         private void FormClientes_Load(object sender, EventArgs e)
         {
+            // Se crea la lista de clientes y se los carga desde la DB
             this.clientes = new BindingList<Cliente>();
             this.cargarClientes();
             this.dgvClientes.DataSource = clientes;
+
+            // Se crean los botones de modificar y borrar para cada fila
             DataGridViewButtonColumn modificar = new DataGridViewButtonColumn();
             DataGridViewButtonColumn borrar = new DataGridViewButtonColumn();
             modificar.Name = "dgvColumnModificar";
@@ -47,10 +50,11 @@ namespace PagoAgilFrba.AbmCliente
             {
                 return;
             }
-
+            // Si el formulario es valido, se carga el objeto cliente y se lo registra en la base de datos
             Cliente nuevo = new Cliente();
             this.llenar(ref nuevo);
             Respuesta respuesta = DB.DB.Instancia.crearCliente(nuevo);
+            // Si todo salio bien, se lo agrega a la lista
             if(respuesta.Codigo == 0)
             {
                 this.clientes.Add(nuevo);
@@ -63,9 +67,12 @@ namespace PagoAgilFrba.AbmCliente
 
         private void dgvClientes_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+            // Vemos que columna fue clickeada
             var senderGrid = (DataGridView)sender;
             if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn && e.RowIndex >= 0)
             {
+                // Si fue clickeada modificar, seteamos los campos con los valores del objeto de esa fila
+                // Tambien ponemos en el groupbox un tag al objeto, para saber cual fue
                 if (senderGrid.Columns[e.ColumnIndex].Name == "dgvColumnModificar" && this.gpbIngreso.Tag == null)
                 {
                     Cliente cliente = this.clientes[e.RowIndex];
@@ -84,6 +91,8 @@ namespace PagoAgilFrba.AbmCliente
                     this.btnCrear.Visible = false;
                     this.gpbIngreso.Tag = cliente;
                 }
+                // Si fue borrar, informamos a la base de datos
+                // Si todo sale bien, refrescamos al item y borramos el tag
                 else if (senderGrid.Columns[e.ColumnIndex].Name == "dgvColumnBorrar")
                 {                                  
                     Respuesta respuesta = DB.DB.Instancia.cambiarEstado(this.clientes[e.RowIndex]);          
@@ -109,14 +118,15 @@ namespace PagoAgilFrba.AbmCliente
             {
                 return;
             }
-
+            // Llenamos al cliente con sus nuevos datos
             Cliente modificada = ((Cliente)this.gpbIngreso.Tag);
             String mail = modificada.Email;
             this.llenar(ref modificada);
-            this.gpbIngreso.Text = "Nueva Cliente";
+            this.gpbIngreso.Text = "Nuevo Cliente";
             this.btnCancelar.Visible = false;
             this.btnModificar.Visible = false;
             this.btnCrear.Visible = true;
+            // Informamos a la DB, si todo sale bien actualizamos
             Respuesta respuesta = DB.DB.Instancia.modificarCliente(modificada);
             if(respuesta.Codigo == 0)
             {
@@ -139,6 +149,7 @@ namespace PagoAgilFrba.AbmCliente
 
         protected void cancelar()
         {
+            // Borramos los campos y limpiamos el tag
             this.gpbIngreso.Tag = null;
             this.gpbIngreso.Text = "Nueva Cliente";
             this.txtNombre.Clear();
@@ -157,6 +168,7 @@ namespace PagoAgilFrba.AbmCliente
         protected bool validarFormulario()
         {
             int i;
+            // Valida todos los campos del formulario
             if (this.txtNombre.Text == "")
             {
                 MessageBox.Show("Error: El nombre del cliente no puede estar vacio");
@@ -194,6 +206,8 @@ namespace PagoAgilFrba.AbmCliente
 
         protected void llenar(ref Cliente cliente)
         {
+            // Llena al cliente con los datos de los campos
+            // Borra el contenido de los campos
             cliente.Nombre = this.txtNombre.Text;
             cliente.Apellido = this.txtApellido.Text;
             cliente.DNI = Int32.Parse(this.txtDNI.Text);
@@ -214,18 +228,19 @@ namespace PagoAgilFrba.AbmCliente
 
         protected void cargarClientes()
         {        
+            // Busca clientes segun los campos de filtros
             this.clientes = new BindingList<Cliente>(DB.DB.Instancia.obtenerClientes(this.txtFiltroNombre.Text, this.txtFiltroApellido.Text, this.txtFiltroDNI.Text == "" ? 0 : Int32.Parse(this.txtFiltroDNI.Text), false));
             this.dgvClientes.DataSource = this.clientes;            
         }
 
         private void txtCodigoPostal_KeyPress(object sender, KeyPressEventArgs e)
         {
+            // Solo deja numericos
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
             {
                 e.Handled = true;
             }
 
-            // only allow one decimal point
             if ((e.KeyChar == '.'))
             {
                 e.Handled = true;
@@ -240,12 +255,13 @@ namespace PagoAgilFrba.AbmCliente
 
         private void txtFiltroCodigoPostal_KeyPress(object sender, KeyPressEventArgs e)
         {
+            // Solo deja numericos
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
             {
                 e.Handled = true;
             }
 
-            // only allow one decimal point
+            
             if ((e.KeyChar == '.'))
             {
                 e.Handled = true;
@@ -254,12 +270,13 @@ namespace PagoAgilFrba.AbmCliente
 
         private void txtDNI_KeyPress(object sender, KeyPressEventArgs e)
         {
+            // Solo deja numericos
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
             {
                 e.Handled = true;
             }
 
-            // only allow one decimal point
+            
             if ((e.KeyChar == '.'))
             {
                 e.Handled = true;
@@ -278,13 +295,12 @@ namespace PagoAgilFrba.AbmCliente
 
         private void txtTelefono_KeyPress(object sender, KeyPressEventArgs e)
         {
-
+            // Solo deja numericos
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
             {
                 e.Handled = true;
             }
 
-            // only allow one decimal point
             if ((e.KeyChar == '.'))
             {
                 e.Handled = true;
@@ -293,6 +309,7 @@ namespace PagoAgilFrba.AbmCliente
 
         private void btnVolver_Click(object sender, EventArgs e)
         {
+            // Vuelve al menu principal
             FormMenuPrincipal menuPrincipal = new FormMenuPrincipal();
             menuPrincipal.Show();
             this.Hide();
@@ -300,7 +317,8 @@ namespace PagoAgilFrba.AbmCliente
 
         private void txtNombre_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if(!char.IsControl(e.KeyChar) && !char.IsLetter(e.KeyChar) && !char.IsWhiteSpace(e.KeyChar))
+            // Solo deja alfabeticos
+            if (!char.IsControl(e.KeyChar) && !char.IsLetter(e.KeyChar) && !char.IsWhiteSpace(e.KeyChar))
             {
                 e.Handled = true;
             }
@@ -308,6 +326,7 @@ namespace PagoAgilFrba.AbmCliente
 
         private void txtApellido_KeyPress(object sender, KeyPressEventArgs e)
         {
+            // Solo deja alfabeticos
             if (!char.IsControl(e.KeyChar) && !char.IsLetter(e.KeyChar) && !char.IsWhiteSpace(e.KeyChar))
             {
                 e.Handled = true;

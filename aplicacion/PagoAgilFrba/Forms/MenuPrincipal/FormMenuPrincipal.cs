@@ -27,7 +27,9 @@ namespace PagoAgilFrba.Forms.MenuPrincipal
         }
 
         private void FormMenuPrincipal_Load(object sender, EventArgs e)
-        {                           
+        {   
+            // Por cada funcionalidad, agrega un boton que redirige a ese formulario en la barra de navegacion
+            // Agrega el listener de click ("irAFormulario") de cada boton                        
             foreach(int id in Usuario.Logeado.Rol.Funcionalidades)
             {
                 Funcionalidad funcionalidad = (Funcionalidad)DB.DB.Instancia.encontrar(typeof(Funcionalidad), id);
@@ -40,12 +42,15 @@ namespace PagoAgilFrba.Forms.MenuPrincipal
 
         public void irAFormulario(object sender, EventArgs e)
         {
+            // Busca el formulario segun nombre "Form" + descripcion de funcionalidad
             Funcionalidad funcionalidad = ((Funcionalidad)((ToolStripButton)sender).Tag);
             Type form = Assembly.GetExecutingAssembly().GetTypes().Where(type => type.Name.Equals("Form" + funcionalidad.Descripcion.Replace(" ", ""))).FirstOrDefault();
-            if(form == null)
+            // Si no lo encuentra, tira una excepcion
+            if (form == null)
             {
                 throw new Exception("Funcionalidad no encontrada");
             }
+            // Si lo encuntra, crea una instancia y direcciona ahi
             ((Form)Activator.CreateInstance(form)).Show();
             this.Hide();
         }
